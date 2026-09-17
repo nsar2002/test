@@ -1,0 +1,69 @@
+name: FLY-MNQ V6-M3E1 somatic input resistance falsification
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v6_m3e1_cross_sex_somatic_input_resistance_falsification_protocol.md'
+      - 'fly_mnq/v6_m3e1_somatic_input_resistance_falsification.py'
+      - '.github/workflows/fly_mnq_v6_m3e1_somatic_input_resistance_falsification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  falsification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install frozen dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 pyarrow==17.0.0 scipy==1.14.1
+      - name: Acquire exact official sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m3e1_work v6_m3e1_out
+          curl --fail --location --retry 5 -o v6_m3e1_work/body-annotations.feather             https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
+          for body in 10540 10977; do
+            curl --fail --location --retry 5 -o "v6_m3e1_work/$body.swc"               "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/$body.swc"
+          done
+          sha256sum v6_m3e1_work/* | tee v6_m3e1_out/input_sha256.txt
+      - name: Freeze execution bytes
+        run: sha256sum research/v6_m3e1_cross_sex_somatic_input_resistance_falsification_protocol.md fly_mnq/v6_m3e1_somatic_input_resistance_falsification.py | tee v6_m3e1_out/preexecution_sha256.txt
+      - name: Execute falsification
+        shell: bash
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m3e1_somatic_input_resistance_falsification.py | tee v6_m3e1_out/stdout.txt
+      - name: Enforce scientific classification emitted
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m3e1_out/v6_m3e1_result.json'))
+          print('FORMAL_CLASSIFICATION',r['classification'])
+          ok={'PASS_M3E1_GROSS_INPUT_RESISTANCE_COMPATIBILITY',
+              'FAIL_M3E1_CURRENT_PASSIVE_MORPHOLOGY_GROSSLY_INCOMPATIBLE'}
+          if r['classification'] not in ok:
+              raise SystemExit(2)
+          PY
+      - name: Hash outputs
+        if: always()
+        shell: bash
+        run: |
+          : > v6_m3e1_out/output_sha256.txt
+          for f in v6_m3e1_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m3e1_out/output_sha256.txt
+          done
+          cat v6_m3e1_out/output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m3e1-somatic-input-resistance
+          path: v6_m3e1_out/
+          retention-days: 14
