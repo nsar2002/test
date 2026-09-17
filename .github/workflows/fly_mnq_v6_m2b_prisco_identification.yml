@@ -1,0 +1,47 @@
+name: FLY-MNQ V6-M2B Prisco identification
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'fly_mnq/v6_m2b_prisco_identification.py'
+      - 'research/v6_m2b_execution_freeze_manifest.md'
+      - '.github/workflows/fly_mnq_v6_m2b_prisco_identification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  identify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frozen runtime dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.3.3 scipy==1.16.2 openpyxl==3.1.5
+      - name: Freeze pre-execution hashes
+        run: |
+          mkdir -p v6_m2b_out
+          sha256sum research/v6_m2b_execution_freeze_manifest.md fly_mnq/v6_m2b_prisco_identification.py > v6_m2b_out/preexecution_sha256.txt
+          cat v6_m2b_out/preexecution_sha256.txt
+      - name: Execute M2B source-calibration gate
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m2b_prisco_identification.py | tee v6_m2b_out/stdout.txt
+      - name: Hash outputs
+        if: always()
+        run: |
+          if [ -d v6_m2b_out ]; then
+            find v6_m2b_out -maxdepth 1 -type f ! -name output_sha256.txt -printf '%f\n' | sort | while read f; do sha256sum "v6_m2b_out/$f"; done > v6_m2b_out/output_sha256.txt
+            cat v6_m2b_out/output_sha256.txt
+          fi
+      - name: Upload provenance artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fly-mnq-v6-m2b-prisco-identification
+          path: v6_m2b_out/
+          if-no-files-found: error
