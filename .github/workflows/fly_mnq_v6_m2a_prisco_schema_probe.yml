@@ -1,0 +1,67 @@
+name: FLY MNQ V6-M2A Prisco schema-only probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fly_mnq_v6_m2a_prisco_schema_probe.yml'
+      - 'fly_mnq/v6_m2a_prisco_schema_probe.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  schema-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install exact schema dependency
+        run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - name: Freeze execution bytes
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m2a_out
+          sha256sum research/v6_m2a_prisco_calibration_source_schema_protocol.md fly_mnq/v6_m2a_prisco_schema_probe.py | tee v6_m2a_out/preexecution_sha256.txt
+      - name: Resolve, download, hash and inspect exact Dryad files
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m2a_prisco_schema_probe.py | tee v6_m2a_out/stdout.txt
+      - name: Enforce source-only guardrails
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m2a_out/v6_m2a_prisco_schema_probe.json'))
+          g=r['guardrails']
+          assert r['status']=='PASS_M2A_SOURCE_SCHEMA_ONLY'
+          assert len(r['manifest'])==15
+          assert len({x['filename'] for x in r['manifest']})==15
+          assert g['response_numeric_values_emitted'] is False
+          assert g['numeric_tokens_in_string_labels_redacted'] is True
+          assert g['parameters_fit'] is False
+          assert g['v6_prediction_loaded'] is False
+          assert g['amin_response_values_loaded'] is False
+          assert g['mnq_or_market_loaded'] is False
+          print('FORMAL_STATUS', r['status'], 'FILES', len(r['manifest']))
+          PY
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m2a_out/output_sha256.txt
+          for f in v6_m2a_out/v6_m2a_prisco_schema_probe.json v6_m2a_out/stdout.txt v6_m2a_out/preexecution_sha256.txt; do
+            if [ -f "$f" ]; then sha256sum "$f" | tee -a v6_m2a_out/output_sha256.txt; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m2a-prisco-schema-probe
+          path: v6_m2a_out/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
