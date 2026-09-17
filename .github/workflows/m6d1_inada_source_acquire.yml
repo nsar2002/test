@@ -1,0 +1,29 @@
+name: M6D1 Inada source-only PDF acquire
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/m6d1_inada_source_acquire.yml'
+  workflow_dispatch:
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Acquire public author PDF bytes only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          curl -L --fail --retry 3 --retry-all-errors \
+            -o out/Neuron_Inada_2017.pdf \
+            https://kazamalab.riken.jp/pdf/Neuron_Inada_2017.pdf
+          sha256sum out/Neuron_Inada_2017.pdf | tee out/source_sha256.txt
+          stat -c '%s' out/Neuron_Inada_2017.pdf | tee out/source_bytes.txt
+          file out/Neuron_Inada_2017.pdf | tee out/file_type.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m6d1-inada-source-pdf
+          path: out/
+          retention-days: 30
