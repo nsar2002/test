@@ -193,7 +193,7 @@ def main():
     if not any(v=="C" for v in name_to_group.values()) or not any(v=="V" for v in name_to_group.values()) or not any(v=="H" for v in name_to_group.values()):
         emit_blocked("BLOCKED_M3F2A_ROI_LABEL_METADATA",meta,"Official label metadata did not expose all C/V/H groups under frozen name semantics")
 
-    cv=CloudVolume(BASE_CV,use_https=True,bounded=True,fill_missing=False,progress=False,mip=0)
+    cv=CloudVolume(BASE_CV,use_https=True,bounded=True,fill_missing=True,progress=False,mip=0)
     res=[float(x) for x in cv.resolution]
     meta["cloudvolume_resolution_nm"]=res
     meta["cloudvolume_voxel_offset"]=[int(x) for x in cv.bounds.minpt[:3]]
