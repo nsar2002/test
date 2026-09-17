@@ -74,14 +74,25 @@ def embedded_list(obj: dict, preferred: str) -> list[dict]:
 
 
 def resolve_version() -> dict:
+    # Dryad's dataset record is the authoritative latest visible version metadata.
+    # Its stash:version link contains the internal version ID even when the /versions
+    # collection does not expose an `id` field in each embedded item.
     encoded = urllib.parse.quote(DOI, safe='')
-    obj = request_json(f'{API}/datasets/{encoded}/versions?per_page=100')
-    versions = embedded_list(obj, 'stash:versions')
-    if not versions:
-        raise RuntimeError(f'no public Dryad versions resolved; keys={list(obj)}')
-    def key(v: dict):
-        return (int(v.get('versionNumber') or 0), int(v.get('id') or 0))
-    return sorted(versions, key=key)[-1]
+    obj = request_json(f'{API}/datasets/{encoded}')
+    link = obj.get('_links', {}).get('stash:version')
+    href = link.get('href') if isinstance(link, dict) else None
+    if not href:
+        raise RuntimeError(f'Dryad dataset record lacks stash:version link; keys={list(obj)}')
+    m = re.search(r'/versions/(\d+)(?:$|[/?#])', href)
+    if not m:
+        raise RuntimeError(f'cannot parse Dryad version id from href={href!r}')
+    return {
+        'id': int(m.group(1)),
+        'versionNumber': obj.get('versionNumber'),
+        'versionStatus': obj.get('versionStatus'),
+        'lastModificationDate': obj.get('lastModificationDate'),
+        'identifier': obj.get('identifier'),
+    }
 
 
 def resolve_files(version_id: int) -> list[dict]:
