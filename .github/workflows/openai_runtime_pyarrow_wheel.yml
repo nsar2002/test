@@ -1,0 +1,30 @@
+name: OpenAI runtime pyarrow wheel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/openai_runtime_pyarrow_wheel.yml'
+  workflow_dispatch:
+
+jobs:
+  wheel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Download binary wheel only
+        run: |
+          set -euo pipefail
+          mkdir wheelhouse
+          python -m pip download --only-binary=:all: --no-deps pyarrow -d wheelhouse
+          sha256sum wheelhouse/* | tee wheel_sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pyarrow-cp313-wheel
+          path: |
+            wheelhouse/*
+            wheel_sha256.txt
+          if-no-files-found: error
