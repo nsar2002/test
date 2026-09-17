@@ -1,0 +1,24 @@
+name: OpenAI runtime brain npz
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/openai_runtime_brain_npz.yml'
+  workflow_dispatch:
+jobs:
+  brain:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Download exact public brain metadata only
+        run: |
+          set -euo pipefail
+          mkdir out
+          curl -L --fail --retry 3 -o out/brain.npz https://github.com/alextitonis/fly.ai/releases/download/brain-v1/brain.npz
+          echo 'cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca  out/brain.npz' | sha256sum -c -
+      - uses: actions/upload-artifact@v4
+        with:
+          name: brain-npz-public
+          path: out/brain.npz
+          retention-days: 1
