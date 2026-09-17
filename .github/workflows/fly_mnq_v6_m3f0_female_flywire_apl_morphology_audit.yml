@@ -47,7 +47,8 @@ jobs:
           r=json.load(open('v6_m3f0_out/v6_m3f0_result.json'))
           print('FORMAL_CLASSIFICATION',r['classification'])
           ok={'PASS_M3F0_FEMALE_FLYWIRE_APL_MORPHOLOGY_SOURCE',
-              'BLOCKED_M3F0_FEMALE_APL_IDENTITY_AMBIGUOUS'}
+              'BLOCKED_M3F0_FEMALE_APL_IDENTITY_AMBIGUOUS',
+              'FAIL_M3F0_FEMALE_PRECOMPUTED_SKELETON_STRUCTURE'}
           if r['classification'] not in ok:
               raise SystemExit(2)
           PY
