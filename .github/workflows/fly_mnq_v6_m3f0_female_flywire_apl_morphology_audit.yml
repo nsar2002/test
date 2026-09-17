@@ -1,0 +1,79 @@
+name: FLY-MNQ V6-M3F0 female FlyWire APL morphology audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v6_m3f0_female_flywire_apl_morphology_source_protocol.md'
+      - 'fly_mnq/v6_m3f0_female_flywire_apl_morphology_audit.py'
+      - '.github/workflows/fly_mnq_v6_m3f0_female_flywire_apl_morphology_audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install frozen dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 scipy==1.14.1
+      - name: Acquire exact pinned systematic annotation source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m3f0_work v6_m3f0_out
+          curl --fail --location --retry 5 --retry-delay 3             -o v6_m3f0_work/Supplemental_file1_neuron_annotations.tsv             https://raw.githubusercontent.com/flyconnectome/flywire_annotations/8587524c1748ce5ef2080822a2fc890fc03bf597/supplemental_files/Supplemental_file1_neuron_annotations.tsv
+          test "$(stat -c %s v6_m3f0_work/Supplemental_file1_neuron_annotations.tsv)" = "31718505"
+          sha256sum v6_m3f0_work/Supplemental_file1_neuron_annotations.tsv | tee v6_m3f0_out/input_sha256.txt
+      - name: Freeze execution bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum research/v6_m3f0_female_flywire_apl_morphology_source_protocol.md fly_mnq/v6_m3f0_female_flywire_apl_morphology_audit.py | tee v6_m3f0_out/preexecution_sha256.txt
+      - name: Execute source/identity/structure audit
+        shell: bash
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m3f0_female_flywire_apl_morphology_audit.py | tee v6_m3f0_out/stdout.txt
+      - name: Enforce formal source classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m3f0_out/v6_m3f0_result.json'))
+          print('FORMAL_CLASSIFICATION',r['classification'])
+          ok={'PASS_M3F0_FEMALE_FLYWIRE_APL_MORPHOLOGY_SOURCE',
+              'BLOCKED_M3F0_FEMALE_APL_IDENTITY_AMBIGUOUS'}
+          if r['classification'] not in ok:
+              raise SystemExit(2)
+          PY
+      - name: Hash outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > v6_m3f0_out/output_sha256.txt
+          for f in v6_m3f0_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m3f0_out/output_sha256.txt
+          done
+          for f in v6_m3f0_work/*.precomputed; do
+            [ -f "$f" ] || continue
+            sha256sum "$f" >> v6_m3f0_out/output_sha256.txt
+          done
+          cat v6_m3f0_out/output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m3f0-female-flywire-apl-morphology
+          path: |
+            v6_m3f0_out/
+            v6_m3f0_work/*.precomputed
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
