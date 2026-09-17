@@ -1,0 +1,82 @@
+name: FLY-MNQ V6-M3D passive electrical operator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v6_m3d_set_valued_passive_electrical_operator_protocol.md'
+      - 'fly_mnq/v6_m3d_passive_electrical_operator.py'
+      - '.github/workflows/fly_mnq_v6_m3d_passive_electrical_operator.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  operator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install frozen dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 pyarrow==17.0.0 scipy==1.14.1
+      - name: Acquire exact official sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m3d_work v6_m3d_out
+          curl --fail --location --retry 5 --retry-delay 3 -o v6_m3d_work/brain.npz             https://github.com/alextitonis/fly.ai/releases/download/brain-v1/brain.npz
+          curl --fail --location --retry 5 --retry-delay 3 -o v6_m3d_work/body-annotations.feather             https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
+          curl --fail --location --retry 5 --retry-delay 3 -o v6_m3d_work/syn-partners.feather             https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/syn-partners-male-cns-v1.0-minconf-0.5.feather
+          for body in 10540 10977; do
+            curl --fail --location --retry 5 --retry-delay 3 -o "v6_m3d_work/$body.swc"               "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-swc/$body.swc"
+          done
+          sha256sum v6_m3d_work/* | tee v6_m3d_out/input_sha256.txt
+      - name: Freeze execution bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum research/v6_m3d_set_valued_passive_electrical_operator_protocol.md fly_mnq/v6_m3d_passive_electrical_operator.py | tee v6_m3d_out/preexecution_sha256.txt
+      - name: Execute M3D operator gate
+        shell: bash
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m3d_passive_electrical_operator.py | tee v6_m3d_out/stdout.txt
+      - name: Enforce qualified operator classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m3d_out/v6_m3d_passive_electrical_operator.json'))
+          print('FORMAL_CLASSIFICATION',r['classification'])
+          ok={
+            'PASS_M3D_PASSIVE_OPERATOR_AND_GRID_LOCAL_DOMINANCE',
+            'PASS_M3D_PASSIVE_OPERATOR_LOCAL_DOMINANCE_NOT_ROBUST',
+          }
+          if r['classification'] not in ok:
+              raise SystemExit(2)
+          PY
+      - name: Hash outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > v6_m3d_out/output_sha256.txt
+          for f in v6_m3d_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m3d_out/output_sha256.txt
+          done
+          cat v6_m3d_out/output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m3d-passive-electrical-operator
+          path: v6_m3d_out/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
