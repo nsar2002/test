@@ -1,0 +1,73 @@
+name: FLY MNQ V6-M1A Amin holdout schema probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fly_mnq_v6_m1a_amin_schema_probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  schema-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install exact schema dependency
+        run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - name: Acquire official eLife holdout source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m1a_work v6_m1a_out
+          curl --fail --location --retry 5 --retry-delay 3 \
+            -o v6_m1a_work/elife-56954-fig7-data1-v2.xlsx \
+            https://cdn.elifesciences.org/articles/56954/elife-56954-fig7-data1-v2.xlsx
+          curl --fail --location --retry 5 --retry-delay 3 \
+            -o v6_m1a_work/elife-56954-supp2-v2.xlsx \
+            https://cdn.elifesciences.org/articles/56954/elife-56954-supp2-v2.xlsx
+          sha256sum v6_m1a_work/*.xlsx | tee v6_m1a_out/input_sha256.txt
+      - name: Freeze schema-probe bytes
+        run: |
+          set -euo pipefail
+          sha256sum research/v6_m1_independent_validation_reservation_protocol.md fly_mnq/v6_m1a_amin_schema_probe.py | tee v6_m1a_out/preexecution_sha256.txt
+      - name: Inspect schema only
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m1a_amin_schema_probe.py | tee v6_m1a_out/stdout.txt
+      - name: Enforce no numerical-model comparison
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m1a_out/v6_m1a_amin_schema_probe.json'))
+          g=r['guardrails']
+          assert r['status']=='SCHEMA_ACQUIRED_NOT_MODEL_COMPARED'
+          assert g['numeric_values_emitted'] is False
+          assert g['numeric_values_used_for_parameter_selection'] is False
+          assert g['v6_prediction_loaded'] is False
+          assert g['mnq_or_market_loaded'] is False
+          print('FORMAL_STATUS', r['status'])
+          PY
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m1a_out/output_sha256.txt
+          for f in v6_m1a_out/v6_m1a_amin_schema_probe.json v6_m1a_out/stdout.txt v6_m1a_out/input_sha256.txt v6_m1a_out/preexecution_sha256.txt; do
+            if [ -f "$f" ]; then sha256sum "$f" | tee -a v6_m1a_out/output_sha256.txt; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m1a-amin-schema-probe
+          path: v6_m1a_out/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
