@@ -1,0 +1,41 @@
+name: FLY-MNQ V6-M3A MaleCNS morphology source audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'fly_mnq/v6_m3a_malecns_morphology_audit.py'
+      - '.github/workflows/fly_mnq_v6_m3a_morphology_audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Freeze implementation hash
+        run: |
+          mkdir -p v6_m3a_out
+          sha256sum fly_mnq/v6_m3a_malecns_morphology_audit.py > v6_m3a_out/preexecution_sha256.txt
+          cat v6_m3a_out/preexecution_sha256.txt
+      - name: Run source-only morphology audit
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m3a_malecns_morphology_audit.py | tee v6_m3a_out/stdout.txt
+      - name: Hash outputs
+        if: always()
+        run: |
+          if [ -d v6_m3a_out ]; then
+            find v6_m3a_out -maxdepth 1 -type f ! -name output_sha256.txt -printf '%f\n' | sort | while read f; do sha256sum "v6_m3a_out/$f"; done > v6_m3a_out/output_sha256.txt
+            cat v6_m3a_out/output_sha256.txt
+          fi
+      - name: Upload provenance artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fly-mnq-v6-m3a-morphology-source-audit
+          path: v6_m3a_out/
+          if-no-files-found: error
