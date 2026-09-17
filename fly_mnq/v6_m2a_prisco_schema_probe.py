@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -11,7 +12,7 @@ from openpyxl import load_workbook
 
 DOI = 'doi:10.5061/dryad.bk3j9kdd1'
 API = 'https://datadryad.org/api/v2'
-DOWNLOAD_BASE = 'https://datadryad.org/stash/downloads/file_stream/'
+UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/152 Safari/537.36'
 WORK = Path('v6_m2a_work')
 OUT = Path('v6_m2a_out')
 WORK.mkdir(exist_ok=True)
@@ -40,19 +41,49 @@ _PLIKE = re.compile(r'(?i)\b(?:p|r|r\^?2|mean|median|sem|sd)\s*[=<>]')
 
 
 def request_json(url: str) -> dict:
-    req = urllib.request.Request(url, headers={'Accept': 'application/json', 'X-API-Version': '2.1.0', 'User-Agent': 'v6-m2a-source-audit/1.0'})
+    req = urllib.request.Request(
+        url,
+        headers={
+            'Accept': 'application/json',
+            'X-API-Version': '2.1.0',
+            'User-Agent': UA,
+        },
+    )
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
 
 
-def download(url: str, path: Path) -> None:
-    req = urllib.request.Request(url, headers={'User-Agent': 'v6-m2a-source-audit/1.0'})
-    with urllib.request.urlopen(req, timeout=120) as r, path.open('wb') as f:
-        while True:
-            chunk = r.read(1 << 20)
-            if not chunk:
-                break
-            f.write(chunk)
+def curl_json(url: str) -> object:
+    cp = subprocess.run(
+        [
+            'curl', '--silent', '--show-error', '--location', '--fail-with-body',
+            '--max-time', '90', '--retry', '3', '--retry-delay', '1',
+            '--user-agent', UA, '--header', 'Accept: application/json', url,
+        ],
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    if cp.returncode != 0:
+        raise RuntimeError(f'curl JSON acquisition failed exit={cp.returncode} stderr={cp.stderr[-300:]}')
+    return json.loads(cp.stdout)
+
+
+def curl_download(url: str, path: Path) -> None:
+    cp = subprocess.run(
+        [
+            'curl', '--silent', '--show-error', '--location', '--fail-with-body',
+            '--max-time', '120', '--retry', '3', '--retry-delay', '1',
+            '--user-agent', UA, '--output', str(path), url,
+        ],
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    if cp.returncode != 0:
+        if path.exists():
+            path.unlink()
+        raise RuntimeError(f'curl file acquisition failed exit={cp.returncode} stderr={cp.stderr[-300:]}')
 
 
 def sha256(path: Path) -> str:
@@ -115,17 +146,37 @@ def file_name(meta: dict) -> str:
 
 
 def file_id(meta: dict) -> int:
-    # Dryad v2 file list objects expose the file identifier in HAL links, not as a
-    # top-level `id`. Parse the canonical /api/v2/files/{id} self link.
-    links = meta.get('_links', {})
     for rel in ('self', 'stash:download'):
-        link = links.get(rel)
-        href = link.get('href') if isinstance(link, dict) else None
+        obj = (meta.get('_links') or {}).get(rel)
+        href = obj.get('href') if isinstance(obj, dict) else None
         if href:
             m = re.search(r'/files/(\d+)(?:/download)?(?:$|[/?#])', href)
             if m:
                 return int(m.group(1))
-    raise RuntimeError(f'cannot resolve Dryad file id from HAL links; rels={sorted(links)}')
+    raise RuntimeError(f'cannot resolve Dryad file id for {file_name(meta)!r}')
+
+
+def resolve_assembly(version_id: int) -> dict[str, dict]:
+    # Current Dryad server code exposes this public route for downloadable resources.
+    # It returns signed per-file URLs. Signed query strings remain process-local and
+    # are never emitted into reports/stdout/artifacts.
+    obj = curl_json(f'https://datadryad.org/downloads/zip_assembly_info/{version_id}.json')
+    if not isinstance(obj, list):
+        raise RuntimeError(f'Dryad assembly endpoint did not return an array: {type(obj).__name__}')
+    out: dict[str, dict] = {}
+    duplicates: list[str] = []
+    for x in obj:
+        if not isinstance(x, dict):
+            continue
+        name = str(x.get('filename') or '').split('/')[-1]
+        if not name:
+            continue
+        if name in out:
+            duplicates.append(name)
+        out[name] = x
+    if duplicates:
+        raise RuntimeError(f'Dryad assembly duplicate filenames encountered: {sorted(set(duplicates))[:20]}')
+    return out
 
 
 def redact_label(s: str) -> tuple[str, bool]:
@@ -141,7 +192,15 @@ def workbook_schema(path: Path) -> dict:
     sheets = []
     for ws in wb.worksheets:
         labels = []
-        counts = {'numeric': 0, 'formula': 0, 'blank': 0, 'boolean': 0, 'date': 0, 'numeric_like_or_numeric_token_string': 0, 'other': 0}
+        counts = {
+            'numeric': 0,
+            'formula': 0,
+            'blank': 0,
+            'boolean': 0,
+            'date': 0,
+            'numeric_like_or_numeric_token_string': 0,
+            'other': 0,
+        }
         for row in ws.iter_rows():
             for c in row:
                 v = c.value
@@ -178,39 +237,66 @@ def main() -> None:
     version = resolve_version()
     version_id = int(version['id'])
     files = resolve_files(version_id)
+    assembly = resolve_assembly(version_id)
+
     by_name: dict[str, list[dict]] = {}
     for f in files:
         by_name.setdefault(file_name(f), []).append(f)
 
     missing = [n for n in TARGETS if n not in by_name]
     duplicates = {n: len(by_name[n]) for n in TARGETS if len(by_name.get(n, [])) != 1 and n in by_name}
-    if missing or duplicates:
-        raise RuntimeError(f'exact-file resolution failed missing={missing} duplicates={duplicates}')
+    assembly_missing = [n for n in TARGETS if n not in assembly]
+    if missing or duplicates or assembly_missing:
+        raise RuntimeError(
+            f'exact-file resolution failed missing={missing} duplicates={duplicates} assembly_missing={assembly_missing}'
+        )
 
     manifest = []
     schemas = {}
     for name in TARGETS:
         meta = by_name[name][0]
         fid = file_id(meta)
+        dtype = str(meta.get('digestType') or '').lower()
+        expected_sha = str(meta.get('digest') or '').lower()
+        expected_size = int(meta.get('size')) if meta.get('size') is not None else None
+        if dtype not in {'sha-256', 'sha256'} or not re.fullmatch(r'[0-9a-f]{64}', expected_sha):
+            raise RuntimeError(f'non-SHA256 Dryad identity for {name}: type={dtype!r} digest={expected_sha!r}')
+        if expected_size is None:
+            raise RuntimeError(f'missing Dryad size for {name}')
+
+        ax = assembly[name]
+        signed = ax.get('url')
+        assembly_size = int(ax.get('size')) if ax.get('size') is not None else None
+        if not isinstance(signed, str) or not signed.startswith('https://'):
+            raise RuntimeError(f'assembly route lacks HTTPS signed URL for {name}')
+        if assembly_size != expected_size:
+            raise RuntimeError(f'assembly/Dryad size mismatch for {name}: assembly={assembly_size} api={expected_size}')
+
         dest = WORK / name
-        download(f'{DOWNLOAD_BASE}{fid}', dest)
-        local_hash = sha256(dest)
-        provider_digest = meta.get('digest')
-        provider_digest_type = meta.get('digestType')
-        if str(provider_digest_type).lower() in {'sha-256', 'sha256'} and provider_digest and local_hash.lower() != str(provider_digest).lower():
-            raise RuntimeError(f'provider SHA-256 mismatch for {name}: provider={provider_digest} local={local_hash}')
-        if meta.get('size') is not None and int(meta['size']) != dest.stat().st_size:
-            raise RuntimeError(f'provider size mismatch for {name}: provider={meta["size"]} local={dest.stat().st_size}')
+        curl_download(signed, dest)
+        local_sha = sha256(dest)
+        local_size = dest.stat().st_size
+        if local_size != expected_size:
+            raise RuntimeError(f'byte-size identity failure for {name}: got={local_size} expected={expected_size}')
+        if local_sha.lower() != expected_sha:
+            raise RuntimeError(f'SHA256 identity failure for {name}: got={local_sha} expected={expected_sha}')
+
+        # Only after exact provider byte identity succeeds may schema inspection open the workbook.
+        schemas[name] = workbook_schema(dest)
         manifest.append({
             'filename': name,
             'dryad_file_id': fid,
-            'provider_size': meta.get('size'),
-            'provider_digest': provider_digest,
-            'provider_digest_type': provider_digest_type,
-            'local_bytes': dest.stat().st_size,
-            'local_sha256': local_hash,
+            'provider_size': expected_size,
+            'provider_digest': expected_sha,
+            'provider_digest_type': meta.get('digestType'),
+            'assembly_size': assembly_size,
+            'signed_transport_host': urllib.parse.urlsplit(signed).hostname,
+            'signed_transport_query_logged': False,
+            'local_bytes': local_size,
+            'local_sha256': local_sha,
+            'exact_size_match': True,
+            'exact_sha256_match': True,
         })
-        schemas[name] = workbook_schema(dest)
 
     roles = {
         'structural_context': TARGETS[0:2],
@@ -229,11 +315,14 @@ def main() -> None:
             'version_status': version.get('versionStatus'),
             'last_modification_date': version.get('lastModificationDate'),
             'total_files_seen': len(files),
+            'assembly_entries_seen': len(assembly),
         },
         'manifest': manifest,
         'roles': roles,
         'schemas': schemas,
         'guardrails': {
+            'all_files_verified_before_workbook_open': True,
+            'assembly_signed_queries_persisted_or_logged': False,
             'response_numeric_values_emitted': False,
             'numeric_tokens_in_string_labels_redacted': True,
             'parameters_fit': False,
@@ -253,8 +342,11 @@ def main() -> None:
         'schema_summary': {
             name: [
                 {
-                    'title': s['title'], 'max_row': s['max_row'], 'max_column': s['max_column'],
-                    'merged_ranges': s['merged_ranges'], 'cell_type_counts': s['cell_type_counts'],
+                    'title': s['title'],
+                    'max_row': s['max_row'],
+                    'max_column': s['max_column'],
+                    'merged_ranges': s['merged_ranges'],
+                    'cell_type_counts': s['cell_type_counts'],
                     'labels_with_numeric_tokens_redacted': s['labels_with_numeric_tokens_redacted'],
                 }
                 for s in schema['sheets']
