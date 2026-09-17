@@ -1,0 +1,64 @@
+name: FLY MNQ V6-M2A Dryad assembly transport probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fly_mnq_v6_m2a_zip_assembly_transport_probe.yml'
+      - 'fly_mnq/v6_m2a_zip_assembly_transport_probe.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assembly-transport-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Freeze probe bytes
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m2a_assembly_out
+          sha256sum fly_mnq/v6_m2a_zip_assembly_transport_probe.py | tee v6_m2a_assembly_out/preexecution_sha256.txt
+      - name: Probe Dryad assembly transport
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m2a_zip_assembly_transport_probe.py | tee v6_m2a_assembly_out/stdout.txt
+      - name: Enforce transport-only guardrails
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m2a_assembly_out/v6_m2a_zip_assembly_transport_probe.json'))
+          g=r['guardrails']
+          assert r['status']=='PASS_DRYAD_ASSEMBLY_HASH_IDENTICAL_TRANSPORT'
+          assert g['assembly_signed_queries_persisted_or_logged'] is False
+          assert g['workbook_opened'] is False
+          assert g['response_values_read'] is False
+          assert g['parameters_fit'] is False
+          assert g['v6_prediction_loaded'] is False
+          assert g['amin_response_values_loaded'] is False
+          assert g['mnq_or_market_loaded'] is False
+          print('FORMAL_STATUS',r['status'])
+          PY
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m2a_assembly_out/output_sha256.txt
+          for f in v6_m2a_assembly_out/v6_m2a_zip_assembly_transport_probe.json v6_m2a_assembly_out/stdout.txt v6_m2a_assembly_out/preexecution_sha256.txt; do
+            if [ -f "$f" ]; then sha256sum "$f" | tee -a v6_m2a_assembly_out/output_sha256.txt; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m2a-dryad-assembly-transport-probe
+          path: v6_m2a_assembly_out/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
