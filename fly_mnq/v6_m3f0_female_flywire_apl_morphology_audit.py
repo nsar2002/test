@@ -63,30 +63,46 @@ def parse_precomputed(path:Path):
     if n<100: raise RuntimeError(f"{path.name}: too few nodes {n}")
     if e!=n-1: raise RuntimeError(f"{path.name}: edges {e} != nodes-1 {n-1}")
     if not np.isfinite(xyz).all(): raise RuntimeError(f"{path.name}: nonfinite xyz")
-    if not np.isfinite(rad).all() or np.any(rad<=0): raise RuntimeError(f"{path.name}: nonpositive/nonfinite radius")
-    if np.any(edges<0) or np.any(edges>=n): raise RuntimeError(f"{path.name}: edge index out of bounds")
-    if np.any(edges[:,0]==edges[:,1]): raise RuntimeError(f"{path.name}: self edge")
-    canon=np.sort(edges,axis=1)
-    if len(np.unique(canon,axis=0))!=len(canon): raise RuntimeError(f"{path.name}: duplicate undirected edge")
+    edge_index_ok=bool(not np.any(edges<0) and not np.any(edges>=n))
+    self_edge_count=int(np.sum(edges[:,0]==edges[:,1])) if edge_index_ok else -1
+    canon=np.sort(edges,axis=1) if edge_index_ok else np.empty((0,2),dtype=np.int64)
+    duplicate_undirected_edges=int(len(canon)-len(np.unique(canon,axis=0))) if edge_index_ok else -1
 
-    rr=np.concatenate([edges[:,0],edges[:,1]])
-    cc=np.concatenate([edges[:,1],edges[:,0]])
-    G=sparse.csr_matrix((np.ones(len(rr),np.int8),(rr,cc)),shape=(n,n))
-    nc,labels=connected_components(G,directed=False,return_labels=True)
-    if nc!=1: raise RuntimeError(f"{path.name}: components={nc}")
+    if edge_index_ok:
+        rr=np.concatenate([edges[:,0],edges[:,1]])
+        cc=np.concatenate([edges[:,1],edges[:,0]])
+        G=sparse.csr_matrix((np.ones(len(rr),np.int8),(rr,cc)),shape=(n,n))
+        nc,labels=connected_components(G,directed=False,return_labels=True)
+        d=xyz[edges[:,0]]-xyz[edges[:,1]]
+        L=np.linalg.norm(d,axis=1)
+        invalid_edge_lengths=int(np.sum(~np.isfinite(L) | (L<=0)))
+    else:
+        nc=-1; L=np.array([],float); invalid_edge_lengths=-1
 
-    d=xyz[edges[:,0]]-xyz[edges[:,1]]
-    L=np.linalg.norm(d,axis=1)
-    if not np.isfinite(L).all() or np.any(L<=0): raise RuntimeError(f"{path.name}: invalid edge length")
+    finite_rad=np.isfinite(rad)
+    nonfinite_radius_count=int(np.sum(~finite_rad))
+    nonpositive_radius_count=int(np.sum(finite_rad & (rad<=0)))
+    structure_pass=bool(
+        n>=100 and e==n-1 and np.isfinite(xyz).all() and
+        nonfinite_radius_count==0 and nonpositive_radius_count==0 and
+        edge_index_ok and self_edge_count==0 and duplicate_undirected_edges==0 and
+        nc==1 and invalid_edge_lengths==0
+    )
 
     return {
         "n_nodes":int(n),"n_edges":int(e),"xyz":xyz,"radius":rad,"edges":edges,
         "coord_min_nm":[float(x) for x in xyz.min(axis=0)],
         "coord_max_nm":[float(x) for x in xyz.max(axis=0)],
-        "radius_min_nm":float(rad.min()),"radius_median_nm":float(np.median(rad)),"radius_max_nm":float(rad.max()),
-        "total_cable_um":float(L.sum()/1000.0),
+        "radius_min_nm":float(np.nanmin(rad)),"radius_median_nm":float(np.nanmedian(rad)),"radius_max_nm":float(np.nanmax(rad)),
+        "nonfinite_radius_count":nonfinite_radius_count,
+        "nonpositive_radius_count":nonpositive_radius_count,
+        "self_edge_count":self_edge_count,
+        "duplicate_undirected_edge_count":duplicate_undirected_edges,
+        "invalid_edge_length_count":invalid_edge_lengths,
+        "total_cable_um":float(L.sum()/1000.0) if len(L) else None,
         "connected_components":int(nc),
         "root_semantics_unavailable":True,
+        "structure_pass":structure_pass,
     }
 
 def main():
@@ -174,9 +190,11 @@ def main():
                           "nearest_radius_nm":float(sk["radius"][ix])}
         }
 
+    all_structure=all(v["structure"]["structure_pass"] for v in sk_reports.values())
+    classification="PASS_M3F0_FEMALE_FLYWIRE_APL_MORPHOLOGY_SOURCE" if all_structure else "FAIL_M3F0_FEMALE_PRECOMPUTED_SKELETON_STRUCTURE"
     report={
       "gate":"V6-M3F0_FEMALE_FLYWIRE_APL_MORPHOLOGY_SOURCE",
-      "classification":"PASS_M3F0_FEMALE_FLYWIRE_APL_MORPHOLOGY_SOURCE",
+      "classification":classification,
       "dataset":{"name":"FlyWire FAFB","materialization":783,"sex":"female adult fly brain"},
       "annotation":{"commit":ANNOT_COMMIT,"blob_sha":ANNOT_BLOB_SHA,"sha256":ann_sha,
                     "size":annot.stat().st_size,"exact_APL_row_count":2,
