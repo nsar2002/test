@@ -1,5 +1,6 @@
 name: M6C2 public source executor
 
+# Trigger refresh after workflow registration. Scientific protocol and schema logic unchanged.
 on:
   push:
     branches: [main]
