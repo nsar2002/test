@@ -262,7 +262,7 @@ def solve_tree(tree,source_nodes,target_nodes,pn_nodes):
         V=lu.solve(B)
         resid=A@V-B
         denom=np.maximum(1.0,np.max(np.abs(B),axis=0))
-        max_resid=max(max_resid,float(np.max(np.abs(resid))/denom))
+        max_resid=max(max_resid,float(np.max(np.max(np.abs(resid),axis=0)/denom)))
         min_voltage=min(min_voltage,float(np.min(V)))
         mat={}
         for si,r in enumerate(PRIMARY):
