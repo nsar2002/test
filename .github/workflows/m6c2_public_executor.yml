@@ -1,0 +1,89 @@
+name: M6C2 public source executor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v5_m6c2_bergmann_calyx_source_protocol.md'
+      - 'fly_mnq/v5_m6c2_bergmann_schema_probe.py'
+      - '.github/workflows/m6c2_public_executor.yml'
+  workflow_dispatch:
+
+jobs:
+  schema-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact dependency
+        run: python -m pip install --disable-pip-version-check openpyxl==3.1.5
+      - name: Freeze execution boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile fly_mnq/v5_m6c2_bergmann_schema_probe.py
+          sha256sum \
+            research/v5_m6c2_bergmann_calyx_source_protocol.md \
+            fly_mnq/v5_m6c2_bergmann_schema_probe.py | tee m6c2_schema_preexecution_sha256.txt
+      - name: Acquire exact canonical PMC Dataset S1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p m6c2_source m6c2_schema_out
+          URL='https://pmc-oa-opendata.s3.amazonaws.com/PMC13039246.1/TJP-604-3005-s002.xlsx'
+          printf '%s\n' "$URL" > m6c2_source/source_url.txt
+          curl -L --fail --retry 3 --retry-all-errors --connect-timeout 20 \
+            -D m6c2_source/source_headers.txt \
+            -o m6c2_source/bergmann2026_dataset_s1.xlsx "$URL"
+          test "$(wc -c < m6c2_source/bergmann2026_dataset_s1.xlsx)" -eq 71218
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('m6c2_source/bergmann2026_dataset_s1.xlsx')
+          if p.read_bytes()[:4] != b'PK\x03\x04':
+              raise SystemExit('Dataset S1 is not an XLSX ZIP payload')
+          print('dataset_size', p.stat().st_size)
+          PY
+          sha256sum m6c2_source/bergmann2026_dataset_s1.xlsx | tee m6c2_source/source_sha256.txt
+      - name: Execute schema-only probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fly_mnq/v5_m6c2_bergmann_schema_probe.py \
+            m6c2_source/bergmann2026_dataset_s1.xlsx \
+            m6c2_schema_out/v5_m6c2_bergmann_schema_report.json | tee m6c2_schema_stdout.txt
+          python - <<'PY'
+          import json
+          r=json.load(open('m6c2_schema_out/v5_m6c2_bergmann_schema_report.json'))
+          assert r['numeric_values_exposed'] is False
+          assert r['size_bytes'] == 71218
+          print('SCHEMA_ONLY_PASS', r['sha256'], r['sheet_names'])
+          PY
+      - name: Hash outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum \
+            m6c2_schema_out/v5_m6c2_bergmann_schema_report.json \
+            m6c2_schema_stdout.txt \
+            m6c2_source/source_url.txt \
+            m6c2_source/source_headers.txt \
+            m6c2_source/source_sha256.txt \
+            m6c2_schema_preexecution_sha256.txt | tee m6c2_schema_output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m6c2-public-schema-probe
+          path: |
+            research/v5_m6c2_bergmann_calyx_source_protocol.md
+            fly_mnq/v5_m6c2_bergmann_schema_probe.py
+            m6c2_source/bergmann2026_dataset_s1.xlsx
+            m6c2_source/source_url.txt
+            m6c2_source/source_headers.txt
+            m6c2_source/source_sha256.txt
+            m6c2_schema_out/v5_m6c2_bergmann_schema_report.json
+            m6c2_schema_stdout.txt
+            m6c2_schema_preexecution_sha256.txt
+            m6c2_schema_output_sha256.txt
+          if-no-files-found: error
