@@ -1,0 +1,57 @@
+name: M6C2B public Lin Figure-5 source acquire
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v5_m6c2b_lin_soma_sparseness_source_protocol.md'
+      - '.github/workflows/m6c2b_public_source_acquire.yml'
+  workflow_dispatch:
+
+jobs:
+  source-acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Freeze source-protocol boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum research/v5_m6c2b_lin_soma_sparseness_source_protocol.md | tee m6c2b_protocol_sha256.txt
+      - name: Acquire author PDF and render Figure 5 page
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p m6c2b_source
+          URL='https://www.aclinlab.org/uploads/3/9/2/6/39268489/nat_neurosci_2014_lin.pdf'
+          printf '%s\n' "$URL" > m6c2b_source/source_url.txt
+          curl -L --fail --retry 3 --connect-timeout 20 -o m6c2b_source/nat_neurosci_2014_lin.pdf "$URL"
+          test "$(head -c 4 m6c2b_source/nat_neurosci_2014_lin.pdf)" = '%PDF'
+          sha256sum m6c2b_source/nat_neurosci_2014_lin.pdf | tee m6c2b_source/source_sha256.txt
+          pdfinfo m6c2b_source/nat_neurosci_2014_lin.pdf | tee m6c2b_source/pdfinfo.txt
+          pages=$(pdfinfo m6c2b_source/nat_neurosci_2014_lin.pdf | awk '/^Pages:/ {print $2}')
+          test "$pages" = '12'
+          pdftoppm -f 5 -l 5 -singlefile -png -r 300 m6c2b_source/nat_neurosci_2014_lin.pdf m6c2b_source/figure5_page_300dpi
+          pdftoppm -f 5 -l 5 -singlefile -png -r 450 m6c2b_source/nat_neurosci_2014_lin.pdf m6c2b_source/figure5_page_450dpi
+          sha256sum m6c2b_source/figure5_page_300dpi.png m6c2b_source/figure5_page_450dpi.png | tee m6c2b_source/render_sha256.txt
+      - name: Hash acquisition outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum m6c2b_protocol_sha256.txt m6c2b_source/source_url.txt m6c2b_source/source_sha256.txt m6c2b_source/pdfinfo.txt m6c2b_source/render_sha256.txt | tee m6c2b_acquisition_output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m6c2b-public-lin-fig5-source
+          path: |
+            research/v5_m6c2b_lin_soma_sparseness_source_protocol.md
+            m6c2b_protocol_sha256.txt
+            m6c2b_source/nat_neurosci_2014_lin.pdf
+            m6c2b_source/source_url.txt
+            m6c2b_source/source_sha256.txt
+            m6c2b_source/pdfinfo.txt
+            m6c2b_source/figure5_page_300dpi.png
+            m6c2b_source/figure5_page_450dpi.png
+            m6c2b_source/render_sha256.txt
+            m6c2b_acquisition_output_sha256.txt
+          if-no-files-found: error
