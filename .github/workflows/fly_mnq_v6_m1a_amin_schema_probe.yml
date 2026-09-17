@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/fly_mnq_v6_m1a_amin_schema_probe.yml'
+      - 'fly_mnq/v6_m1a_amin_schema_probe.py'
   workflow_dispatch:
 
 permissions:
@@ -41,19 +42,24 @@ jobs:
         run: |
           set -euo pipefail
           python fly_mnq/v6_m1a_amin_schema_probe.py | tee v6_m1a_out/stdout.txt
-      - name: Enforce no numerical-model comparison
+      - name: Enforce redacted holdout schema guardrails
         run: |
           set -euo pipefail
           python - <<'PY'
           import json
           r=json.load(open('v6_m1a_out/v6_m1a_amin_schema_probe.json'))
           g=r['guardrails']
+          c=r['correction_history']
           assert r['status']=='SCHEMA_ACQUIRED_NOT_MODEL_COMPARED'
-          assert g['numeric_values_emitted'] is False
+          assert g['response_numeric_cells_emitted'] is False
+          assert g['numeric_like_string_values_emitted'] is False
+          assert g['numeric_like_string_values_redacted'] is True
           assert g['numeric_values_used_for_parameter_selection'] is False
           assert g['v6_prediction_loaded'] is False
           assert g['mnq_or_market_loaded'] is False
-          print('FORMAL_STATUS', r['status'])
+          assert c['initial_probe_exposed_supplementary_pvalue_strings'] is True
+          assert c['initial_probe_used_pvalues_for_parameter_or_threshold_selection'] is False
+          print('FORMAL_STATUS', r['status'], 'REDACTION_CORRECTED')
           PY
       - name: Hash outputs
         if: always()
