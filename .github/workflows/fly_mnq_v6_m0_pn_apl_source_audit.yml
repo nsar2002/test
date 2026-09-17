@@ -1,0 +1,77 @@
+name: FLY MNQ V6-M0 PN-APL source audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fly_mnq_v6_m0_pn_apl_source_audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Install exact extraction dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 pyarrow==17.0.0
+      - name: Acquire exact official MaleCNS v1.0 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m0_work v6_m0_out
+          curl --fail --location --retry 5 --retry-delay 5 \
+            -o v6_m0_work/brain.npz \
+            https://github.com/alextitonis/fly.ai/releases/download/brain-v1/brain.npz
+          echo 'cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca  v6_m0_work/brain.npz' | sha256sum -c -
+          curl --fail --location --retry 5 --retry-delay 5 \
+            -o v6_m0_work/body-annotations.feather \
+            https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
+          curl --fail --location --retry 5 --retry-delay 5 \
+            -o v6_m0_work/syn-partners.feather \
+            https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/syn-partners-male-cns-v1.0-minconf-0.5.feather
+          sha256sum v6_m0_work/brain.npz v6_m0_work/body-annotations.feather v6_m0_work/syn-partners.feather | tee v6_m0_out/input_sha256.txt
+      - name: Freeze execution bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum research/v6_m0_pn_apl_microglomerular_architecture_protocol.md fly_mnq/v6_m0_pn_apl_source_audit.py | tee v6_m0_out/preexecution_sha256.txt
+      - name: Execute source-only PN-APL CALYX audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m0_pn_apl_source_audit.py | tee v6_m0_out/stdout.txt
+      - name: Enforce formal source-geometry PASS
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m0_out/v6_m0_malecns_pn_apl_source_audit.json'))
+          print('FORMAL_STATUS',r['status'],r['classification'])
+          if r['status']!='PASS' or r['classification']!='PASS_M0_MALECNS_PN_APL_SOURCE_GEOMETRY':
+              raise SystemExit(2)
+          PY
+      - name: Hash outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > v6_m0_out/output_sha256.txt
+          for f in v6_m0_out/v6_m0_malecns_pn_apl_source_audit.json v6_m0_out/malecns_alpn_apl_calyx_synapses.parquet v6_m0_out/stdout.txt v6_m0_out/input_sha256.txt v6_m0_out/preexecution_sha256.txt; do
+            if [ -f "$f" ]; then sha256sum "$f" | tee -a v6_m0_out/output_sha256.txt; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m0-pn-apl-source-audit
+          path: v6_m0_out/
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
