@@ -74,9 +74,6 @@ def embedded_list(obj: dict, preferred: str) -> list[dict]:
 
 
 def resolve_version() -> dict:
-    # Dryad's dataset record is the authoritative latest visible version metadata.
-    # Its stash:version link contains the internal version ID even when the /versions
-    # collection does not expose an `id` field in each embedded item.
     encoded = urllib.parse.quote(DOI, safe='')
     obj = request_json(f'{API}/datasets/{encoded}')
     link = obj.get('_links', {}).get('stash:version')
@@ -115,6 +112,20 @@ def resolve_files(version_id: int) -> list[dict]:
 
 def file_name(meta: dict) -> str:
     return str(meta.get('path') or meta.get('name') or meta.get('fileName') or '').split('/')[-1]
+
+
+def file_id(meta: dict) -> int:
+    # Dryad v2 file list objects expose the file identifier in HAL links, not as a
+    # top-level `id`. Parse the canonical /api/v2/files/{id} self link.
+    links = meta.get('_links', {})
+    for rel in ('self', 'stash:download'):
+        link = links.get(rel)
+        href = link.get('href') if isinstance(link, dict) else None
+        if href:
+            m = re.search(r'/files/(\d+)(?:/download)?(?:$|[/?#])', href)
+            if m:
+                return int(m.group(1))
+    raise RuntimeError(f'cannot resolve Dryad file id from HAL links; rels={sorted(links)}')
 
 
 def redact_label(s: str) -> tuple[str, bool]:
@@ -180,17 +191,24 @@ def main() -> None:
     schemas = {}
     for name in TARGETS:
         meta = by_name[name][0]
-        fid = int(meta['id'])
+        fid = file_id(meta)
         dest = WORK / name
         download(f'{DOWNLOAD_BASE}{fid}', dest)
+        local_hash = sha256(dest)
+        provider_digest = meta.get('digest')
+        provider_digest_type = meta.get('digestType')
+        if str(provider_digest_type).lower() in {'sha-256', 'sha256'} and provider_digest and local_hash.lower() != str(provider_digest).lower():
+            raise RuntimeError(f'provider SHA-256 mismatch for {name}: provider={provider_digest} local={local_hash}')
+        if meta.get('size') is not None and int(meta['size']) != dest.stat().st_size:
+            raise RuntimeError(f'provider size mismatch for {name}: provider={meta["size"]} local={dest.stat().st_size}')
         manifest.append({
             'filename': name,
             'dryad_file_id': fid,
             'provider_size': meta.get('size'),
-            'provider_digest': meta.get('digest'),
-            'provider_digest_type': meta.get('digestType'),
+            'provider_digest': provider_digest,
+            'provider_digest_type': provider_digest_type,
             'local_bytes': dest.stat().st_size,
-            'local_sha256': sha256(dest),
+            'local_sha256': local_hash,
         })
         schemas[name] = workbook_schema(dest)
 
