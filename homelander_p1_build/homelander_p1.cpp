@@ -18,6 +18,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
@@ -32,6 +48,22 @@
 #include <string>
 #include <vector>
 #include <limits>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -67,11 +99,43 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
     HWND g_window = nullptr;
     std::string g_root;
     SRWLOCK g_logLock = SRWLOCK_INIT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,6 +177,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     LuaPcallFn        LuaPcall = nullptr;
     LuaGetFieldFn     LuaGetField = nullptr;
     LuaSetTopFn       LuaSetTop = nullptr;
@@ -138,7 +218,39 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void** g_luaScriptManagerSlot = nullptr;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -175,6 +287,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     int g_lastLuaState = 0;
     bool g_scriptsReady = false;
     bool g_f4Prev = false;
@@ -182,6 +310,22 @@ namespace hl
     bool g_f6Prev = false;
     bool g_f7Prev = false;
     bool g_f8Prev = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -243,6 +387,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     std::string SelfRoot()
     {
         char path[MAX_PATH]{};
@@ -253,6 +413,22 @@ namespace hl
         const auto pos = s.find_last_of("\\/");
         return pos == std::string::npos ? "." : s.substr(0, pos);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -293,10 +469,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         std::string line = "[HOMELANDER_P1_ASI] ";
         line += message;
         line += "\r\n";
         OutputDebugStringA(line.c_str());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -325,6 +533,22 @@ namespace hl
         }
         ReleaseSRWLockExclusive(&g_logLock);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -375,6 +599,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     struct ScanResult
     {
         uintptr_t address = 0;
@@ -396,11 +636,43 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ScanResult ScanExecutableSections(HMODULE module, const char* pattern)
     {
         ScanResult result{};
         if (!module)
             return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -440,9 +712,41 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const auto pat = ParsePattern(pattern);
         if (pat.empty())
             return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -481,10 +785,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             uint8_t* begin = base + section->VirtualAddress;
             const size_t size = section->Misc.VirtualSize;
             if (size < pat.size())
                 continue;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -538,6 +874,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     uintptr_t RequireUnique(const char* name, const char* pattern)
     {
         const auto r = ScanExecutableSections(g_engine, pattern);
@@ -550,6 +902,22 @@ namespace hl
             static_cast<unsigned>(r.address - reinterpret_cast<uintptr_t>(g_engine)));
         return r.address;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -588,6 +956,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     std::string LuaErrorString(int L)
     {
         if (!LuaToLString)
@@ -595,6 +979,22 @@ namespace hl
         const char* s = LuaToLString(L, -1, nullptr);
         return s ? s : "<Lua error without string>";
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -635,10 +1035,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     bool ExecuteLuaFile(int L, const char* relativePath)
     {
         if (!L || !LuaLoadBuffer || !LuaPcall || !LuaGetTop || !LuaSetTop)
             return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -662,6 +1094,22 @@ namespace hl
             Log("Lua file missing: %s", full.c_str());
             return false;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -702,6 +1150,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const int call = LuaPcall(L, 0, 0, 0);
         if (call != 0)
         {
@@ -725,10 +1189,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         LuaSetTop(L, top);
         Log("Lua loaded: %s", relativePath);
         return true;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -776,6 +1272,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void InstallLuaLogger(int L)
     {
         if (!LuaPushCClosure || !LuaSetField)
@@ -800,10 +1312,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     bool CallLua0(int L, const char* name, bool logFailure = true)
     {
         if (!LuaGetField || !LuaPcall || !LuaGetTop || !LuaSetTop)
             return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -849,10 +1393,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     bool Held(int vk)
     {
         return (GetAsyncKeyState(vk) & 0x8000) != 0;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -892,6 +1468,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void SetLuaBoolString(int L, const char* name, bool value)
     {
         if (!LuaPushLString || !LuaSetField)
@@ -900,6 +1492,22 @@ namespace hl
         LuaPushLString(L, s, 1);
         LuaSetField(L, LUA_GLOBALSINDEX, name);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -944,10 +1552,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void BootstrapLuaState(int L)
     {
         g_scriptsReady = false;
         InstallLuaLogger(L);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -986,10 +1626,42 @@ namespace hl
 
 
 
-        g_scriptsReady = setter && math && controller && heatProbe;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = false;
-        Log("Lua bootstrap scriptsReady=%s", g_scriptsReady ? "true" : "false");
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s", g_scriptsReady ? "true" : "false", heatProbe ? "true" : "false");
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1029,8 +1701,40 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (!g_window || !IsWindow(g_window))
             g_window = FindWindowA("prototypeWindowClass", nullptr);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1065,8 +1769,40 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (!g_scriptsReady)
             return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1105,12 +1841,44 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (RisingEdge(VK_F5, g_f5Prev, inputEnabled))
         {
             Log("F5: player rediscovery + setter echo gate");
             ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
             CallLua0(L, "Homelander_SetterEchoProbe_Verified");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1148,6 +1916,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (RisingEdge(VK_F7, g_f7Prev, inputEnabled))
         {
             Log("F7: flight disable requested");
@@ -1169,9 +1953,41 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // Silent while disabled. The Lua controller returns immediately.
         CallLua0(L, "Homelander_FlightNativeTick", false);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1209,8 +2025,40 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         return g_originalGOMUpdate ? g_originalGOMUpdate(a1, a2, deltaTime) : 0;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1232,6 +2080,22 @@ namespace hl
         const int64_t d = static_cast<int64_t>(to) - static_cast<int64_t>(fromAfterInstruction);
         return d >= std::numeric_limits<int32_t>::min() && d <= std::numeric_limits<int32_t>::max();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1274,11 +2138,43 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     bool InstallGOMUpdateHook(uintptr_t address)
     {
         auto target = reinterpret_cast<uint8_t*>(address);
         if (!target)
             return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1318,7 +2214,39 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         std::memcpy(g_originalGOMBytes, target, sizeof(g_originalGOMBytes));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1355,6 +2283,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         auto trampoline = reinterpret_cast<uint8_t*>(
             VirtualAlloc(nullptr, 32, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE));
         if (!trampoline)
@@ -1362,6 +2306,22 @@ namespace hl
             Log("FAIL VirtualAlloc trampoline");
             return false;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1402,6 +2362,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         DWORD oldProtect = 0;
         if (!VirtualProtect(target, 9, PAGE_EXECUTE_READWRITE, &oldProtect))
         {
@@ -1409,6 +2385,22 @@ namespace hl
             VirtualFree(trampoline, 0, MEM_RELEASE);
             return false;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1444,9 +2436,41 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         DWORD ignored = 0;
         VirtualProtect(target, 9, oldProtect, &ignored);
         FlushInstructionCache(GetCurrentProcess(), target, 9);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1485,11 +2509,43 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         g_gomTarget = target;
         g_originalGOMUpdate = reinterpret_cast<GOMUpdateFn>(trampoline);
         Log("PASS GOM hook installed RVA=0x%08X", static_cast<unsigned>(address - reinterpret_cast<uintptr_t>(g_engine)));
         return true;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1535,9 +2591,41 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (!pcall || !getfield || !settop || !gettop || !tolstring || !loadbuffer ||
             !pushc || !pushls || !setfield || !managerRef || !gom)
             return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1579,6 +2667,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // managerRef points at: 8B 0D <absolute address of global manager slot>
         const uintptr_t slotAddress = *reinterpret_cast<uintptr_t*>(managerRef + 2);
         g_luaScriptManagerSlot = reinterpret_cast<void**>(slotAddress);
@@ -1603,8 +2707,40 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         return InstallGOMUpdateHook(gom);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1641,6 +2777,22 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         while (!(g_engine = GetModuleHandleA("prototypeenginef.dll")))
             Sleep(50);
 
@@ -1659,7 +2811,39 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Log("prototypeenginef.dll base=0x%08X", static_cast<unsigned>(reinterpret_cast<uintptr_t>(g_engine)));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1697,10 +2881,42 @@ namespace hl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Log("READY. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only heatvision target probe");
         return 0;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
