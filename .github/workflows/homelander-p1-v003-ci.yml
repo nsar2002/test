@@ -1,0 +1,60 @@
+name: Homelander P1 v003 Win32 CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-freeaim-v003-20260918
+    paths:
+      - 'homelander_p1_build/**'
+      - '.github/workflows/homelander-p1-v003-ci.yml'
+  pull_request:
+    branches:
+      - homelander-p1-build-20260918
+    paths:
+      - 'homelander_p1_build/**'
+      - '.github/workflows/homelander-p1-v003-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  build-win32:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MinGW-w64 x86
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686
+
+      - name: Build
+        run: |
+          mkdir -p homelander_p1_build/build
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build/homelander_p1.asi \
+            -luser32
+          test -s homelander_p1_build/build/homelander_p1.asi
+
+      - name: Verify PE32 and imports
+        run: |
+          file homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build/imports.txt; then
+            echo 'Unexpected MinGW runtime DLL import'
+            exit 1
+          fi
+          sha256sum homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/sha256.txt
+
+      - name: Verify staged Lua is present
+        run: |
+          test -s homelander_p1_build/lua_p1/freeaim_probe_v004_STAGED.lua
+          grep -q 'function Homelander_FreeAimProbe' homelander_p1_build/lua_p1/freeaim_probe_v004_STAGED.lua
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: homelander-p1-v003-win32
+          path: homelander_p1_build/build/
