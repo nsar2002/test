@@ -69,8 +69,14 @@ jobs:
           grep -q 'centerError > 0.02f' homelander_p1_build/homelander_p1.cpp
           grep -q 'beamDistance > 1200.0f' homelander_p1_build/homelander_p1.cpp
           grep -q 'proto_lit_glow' homelander_p1_build/homelander_p1.cpp
+          grep -q 'ResolveProtoLitGlowNameGlobal' homelander_p1_build/homelander_p1.cpp
           grep -q 'CleanupLaserSightHandles();' homelander_p1_build/homelander_p1.cpp
           grep -q 'ResolveLuaGOHObject' homelander_p1_build/homelander_p1.cpp
+          grep -q 'pcall(go_Local2World, target, local_target_offset)' homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          if grep -q 'NameCtor(&shaderName' homelander_p1_build/homelander_p1.cpp; then
+            echo "F13 must use engine preconstructed proto_lit_glow Name global"
+            exit 1
+          fi
 
       - name: Hash build and source
         run: |
