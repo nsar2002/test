@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - homelander-p1-v002-provenance-2f954-20260918
+  pull_request:
+    branches:
+      - homelander-p1-v002-provenance-2f954-20260918
   workflow_dispatch:
 
 jobs:
