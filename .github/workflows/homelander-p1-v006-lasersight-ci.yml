@@ -1,0 +1,99 @@
+name: Homelander P1 v006 Native LaserSight CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v006-lasersight-native-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua'
+      - 'homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md'
+      - '.github/workflows/homelander-p1-v006-lasersight-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Build v006
+        run: |
+          mkdir -p homelander_p1_build/build_v006
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_v006/homelander_p1_v006.asi \
+            -luser32
+          test -s homelander_p1_build/build_v006/homelander_p1_v006.asi
+
+      - name: Verify PE32 imports and v006 dispatch
+        run: |
+          file homelander_p1_build/build_v006/homelander_p1_v006.asi | tee homelander_p1_build/build_v006/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_v006/homelander_p1_v006.asi | tee homelander_p1_build/build_v006/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_v006/homelander_p1_v006.asi | tee homelander_p1_build/build_v006/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_v006/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_v006/imports.txt; then exit 1; fi
+          grep -q 'P1_RuntimeProbe_006_LASERSIGHT_NATIVE_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+          grep -q 'VK_F13' homelander_p1_build/homelander_p1.cpp
+          grep -q 'VK_F14' homelander_p1_build/homelander_p1.cpp
+          grep -q 'HL_LaserSightShaderProbe' homelander_p1_build/homelander_p1.cpp
+          grep -q 'HL_LaserSightSubmitDual' homelander_p1_build/homelander_p1.cpp
+          grep -q 'StructRenderEvent<LaserSightStruct>' homelander_p1_build/homelander_p1.cpp
+
+      - name: Validate Lua 5.1 and v006 mutation boundary
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          grep -q 'Homelander_LaserSightShaderProbeV008' homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          grep -q 'Homelander_LaserSightOneShotV008' homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          grep -q 'HL_LaserSightSubmitDual' homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          if grep -Eq 'go_ApplyDamage|go_ApplyDamageAndHit|em_AddWorldEffect|em_AddWorldEffectOriented|phys_SetLinearVelocity|phys_SetAngularVelocity|pcall\(ai_Laser' homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua; then
+            echo "Forbidden mutator/legacy renderer in v008 native LaserSight Lua gate"
+            exit 1
+          fi
+
+      - name: Verify native safety invariants
+        run: |
+          grep -q 'halfSep > 0.25f' homelander_p1_build/homelander_p1.cpp
+          grep -q 'centerError > 0.02f' homelander_p1_build/homelander_p1.cpp
+          grep -q 'beamDistance > 1200.0f' homelander_p1_build/homelander_p1.cpp
+          grep -q 'proto_lit_glow' homelander_p1_build/homelander_p1.cpp
+          grep -q 'CleanupLaserSightHandles();' homelander_p1_build/homelander_p1.cpp
+          grep -q 'ResolveLuaGOHObject' homelander_p1_build/homelander_p1.cpp
+
+      - name: Hash build and source
+        run: |
+          sha256sum homelander_p1_build/build_v006/homelander_p1_v006.asi | tee homelander_p1_build/build_v006/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          sha256sum homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant v006 bundle
+        run: |
+          mkdir -p stage_v006/lua_p1 stage_v006/CI_EVIDENCE
+          cp homelander_p1_build/build_v006/homelander_p1_v006.asi stage_v006/
+          cp homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua stage_v006/lua_p1/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md stage_v006/
+          cp homelander_p1_build/homelander_p1.cpp stage_v006/homelander_p1_v006_SOURCE.cpp
+          cp homelander_p1_build/build_v006/file.txt stage_v006/CI_EVIDENCE/
+          cp homelander_p1_build/build_v006/headers.txt stage_v006/CI_EVIDENCE/
+          cp homelander_p1_build/build_v006/imports.txt stage_v006/CI_EVIDENCE/
+          cp homelander_p1_build/build_v006/sha256.txt stage_v006/CI_EVIDENCE/
+          (cd stage_v006 && sha256sum homelander_p1_v006.asi lua_p1/*.lua P1_NATIVE_LASERSIGHT_GATE_20260919.md homelander_p1_v006_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v006 && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v006_NativeLaserSightGate_DORMANT
+          path: stage_v006/
+          if-no-files-found: error
