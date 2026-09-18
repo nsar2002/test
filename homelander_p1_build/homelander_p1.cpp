@@ -952,7 +952,13 @@ namespace hl
         LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLastRayHitGOHHook), 0);
         LuaSetField(L, LUA_GLOBALSINDEX, "HL_LastRayHitGOH");
 
-        Log("Installed Lua bridges: HL_Log, HL_GetCameraFrame, HL_LastRayHitGOH");
+        LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLaserSightShaderProbeHook), 0);
+        LuaSetField(L, LUA_GLOBALSINDEX, "HL_LaserSightShaderProbe");
+
+        LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLaserSightSubmitDualHook), 0);
+        LuaSetField(L, LUA_GLOBALSINDEX, "HL_LaserSightSubmitDual");
+
+        Log("Installed Lua bridges: HL_Log, HL_GetCameraFrame, HL_LastRayHitGOH, HL_LaserSightShaderProbe, HL_LaserSightSubmitDual");
     }
 
     bool CallLua0(int L, const char* name, bool logFailure = true)
@@ -1024,16 +1030,23 @@ namespace hl
         g_localOffsetReady = ExecuteLuaFile(L, "lua_p1\\freeaim_local_offset_probe_v005_STAGED.lua");
         g_eyeOriginReady = ExecuteLuaFile(L, "lua_p1\\eye_origin_probe_v006_STAGED.lua");
         g_dualEyeRenderReady = ExecuteLuaFile(L, "lua_p1\\dual_eye_freeaim_render_v007_STAGED.lua");
+        g_laserSightNativeReady = ExecuteLuaFile(L, "lua_p1\\lasersight_native_gate_v008_STAGED.lua");
+
+        g_laserShaderGatePassed = false;
+        g_laserShader = nullptr;
+        CleanupLaserSightHandles();
 
         g_scriptsReady = setter && math && controller;
-        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev = g_f11Prev = g_f12Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s",
+        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
             g_localOffsetReady ? "true" : "false",
             g_eyeOriginReady ? "true" : "false",
-            g_dualEyeRenderReady ? "true" : "false");
+            g_dualEyeRenderReady ? "true" : "false",
+            g_laserSightNativeReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1046,6 +1059,10 @@ namespace hl
 
         if (!g_window || !IsWindow(g_window))
             g_window = FindWindowA("prototypeWindowClass", nullptr);
+
+        // Mimic LaserAction lifecycle: a one-shot F14 handle survives one update
+        // and is released at the beginning of the next GOM tick.
+        CleanupLaserSightHandles();
 
         const bool inputEnabled = g_window && GetForegroundWindow() == g_window;
         PublishHeldInput(L, inputEnabled);
@@ -1128,12 +1145,38 @@ namespace hl
         {
             if (g_dualEyeRenderReady)
             {
-                Log("F12: one-shot dual-eye free-aim render-only probe");
+                Log("F12: legacy ai_Laser falsification probe (not final renderer)");
                 CallLua0(L, "Homelander_DualEyeFreeAimRenderProbe");
             }
             else
             {
                 Log("F12 ignored: dual-eye render staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F13, g_f13Prev, inputEnabled))
+        {
+            if (g_laserSightNativeReady)
+            {
+                Log("F13: read-only pure3d::Shader resolution gate");
+                CallLua0(L, "Homelander_LaserSightShaderProbeV008");
+            }
+            else
+            {
+                Log("F13 ignored: native LaserSight staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F14, g_f14Prev, inputEnabled))
+        {
+            if (g_laserSightNativeReady)
+            {
+                Log("F14: one-shot REAL LaserSight dual-eye render event");
+                CallLua0(L, "Homelander_LaserSightOneShotV008");
+            }
+            else
+            {
+                Log("F14 ignored: native LaserSight staged Lua did not load");
             }
         }
 
@@ -1557,7 +1600,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=one-shot render-only", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight", kBuildId);
         return 0;
     }
 }
