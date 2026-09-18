@@ -8291,9 +8291,9 @@ namespace hl
         const uint16_t generation=static_cast<uint16_t>(handle>>16);
         if (index>=capacity) return nullptr;
         const uintptr_t entry=entries+static_cast<uintptr_t>(index)*8u;
-        uintptr_t physicsObject=0; uint16_t entryGeneration=0;
+        uintptr_t physicsObject=0; uint32_t entryGeneration=0;
         if (!ReadValue(entry,physicsObject)||!physicsObject||!ReadValue(entry+4,entryGeneration)||
-            entryGeneration!=generation) return nullptr;
+            entryGeneration!=static_cast<uint32_t>(generation)) return nullptr;
         uintptr_t vtable=0,fnAddr=0;
         if (!ReadValue(physicsObject,vtable)||!vtable||!ReadValue(vtable+0x14,fnAddr)||!IsExecutableAddress(fnAddr))
             return nullptr;
