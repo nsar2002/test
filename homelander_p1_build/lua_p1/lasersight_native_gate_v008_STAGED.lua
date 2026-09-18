@@ -86,22 +86,39 @@ function Homelander_LaserSightOneShotV008()
     end
 
     local target = HOMELANDER_FREEAIM_HIT
-    local target_pos = HOMELANDER_FREEAIM_HIT_POS
-    if not valid_goh(target) or target == player or target_pos == nil then
+    local original_hit_pos = HOMELANDER_FREEAIM_HIT_POS
+    if not valid_goh(target) or target == player or original_hit_pos == nil then
         log("F14 ABORT: current F9 target/hitpoint missing or invalid")
         return false
     end
 
+    local local_target_offset = HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET
     if HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH ~= target or
-       HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET == nil or
+       local_target_offset == nil or
        not finite_number(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_ERROR) then
         log("F14 ABORT: F10 target-local roundtrip state missing/stale")
         return false
     end
 
-    if type(go_GetJointPosition) ~= "function" then
-        log("F14 ABORT: go_GetJointPosition unavailable")
+    if type(go_GetJointPosition) ~= "function" or type(go_Local2World) ~= "function" then
+        log("F14 ABORT: go_GetJointPosition/go_Local2World unavailable")
         return false
+    end
+
+    -- Reconstruct the SAME F10-proven object-local impact point against the
+    -- target's CURRENT transform. This avoids aiming at a stale F9 world point
+    -- when the target moved between F9/F10 and F14.
+    local okTarget, target_pos = pcall(go_Local2World, target, local_target_offset)
+    if not okTarget or target_pos == nil then
+        log("F14 ABORT: current target local->world endpoint reconstruction failed")
+        return false
+    end
+
+    local okDrift, drift = pcall(function()
+        return (target_pos - original_hit_pos):magnitude()
+    end)
+    if okDrift and finite_number(drift) then
+        log("F14 target endpoint drift since F9=" .. tostring(drift))
     end
 
     local okEye, eye_pos = pcall(go_GetJointPosition, player, "EYEPOINT")
