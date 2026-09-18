@@ -1,2 +1,3 @@
 Trigger verified v003 transfer packaging from exact CI artifact.
 Combined build+package workflow trigger.
+Repaired combined workflow final trigger.
