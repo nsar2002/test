@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_003_FREEAIM_STAGED_20260918";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_004_LOCALOFFSET_STAGED_20260918";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
