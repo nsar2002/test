@@ -1,0 +1,1729 @@
+﻿// Homelander Prototype 1 minimal runtime bridge
+// Target: Prototype 1 Win32 / prototypeenginef.dll active build
+// Reference signatures validated 1/1 against user's active DLL on 2026-09-18.
+// No ImGui, no D3DX, no DirectInput, no third-party hook library.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#include <cstdint>
+#include <cstdio>
+#include <cstdarg>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <limits>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace hl
+{
+    constexpr int LUA_GLOBALSINDEX = -10002;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    HMODULE g_self = nullptr;
+    HMODULE g_engine = nullptr;
+    HWND g_window = nullptr;
+    std::string g_root;
+    SRWLOCK g_logLock = SRWLOCK_INIT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    using LuaPcallFn        = int(__cdecl*)(int, int, int, int);
+    using LuaGetFieldFn     = void(__cdecl*)(int, int, const char*);
+    using LuaSetTopFn       = void(__cdecl*)(int, int);
+    using LuaGetTopFn       = int(__cdecl*)(int);
+    using LuaToLStringFn    = const char*(__cdecl*)(int, int, size_t*);
+    using LuaLoadBufferFn   = int(__cdecl*)(int, const char*, size_t, const char*);
+    using LuaPushCClosureFn = void(__cdecl*)(int, void*, int);
+    using LuaPushLStringFn  = void(__cdecl*)(int, const char*, size_t);
+    using LuaSetFieldFn     = void(__cdecl*)(int, int, const char*);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    LuaPcallFn        LuaPcall = nullptr;
+    LuaGetFieldFn     LuaGetField = nullptr;
+    LuaSetTopFn       LuaSetTop = nullptr;
+    LuaGetTopFn       LuaGetTop = nullptr;
+    LuaToLStringFn    LuaToLString = nullptr;
+    LuaLoadBufferFn   LuaLoadBuffer = nullptr;
+    LuaPushCClosureFn LuaPushCClosure = nullptr;
+    LuaPushLStringFn  LuaPushLString = nullptr;
+    LuaSetFieldFn     LuaSetField = nullptr;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void** g_luaScriptManagerSlot = nullptr;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    using GOMUpdateFn = int(__stdcall*)(int, int, float);
+    GOMUpdateFn g_originalGOMUpdate = nullptr;
+    uint8_t* g_gomTarget = nullptr;
+    uint8_t g_originalGOMBytes[9]{};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int g_lastLuaState = 0;
+    bool g_scriptsReady = false;
+    bool g_f4Prev = false;
+    bool g_f5Prev = false;
+    bool g_f6Prev = false;
+    bool g_f7Prev = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const char* kSigLuaPcall =
+        "8B 4C 24 ? 83 EC ? 85 C9 56";
+    const char* kSigLuaGetField =
+        "8B 4C 24 ? 83 EC ? 53 56 8B 74 24 ? 57 8B D6 E8 ? ? ? ? "
+        "8B 54 24 ? 8B F8 8B C2 8D 58 ? 8A 08 83 C0 ? 84 C9 75 ? "
+        "2B C3 50 52 56 E8 ? ? ? ? 89 44 24 ? 8B 46 ? 50";
+    const char* kSigLuaSetTop =
+        "8B 4C 24 ? 85 C9 8B 44 24 ? 7C";
+    const char* kSigLuaGetTop =
+        "8B 4C 24 ? 8B 41 ? 2B 41 ? C1 F8";
+    const char* kSigLuaToLString =
+        "56 8B 74 24 ? 57 8B 7C 24 ? 8B CF 8B D6";
+    const char* kSigLuaLoadBuffer =
+        "55 8B EC 83 EC ? 8B 45 ? 8B 55";
+    const char* kSigLuaPushCClosure =
+        "56 8B 74 24 ? 8B 46 ? 8B 48 ? 3B 48 ? 57 72 ? 56 E8 ? ? ? ? "
+        "83 C4 ? 8B C6";
+    const char* kSigLuaPushLString =
+        "56 8B 74 24 ? 8B 46 ? 8B 48 ? 3B 48 ? 57 72 ? 56 E8 ? ? ? ? "
+        "83 C4 ? 8B 54 24 ? 8B 44 24 ? 8B 7E ? 52 50 56 E8 ? ? ? ? "
+        "83 C4 ? 89 07 C7 47 ? ? ? ? ? 83 46 ? ? 5F 5E C3 8B 54 24";
+    const char* kSigLuaSetField =
+        "8B 4C 24 ? 83 EC ? 53 56 8B 74 24 ? 57 8B D6 E8 ? ? ? ? "
+        "8B 54 24 ? 8B F8 8B C2 8D 58 ? 8A 08 83 C0 ? 84 C9 75 ? "
+        "2B C3 50 52 56 E8 ? ? ? ? 89 44 24 ? 8B 46 ? 83 E8";
+    const char* kSigLuaManager =
+        "8B 0D ? ? ? ? 85 C9 74 ? 8B 01 8B 10 6A ? FF D2 A1";
+    const char* kSigGOMUpdate =
+        "53 55 56 57 E8 ? ? ? ? E8 ? ? ? ? E8";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::string SelfRoot()
+    {
+        char path[MAX_PATH]{};
+        const DWORD n = GetModuleFileNameA(g_self, path, MAX_PATH);
+        if (!n || n >= MAX_PATH)
+            return ".";
+        std::string s(path, n);
+        const auto pos = s.find_last_of("\\/");
+        return pos == std::string::npos ? "." : s.substr(0, pos);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void Log(const char* fmt, ...)
+    {
+        char message[2048]{};
+        va_list args;
+        va_start(args, fmt);
+        std::vsnprintf(message, sizeof(message), fmt, args);
+        message[sizeof(message) - 1] = '\0';
+        va_end(args);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        std::string line = "[HOMELANDER_P1_ASI] ";
+        line += message;
+        line += "\r\n";
+        OutputDebugStringA(line.c_str());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        AcquireSRWLockExclusive(&g_logLock);
+        const std::string path = g_root.empty() ? "homelander_p1_runtime.log" : (g_root + "\\homelander_p1_runtime.log");
+        HANDLE h = CreateFileA(path.c_str(), FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                               nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            DWORD written = 0;
+            WriteFile(h, line.data(), static_cast<DWORD>(line.size()), &written, nullptr);
+            CloseHandle(h);
+        }
+        ReleaseSRWLockExclusive(&g_logLock);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::vector<int> ParsePattern(const char* pattern)
+    {
+        std::vector<int> bytes;
+        std::istringstream stream(pattern);
+        std::string token;
+        while (stream >> token)
+        {
+            if (token == "?" || token == "??")
+            {
+                bytes.push_back(-1);
+            }
+            else
+            {
+                bytes.push_back(static_cast<int>(std::strtoul(token.c_str(), nullptr, 16)));
+            }
+        }
+        return bytes;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    struct ScanResult
+    {
+        uintptr_t address = 0;
+        size_t count = 0;
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ScanResult ScanExecutableSections(HMODULE module, const char* pattern)
+    {
+        ScanResult result{};
+        if (!module)
+            return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        auto base = reinterpret_cast<uint8_t*>(module);
+        auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
+        if (dos->e_magic != IMAGE_DOS_SIGNATURE)
+            return result;
+        auto nt = reinterpret_cast<IMAGE_NT_HEADERS*>(base + dos->e_lfanew);
+        if (nt->Signature != IMAGE_NT_SIGNATURE)
+            return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const auto pat = ParsePattern(pattern);
+        if (pat.empty())
+            return result;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        auto section = IMAGE_FIRST_SECTION(nt);
+        for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section)
+        {
+            if ((section->Characteristics & IMAGE_SCN_MEM_EXECUTE) == 0 ||
+                (section->Characteristics & IMAGE_SCN_MEM_READ) == 0)
+                continue;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            uint8_t* begin = base + section->VirtualAddress;
+            const size_t size = section->Misc.VirtualSize;
+            if (size < pat.size())
+                continue;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            for (size_t off = 0; off <= size - pat.size(); ++off)
+            {
+                bool match = true;
+                for (size_t j = 0; j < pat.size(); ++j)
+                {
+                    if (pat[j] >= 0 && begin[off + j] != static_cast<uint8_t>(pat[j]))
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match)
+                {
+                    if (result.count == 0)
+                        result.address = reinterpret_cast<uintptr_t>(begin + off);
+                    ++result.count;
+                }
+            }
+        }
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    uintptr_t RequireUnique(const char* name, const char* pattern)
+    {
+        const auto r = ScanExecutableSections(g_engine, pattern);
+        if (r.count != 1)
+        {
+            Log("FAIL signature %-20s count=%zu (required exactly 1)", name, r.count);
+            return 0;
+        }
+        Log("PASS signature %-20s RVA=0x%08X", name,
+            static_cast<unsigned>(r.address - reinterpret_cast<uintptr_t>(g_engine)));
+        return r.address;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int GetLuaState()
+    {
+        if (!g_luaScriptManagerSlot || !*g_luaScriptManagerSlot)
+            return 0;
+        return *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(*g_luaScriptManagerSlot) + 0x0C);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::string LuaErrorString(int L)
+    {
+        if (!LuaToLString)
+            return "<Lua error>";
+        const char* s = LuaToLString(L, -1, nullptr);
+        return s ? s : "<Lua error without string>";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool ReadTextFile(const std::string& path, std::string& out)
+    {
+        std::ifstream file(path, std::ios::in | std::ios::binary);
+        if (!file)
+            return false;
+        out.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool ExecuteLuaFile(int L, const char* relativePath)
+    {
+        if (!L || !LuaLoadBuffer || !LuaPcall || !LuaGetTop || !LuaSetTop)
+            return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        std::string full = g_root + "\\" + relativePath;
+        std::string source;
+        if (!ReadTextFile(full, source))
+        {
+            Log("Lua file missing: %s", full.c_str());
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const int top = LuaGetTop(L);
+        const int load = LuaLoadBuffer(L, source.data(), source.size(), relativePath);
+        if (load != 0)
+        {
+            Log("Lua compile error [%s]: %s", relativePath, LuaErrorString(L).c_str());
+            LuaSetTop(L, top);
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const int call = LuaPcall(L, 0, 0, 0);
+        if (call != 0)
+        {
+            Log("Lua runtime error [%s]: %s", relativePath, LuaErrorString(L).c_str());
+            LuaSetTop(L, top);
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        LuaSetTop(L, top);
+        Log("Lua loaded: %s", relativePath);
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int __cdecl LuaLogHook(int L)
+    {
+        if (!LuaGetTop || !LuaToLString)
+            return 0;
+        const int n = LuaGetTop(L);
+        std::string line;
+        for (int i = 1; i <= n; ++i)
+        {
+            if (i > 1) line += "\t";
+            const char* s = LuaToLString(L, i, nullptr);
+            line += s ? s : "<non-string>";
+        }
+        Log("LUA %s", line.c_str());
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void InstallLuaLogger(int L)
+    {
+        if (!LuaPushCClosure || !LuaSetField)
+            return;
+        LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLogHook), 0);
+        LuaSetField(L, LUA_GLOBALSINDEX, "HL_Log");
+        Log("Installed HL_Log bridge");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool CallLua0(int L, const char* name, bool logFailure = true)
+    {
+        if (!LuaGetField || !LuaPcall || !LuaGetTop || !LuaSetTop)
+            return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const int top = LuaGetTop(L);
+        LuaGetField(L, LUA_GLOBALSINDEX, name);
+        const int rc = LuaPcall(L, 0, 0, 0);
+        if (rc != 0)
+        {
+            if (logFailure)
+                Log("Lua callback failed [%s]: %s", name, LuaErrorString(L).c_str());
+            LuaSetTop(L, top);
+            return false;
+        }
+        LuaSetTop(L, top);
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool Held(int vk)
+    {
+        return (GetAsyncKeyState(vk) & 0x8000) != 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool RisingEdge(int vk, bool& previous, bool inputEnabled)
+    {
+        const bool now = inputEnabled && Held(vk);
+        const bool rising = now && !previous;
+        previous = now;
+        return rising;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void SetLuaBoolString(int L, const char* name, bool value)
+    {
+        if (!LuaPushLString || !LuaSetField)
+            return;
+        const char* s = value ? "1" : "0";
+        LuaPushLString(L, s, 1);
+        LuaSetField(L, LUA_GLOBALSINDEX, name);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void PublishHeldInput(int L, bool inputEnabled)
+    {
+        SetLuaBoolString(L, "HL_KEY_W", inputEnabled && Held('W'));
+        SetLuaBoolString(L, "HL_KEY_S", inputEnabled && Held('S'));
+        SetLuaBoolString(L, "HL_KEY_A", inputEnabled && Held('A'));
+        SetLuaBoolString(L, "HL_KEY_D", inputEnabled && Held('D'));
+        SetLuaBoolString(L, "HL_KEY_SPACE", inputEnabled && Held(VK_SPACE));
+        SetLuaBoolString(L, "HL_KEY_C", inputEnabled && Held('C'));
+        SetLuaBoolString(L, "HL_KEY_CTRL", inputEnabled && (Held(VK_LCONTROL) || Held(VK_RCONTROL)));
+        SetLuaBoolString(L, "HL_KEY_SHIFT", inputEnabled && (Held(VK_LSHIFT) || Held(VK_RSHIFT)));
+        SetLuaBoolString(L, "HL_BRIDGE_READY", true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void BootstrapLuaState(int L)
+    {
+        g_scriptsReady = false;
+        InstallLuaLogger(L);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // runtime probe is read-only; definition files below do not mutate physics at load time.
+        ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
+        const bool setter = ExecuteLuaFile(L, "lua_p1\\setter_echo_probe.lua");
+        const bool math = ExecuteLuaFile(L, "lua_p1\\flight_math_probe.lua");
+        const bool controller = ExecuteLuaFile(L, "lua_p1\\flight_controller_v1.lua");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        g_scriptsReady = setter && math && controller;
+        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = false;
+        Log("Lua bootstrap scriptsReady=%s", g_scriptsReady ? "true" : "false");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void BridgeTick(int L)
+    {
+        if (L != g_lastLuaState)
+        {
+            g_lastLuaState = L;
+            BootstrapLuaState(L);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!g_window || !IsWindow(g_window))
+            g_window = FindWindowA("prototypeWindowClass", nullptr);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const bool inputEnabled = g_window && GetForegroundWindow() == g_window;
+        PublishHeldInput(L, inputEnabled);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!g_scriptsReady)
+            return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (RisingEdge(VK_F4, g_f4Prev, inputEnabled))
+        {
+            Log("F4: read-only discovery + flight math probe");
+            ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
+            CallLua0(L, "Homelander_FlightMathProbe_Verified");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (RisingEdge(VK_F5, g_f5Prev, inputEnabled))
+        {
+            Log("F5: player rediscovery + setter echo gate");
+            ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
+            CallLua0(L, "Homelander_SetterEchoProbe_Verified");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (RisingEdge(VK_F6, g_f6Prev, inputEnabled))
+        {
+            Log("F6: flight enable requested");
+            CallLua0(L, "Homelander_FlightEnableVerified");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (RisingEdge(VK_F7, g_f7Prev, inputEnabled))
+        {
+            Log("F7: flight disable requested");
+            CallLua0(L, "Homelander_FlightDisable");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Silent while disabled. The Lua controller returns immediately.
+        CallLua0(L, "Homelander_FlightNativeTick", false);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int __stdcall GOMUpdateHook(int a1, int a2, float deltaTime)
+    {
+        const int L = GetLuaState();
+        if (L != 0)
+            BridgeTick(L);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return g_originalGOMUpdate ? g_originalGOMUpdate(a1, a2, deltaTime) : 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool FitsRel32(uintptr_t fromAfterInstruction, uintptr_t to)
+    {
+        const int64_t d = static_cast<int64_t>(to) - static_cast<int64_t>(fromAfterInstruction);
+        return d >= std::numeric_limits<int32_t>::min() && d <= std::numeric_limits<int32_t>::max();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool WriteBranch(uint8_t* site, uint8_t opcode, uintptr_t destination)
+    {
+        const uintptr_t next = reinterpret_cast<uintptr_t>(site + 5);
+        if (!FitsRel32(next, destination))
+            return false;
+        const int32_t rel = static_cast<int32_t>(static_cast<int64_t>(destination) - static_cast<int64_t>(next));
+        site[0] = opcode;
+        std::memcpy(site + 1, &rel, sizeof(rel));
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool InstallGOMUpdateHook(uintptr_t address)
+    {
+        auto target = reinterpret_cast<uint8_t*>(address);
+        if (!target)
+            return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Signature guarantees: push ebx; push ebp; push esi; push edi; call rel32
+        if (target[0] != 0x53 || target[1] != 0x55 || target[2] != 0x56 ||
+            target[3] != 0x57 || target[4] != 0xE8)
+        {
+            Log("FAIL GOM prologue validation");
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        std::memcpy(g_originalGOMBytes, target, sizeof(g_originalGOMBytes));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        int32_t originalCallRel = 0;
+        std::memcpy(&originalCallRel, target + 5, sizeof(originalCallRel));
+        const uintptr_t originalCallTarget =
+            reinterpret_cast<uintptr_t>(target + 9) + originalCallRel;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        auto trampoline = reinterpret_cast<uint8_t*>(
+            VirtualAlloc(nullptr, 32, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE));
+        if (!trampoline)
+        {
+            Log("FAIL VirtualAlloc trampoline");
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        std::memcpy(trampoline, target, 4);
+        if (!WriteBranch(trampoline + 4, 0xE8, originalCallTarget) ||
+            !WriteBranch(trampoline + 9, 0xE9, reinterpret_cast<uintptr_t>(target + 9)))
+        {
+            Log("FAIL trampoline rel32 range");
+            VirtualFree(trampoline, 0, MEM_RELEASE);
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        DWORD oldProtect = 0;
+        if (!VirtualProtect(target, 9, PAGE_EXECUTE_READWRITE, &oldProtect))
+        {
+            Log("FAIL VirtualProtect GOM target");
+            VirtualFree(trampoline, 0, MEM_RELEASE);
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const bool hookBranchOk = WriteBranch(target, 0xE9, reinterpret_cast<uintptr_t>(&GOMUpdateHook));
+        if (hookBranchOk)
+            std::memset(target + 5, 0x90, 4);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        DWORD ignored = 0;
+        VirtualProtect(target, 9, oldProtect, &ignored);
+        FlushInstructionCache(GetCurrentProcess(), target, 9);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!hookBranchOk)
+        {
+            Log("FAIL hook rel32 range");
+            VirtualFree(trampoline, 0, MEM_RELEASE);
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        g_gomTarget = target;
+        g_originalGOMUpdate = reinterpret_cast<GOMUpdateFn>(trampoline);
+        Log("PASS GOM hook installed RVA=0x%08X", static_cast<unsigned>(address - reinterpret_cast<uintptr_t>(g_engine)));
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool ResolveRuntime()
+    {
+        const uintptr_t pcall = RequireUnique("LuaPcall", kSigLuaPcall);
+        const uintptr_t getfield = RequireUnique("LuaGetField", kSigLuaGetField);
+        const uintptr_t settop = RequireUnique("LuaSetTop", kSigLuaSetTop);
+        const uintptr_t gettop = RequireUnique("LuaGetTop", kSigLuaGetTop);
+        const uintptr_t tolstring = RequireUnique("LuaToLString", kSigLuaToLString);
+        const uintptr_t loadbuffer = RequireUnique("LuaLoadBuffer", kSigLuaLoadBuffer);
+        const uintptr_t pushc = RequireUnique("LuaPushCClosure", kSigLuaPushCClosure);
+        const uintptr_t pushls = RequireUnique("LuaPushLString", kSigLuaPushLString);
+        const uintptr_t setfield = RequireUnique("LuaSetField", kSigLuaSetField);
+        const uintptr_t managerRef = RequireUnique("LuaManager", kSigLuaManager);
+        const uintptr_t gom = RequireUnique("GOMUpdate", kSigGOMUpdate);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!pcall || !getfield || !settop || !gettop || !tolstring || !loadbuffer ||
+            !pushc || !pushls || !setfield || !managerRef || !gom)
+            return false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        LuaPcall = reinterpret_cast<LuaPcallFn>(pcall);
+        LuaGetField = reinterpret_cast<LuaGetFieldFn>(getfield);
+        LuaSetTop = reinterpret_cast<LuaSetTopFn>(settop);
+        LuaGetTop = reinterpret_cast<LuaGetTopFn>(gettop);
+        LuaToLString = reinterpret_cast<LuaToLStringFn>(tolstring);
+        LuaLoadBuffer = reinterpret_cast<LuaLoadBufferFn>(loadbuffer);
+        LuaPushCClosure = reinterpret_cast<LuaPushCClosureFn>(pushc);
+        LuaPushLString = reinterpret_cast<LuaPushLStringFn>(pushls);
+        LuaSetField = reinterpret_cast<LuaSetFieldFn>(setfield);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // managerRef points at: 8B 0D <absolute address of global manager slot>
+        const uintptr_t slotAddress = *reinterpret_cast<uintptr_t*>(managerRef + 2);
+        g_luaScriptManagerSlot = reinterpret_cast<void**>(slotAddress);
+        if (!g_luaScriptManagerSlot)
+        {
+            Log("FAIL Lua manager slot null");
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return InstallGOMUpdateHook(gom);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    DWORD WINAPI SetupThread(void*)
+    {
+        g_root = SelfRoot();
+        Log("starting; root=%s", g_root.c_str());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        while (!(g_engine = GetModuleHandleA("prototypeenginef.dll")))
+            Sleep(50);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Log("prototypeenginef.dll base=0x%08X", static_cast<unsigned>(reinterpret_cast<uintptr_t>(g_engine)));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!ResolveRuntime())
+        {
+            Log("FATAL runtime resolution/hook failed; no gameplay mutation enabled");
+            return 0;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Log("READY. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable");
+        return 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID)
+{
+    if (reason == DLL_PROCESS_ATTACH)
+    {
+        hl::g_self = module;
+        DisableThreadLibraryCalls(module);
+        HANDLE thread = CreateThread(nullptr, 0, hl::SetupThread, nullptr, 0, nullptr);
+        if (thread)
+            CloseHandle(thread);
+    }
+    return TRUE;
+}
