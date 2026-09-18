@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_004_LOCALOFFSET_STAGED_20260918";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_005_DUALEYE_RENDER_STAGED_20260918";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -94,8 +94,12 @@ namespace hl
     bool g_f8Prev = false;
     bool g_f9Prev = false;
     bool g_f10Prev = false;
+    bool g_f11Prev = false;
+    bool g_f12Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
+    bool g_eyeOriginReady = false;
+    bool g_dualEyeRenderReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -632,14 +636,18 @@ namespace hl
         const bool heatProbe = ExecuteLuaFile(L, "lua_p1\\heatvision_probe.lua");
         g_freeAimReady = ExecuteLuaFile(L, "lua_p1\\freeaim_probe_v004_STAGED.lua");
         g_localOffsetReady = ExecuteLuaFile(L, "lua_p1\\freeaim_local_offset_probe_v005_STAGED.lua");
+        g_eyeOriginReady = ExecuteLuaFile(L, "lua_p1\\eye_origin_probe_v006_STAGED.lua");
+        g_dualEyeRenderReady = ExecuteLuaFile(L, "lua_p1\\dual_eye_freeaim_render_v007_STAGED.lua");
 
         g_scriptsReady = setter && math && controller;
-        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s",
+        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev = g_f11Prev = g_f12Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
-            g_localOffsetReady ? "true" : "false");
+            g_localOffsetReady ? "true" : "false",
+            g_eyeOriginReady ? "true" : "false",
+            g_dualEyeRenderReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -714,6 +722,32 @@ namespace hl
             else
             {
                 Log("F10 ignored: local-offset staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F11, g_f11Prev, inputEnabled))
+        {
+            if (g_eyeOriginReady)
+            {
+                Log("F11: read-only EYEPOINT verification probe");
+                CallLua0(L, "Homelander_EyeOriginProbeV006");
+            }
+            else
+            {
+                Log("F11 ignored: eye-origin staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F12, g_f12Prev, inputEnabled))
+        {
+            if (g_dualEyeRenderReady)
+            {
+                Log("F12: one-shot dual-eye free-aim render-only probe");
+                CallLua0(L, "Homelander_DualEyeFreeAimRenderProbe");
+            }
+            else
+            {
+                Log("F12 ignored: dual-eye render staged Lua did not load");
             }
         }
 
@@ -1137,7 +1171,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=one-shot render-only", kBuildId);
         return 0;
     }
 }
