@@ -120,6 +120,7 @@ namespace hl
     void** g_shaderManagerSlot = nullptr;
     void** g_renderEventGlobalSlot = nullptr;
     EngineName* g_protoLitGlowNameGlobal = nullptr;
+    EngineName* g_eyePointNameGlobal = nullptr;
     void* g_laserSightCallback = nullptr;
     void* g_laserShader = nullptr;
     bool g_laserShaderGatePassed = false;
@@ -679,6 +680,104 @@ namespace hl
         return reinterpret_cast<EngineName*>(static_cast<uintptr_t>(globalAddress));
     }
 
+    EngineName* ResolveEyePointNameGlobal()
+    {
+        const uintptr_t stringAddress = FindUniqueAsciiString(g_engine, "EYEPOINT");
+        if (!stringAddress)
+            return nullptr;
+
+        auto base = reinterpret_cast<uint8_t*>(g_engine);
+        auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
+        auto nt = reinterpret_cast<IMAGE_NT_HEADERS*>(base + dos->e_lfanew);
+
+        uintptr_t xref = 0;
+        size_t xrefCount = 0;
+        auto section = IMAGE_FIRST_SECTION(nt);
+        for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section)
+        {
+            if ((section->Characteristics & IMAGE_SCN_MEM_EXECUTE) == 0 ||
+                (section->Characteristics & IMAGE_SCN_MEM_READ) == 0)
+                continue;
+
+            uint8_t* begin = base + section->VirtualAddress;
+            const size_t size = section->Misc.VirtualSize;
+            if (size < 5)
+                continue;
+
+            for (size_t off = 0; off <= size - 5; ++off)
+            {
+                if (begin[off] != 0x68)
+                    continue;
+                uint32_t imm = 0;
+                std::memcpy(&imm, begin + off + 1, sizeof(imm));
+                if (static_cast<uintptr_t>(imm) == stringAddress)
+                {
+                    if (xrefCount == 0)
+                        xref = reinterpret_cast<uintptr_t>(begin + off);
+                    ++xrefCount;
+                }
+            }
+        }
+
+        if (xrefCount != 1 || !xref ||
+            !IsReadableMemory(reinterpret_cast<const void*>(xref), 15))
+        {
+            Log("FAIL EYEPOINT initializer xref count/range count=%zu", xrefCount);
+            return nullptr;
+        }
+
+        const uint8_t* p = reinterpret_cast<const uint8_t*>(xref);
+        // push <EYEPOINT>; mov ecx,<preconstructed Name global>; call <Name ctor thunk>
+        if (p[0] != 0x68 || p[5] != 0xB9 || p[10] != 0xE8)
+        {
+            Log("FAIL EYEPOINT initializer skeleton mismatch");
+            return nullptr;
+        }
+
+        uint32_t globalAddress = 0;
+        std::memcpy(&globalAddress, p + 6, sizeof(globalAddress));
+
+        uintptr_t ctorThunk = ResolveRel32Target(xref + 10);
+        if (!ctorThunk)
+        {
+            Log("FAIL EYEPOINT Name ctor thunk unresolved");
+            return nullptr;
+        }
+
+        uintptr_t ctorTarget = ctorThunk;
+        if (*reinterpret_cast<const uint8_t*>(ctorThunk) == 0xE9)
+        {
+            int32_t rel = 0;
+            std::memcpy(&rel, reinterpret_cast<const void*>(ctorThunk + 1), sizeof(rel));
+            ctorTarget = ctorThunk + 5 + static_cast<intptr_t>(rel);
+        }
+
+        if (!NameCtor || ctorTarget != reinterpret_cast<uintptr_t>(NameCtor))
+        {
+            Log("FAIL EYEPOINT initializer does not resolve to proven NameCtor");
+            return nullptr;
+        }
+
+        const uintptr_t moduleBase = reinterpret_cast<uintptr_t>(g_engine);
+        const uintptr_t moduleEnd =
+            moduleBase + static_cast<uintptr_t>(nt->OptionalHeader.SizeOfImage);
+        const uintptr_t nameAddress = static_cast<uintptr_t>(globalAddress);
+
+        if (!globalAddress ||
+            nameAddress < moduleBase ||
+            nameAddress + sizeof(EngineName) < nameAddress ||
+            nameAddress + sizeof(EngineName) > moduleEnd ||
+            !IsReadableMemory(reinterpret_cast<const void*>(nameAddress), sizeof(EngineName)))
+        {
+            Log("FAIL EYEPOINT Name global outside/unreadable in engine image");
+            return nullptr;
+        }
+
+        Log("PASS EYEPOINT Name global RVA=0x%08X",
+            static_cast<unsigned>(nameAddress - moduleBase));
+        return reinterpret_cast<EngineName*>(nameAddress);
+    }
+
     bool IsReadableMemory(const void* ptr, size_t bytes)
     {
         if (!ptr || bytes == 0)
@@ -861,7 +960,7 @@ namespace hl
         bool ok = false;
 
         if (!LuaGetTop || !LuaToNumber || !LuaToUserData || !LuaPushBoolean ||
-            !NameCtor || !JointLocalToWorld)
+            !JointLocalToWorld || !g_eyePointNameGlobal)
         {
             Log("F14 FAIL: one or more native bridge primitives unresolved");
             PushLuaBool(L, false);
@@ -907,9 +1006,6 @@ namespace hl
             return 1;
         }
 
-        EngineName eyeName{};
-        NameCtor(&eyeName, "EYEPOINT", 1);
-
         const Vec3 centerLocal{0.0f, 0.0f, 0.0f};
         const Vec3 leftLocal{-halfSep, 0.0f, 0.0f};
         const Vec3 rightLocal{halfSep, 0.0f, 0.0f};
@@ -917,9 +1013,9 @@ namespace hl
         Vec3 leftEye{};
         Vec3 rightEye{};
 
-        JointLocalToWorld(&actualEye, playerObject, &eyeName, &centerLocal);
-        JointLocalToWorld(&leftEye, playerObject, &eyeName, &leftLocal);
-        JointLocalToWorld(&rightEye, playerObject, &eyeName, &rightLocal);
+        JointLocalToWorld(&actualEye, playerObject, g_eyePointNameGlobal, &centerLocal);
+        JointLocalToWorld(&leftEye, playerObject, g_eyePointNameGlobal, &leftLocal);
+        JointLocalToWorld(&rightEye, playerObject, g_eyePointNameGlobal, &rightLocal);
 
         if (!FiniteVec(actualEye) || !FiniteVec(leftEye) || !FiniteVec(rightEye))
         {
@@ -1767,6 +1863,7 @@ namespace hl
         g_shaderManagerSlot = reinterpret_cast<void**>(shaderManagerSlotAddress);
         g_renderEventGlobalSlot = reinterpret_cast<void**>(renderEventGlobalA);
         g_protoLitGlowNameGlobal = ResolveProtoLitGlowNameGlobal();
+        g_eyePointNameGlobal = ResolveEyePointNameGlobal();
         g_laserSightCallback = reinterpret_cast<void*>(laserCallback);
         ShaderLookup = reinterpret_cast<ShaderLookupFn>(shaderLookupTarget);
         LaserEventAlloc = reinterpret_cast<LaserEventAllocFn>(laserEventAllocTarget);
@@ -1789,7 +1886,7 @@ namespace hl
 
         if (!g_luaScriptManagerSlot || !g_physicsManagerGlobal || !g_gohTableGlobal ||
             !g_shaderManagerSlot || !g_renderEventGlobalSlot ||
-            !g_protoLitGlowNameGlobal ||
+            !g_protoLitGlowNameGlobal || !g_eyePointNameGlobal ||
             !ShaderLookup || !LaserEventAlloc || !LaserHandleAlloc ||
             !LaserHandleValid || !LaserHandleRelease || !LaserSubmit || !RenderContext)
         {
