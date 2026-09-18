@@ -8,6 +8,7 @@ on:
       - 'homelander_p1_build/homelander_p1.cpp'
       - 'homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua'
       - 'homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md'
+      - 'homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md'
       - '.github/workflows/homelander-p1-v006-lasersight-ci.yml'
   workflow_dispatch:
 
@@ -76,6 +77,7 @@ jobs:
           sha256sum homelander_p1_build/build_v006/homelander_p1_v006.asi | tee homelander_p1_build/build_v006/sha256.txt
           sha256sum homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
           sha256sum homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md
+          sha256sum homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md
           sha256sum homelander_p1_build/homelander_p1.cpp
 
       - name: Assemble dormant v006 bundle
@@ -84,12 +86,13 @@ jobs:
           cp homelander_p1_build/build_v006/homelander_p1_v006.asi stage_v006/
           cp homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua stage_v006/lua_p1/
           cp homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md stage_v006/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md stage_v006/
           cp homelander_p1_build/homelander_p1.cpp stage_v006/homelander_p1_v006_SOURCE.cpp
           cp homelander_p1_build/build_v006/file.txt stage_v006/CI_EVIDENCE/
           cp homelander_p1_build/build_v006/headers.txt stage_v006/CI_EVIDENCE/
           cp homelander_p1_build/build_v006/imports.txt stage_v006/CI_EVIDENCE/
           cp homelander_p1_build/build_v006/sha256.txt stage_v006/CI_EVIDENCE/
-          (cd stage_v006 && sha256sum homelander_p1_v006.asi lua_p1/*.lua P1_NATIVE_LASERSIGHT_GATE_20260919.md homelander_p1_v006_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v006 && sha256sum homelander_p1_v006.asi lua_p1/*.lua P1_NATIVE_LASERSIGHT_GATE_20260919.md P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md homelander_p1_v006_SOURCE.cpp > SHA256SUMS.txt)
           (cd stage_v006 && sha256sum -c SHA256SUMS.txt)
 
       - uses: actions/upload-artifact@v4
