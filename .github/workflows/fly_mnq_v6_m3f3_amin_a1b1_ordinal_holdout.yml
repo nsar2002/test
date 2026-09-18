@@ -1,0 +1,84 @@
+name: FLY-MNQ V6-M3F3 Amin A1-B1 ordinal holdout
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/v6_m3f2b_PASS.trigger'
+permissions:
+  contents: read
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Verify prerequisite attestation
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx 'PASS_M3F2B_OFFICIAL_ROI_HV_ORDINAL_ELIGIBILITY' research/v6_m3f2b_PASS.trigger
+      - name: Install frozen dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.1.3 openpyxl==3.1.5
+      - name: Acquire exact official eLife holdout workbook
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m3f3_work v6_m3f3_out
+          curl --fail --location --retry 5 --retry-delay 3             -o v6_m3f3_work/elife-56954-fig7-data1-v2.xlsx             https://cdn.elifesciences.org/articles/56954/elife-56954-fig7-data1-v2.xlsx
+          echo 'ba1d7c4dfaa2007aa3e71f668b72ee81845ea20094012f44450117a3a2165e9c  v6_m3f3_work/elife-56954-fig7-data1-v2.xlsx' | sha256sum -c -
+          sha256sum v6_m3f3_work/elife-56954-fig7-data1-v2.xlsx | tee v6_m3f3_out/input_sha256.txt
+      - name: Freeze execution bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum             research/v6_m3f3_amin_a1b1_official_roi_ordinal_holdout_protocol.md             fly_mnq/v6_m3f3_amin_a1b1_ordinal_holdout.py             research/v6_m3f2b_PASS.trigger             | tee v6_m3f3_out/preexecution_sha256.txt
+      - name: Execute summary-only holdout
+        shell: bash
+        run: |
+          set -o pipefail
+          python fly_mnq/v6_m3f3_amin_a1b1_ordinal_holdout.py | tee v6_m3f3_out/stdout.txt
+      - name: Enforce classification and firewall
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open('v6_m3f3_out/v6_m3f3_result.json'))
+          print('FORMAL_CLASSIFICATION',r['classification'])
+          allowed={
+            'PASS_M3F3_INDEPENDENT_ORDINAL_APL_LOCALITY',
+            'FAIL_M3F3_INDEPENDENT_ORDINAL_APL_LOCALITY',
+            'BLOCKED_M3F3_SOURCE_PAIRING_INSUFFICIENT',
+          }
+          if r['classification'] not in allowed:
+              raise SystemExit(2)
+          g=r['guardrails']
+          assert g['a4_b4_read'] is False
+          assert g['c1_rescue_read'] is False
+          assert g['source_pvalue_read'] is False
+          assert g['voltage_to_gcamp_fit'] is False
+          assert g['q_selected'] is False
+          assert g['raw_per_neuron_values_emitted'] is False
+          assert g['mnq_or_market_loaded'] is False
+          PY
+      - name: Hash outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > v6_m3f3_out/output_sha256.txt
+          for f in v6_m3f3_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m3f3_out/output_sha256.txt
+          done
+          cat v6_m3f3_out/output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m3f3-amin-a1b1-ordinal-holdout
+          path: v6_m3f3_out/
+          retention-days: 14
