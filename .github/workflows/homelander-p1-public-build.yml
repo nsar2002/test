@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: |
           mkdir -p homelander_p1_build/build
-          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp             -std=gnu++17 -O2 -Wall -Wextra             -shared -static-libgcc -static-libstdc++             -Wl,--subsystem,windows             -o homelander_p1_build/build/homelander_p1.asi             -luser32
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp             -std=gnu++17 -O2 -Wall -Wextra             -shared -static-libgcc -static-libstdc++             -Wl,--subsystem,windows,--no-insert-timestamp             -o homelander_p1_build/build/homelander_p1.asi             -luser32
           test -s homelander_p1_build/build/homelander_p1.asi
       - name: Verify
         run: |
