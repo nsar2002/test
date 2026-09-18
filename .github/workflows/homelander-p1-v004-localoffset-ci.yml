@@ -1,0 +1,59 @@
+name: Homelander P1 v004 LocalOffset CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v004-localoffset-20260918
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua'
+      - 'homelander_p1_build/P1_LOCALOFFSET_STATIC_GATE_20260918.md'
+      - '.github/workflows/homelander-p1-v004-localoffset-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-static-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+      - name: Build v004
+        run: |
+          mkdir -p homelander_p1_build/build_v004
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_v004/homelander_p1_v004.asi \
+            -luser32
+          test -s homelander_p1_build/build_v004/homelander_p1_v004.asi
+      - name: Verify PE32 imports and staged dispatch
+        run: |
+          file homelander_p1_build/build_v004/homelander_p1_v004.asi | tee homelander_p1_build/build_v004/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_v004/homelander_p1_v004.asi | tee homelander_p1_build/build_v004/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_v004/homelander_p1_v004.asi | tee homelander_p1_build/build_v004/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_v004/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_v004/imports.txt; then exit 1; fi
+          grep -q 'P1_RuntimeProbe_004_LOCALOFFSET_STAGED_20260918' homelander_p1_build/homelander_p1.cpp
+          grep -q 'VK_F10' homelander_p1_build/homelander_p1.cpp
+          grep -q 'Homelander_FreeAimLocalOffsetProbe' homelander_p1_build/homelander_p1.cpp
+      - name: Validate Lua 5.1
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/freeaim_probe_v004_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua
+      - name: Hash build
+        run: |
+          sha256sum homelander_p1_build/build_v004/homelander_p1_v004.asi | tee homelander_p1_build/build_v004/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: homelander-p1-v004-localoffset-win32
+          path: homelander_p1_build/build_v004/
+          if-no-files-found: error
