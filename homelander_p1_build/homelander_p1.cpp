@@ -807,8 +807,10 @@ namespace hl
         ok = leftOK && rightOK;
         if (!ok)
         {
-            CleanupLaserSightHandles();
-            Log("F14 FAIL: dual LaserSight submit did not complete");
+            // Do not release a successfully queued first beam in the same call.
+            // Match LaserAction lifetime: any allocated/submitted handle is released
+            // by CleanupLaserSightHandles() at the beginning of the next GOM tick.
+            Log("F14 FAIL/PARTIAL: dual LaserSight submit did not complete; any live handle will release next tick");
         }
         else
         {
