@@ -1,0 +1,45 @@
+name: Build Homelander P1 ASI Public Scratch
+
+on:
+  push:
+    branches:
+      - homelander-p1-build-20260918
+    paths:
+      - 'homelander_p1_build/**'
+      - '.github/workflows/homelander-p1-public-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-win32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MinGW-w64 x86
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686
+      - name: Build
+        run: |
+          mkdir -p homelander_p1_build/build
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp             -std=gnu++17 -O2 -Wall -Wextra             -shared -static-libgcc -static-libstdc++             -Wl,--subsystem,windows             -o homelander_p1_build/build/homelander_p1.asi             -luser32
+          test -s homelander_p1_build/build/homelander_p1.asi
+      - name: Verify
+        run: |
+          file homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build/imports.txt; then
+            echo "ERROR dynamic MinGW runtime dependency"
+            exit 1
+          fi
+          sha256sum homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: homelander-p1-asi-public-scratch
+          path: homelander_p1_build/build/
+          if-no-files-found: error
+          retention-days: 7
