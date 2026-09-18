@@ -119,6 +119,7 @@ namespace hl
 
     void** g_shaderManagerSlot = nullptr;
     void** g_renderEventGlobalSlot = nullptr;
+    EngineName* g_protoLitGlowNameGlobal = nullptr;
     void* g_laserSightCallback = nullptr;
     void* g_laserShader = nullptr;
     bool g_laserShaderGatePassed = false;
@@ -530,6 +531,137 @@ namespace hl
         return callSite + 5 + static_cast<intptr_t>(rel);
     }
 
+    uintptr_t FindUniqueAsciiString(HMODULE module, const char* text)
+    {
+        if (!module || !text || !*text)
+            return 0;
+
+        auto base = reinterpret_cast<uint8_t*>(module);
+        auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
+        if (dos->e_magic != IMAGE_DOS_SIGNATURE)
+            return 0;
+        auto nt = reinterpret_cast<IMAGE_NT_HEADERS*>(base + dos->e_lfanew);
+        if (nt->Signature != IMAGE_NT_SIGNATURE)
+            return 0;
+
+        const size_t length = std::strlen(text) + 1; // require NUL terminator too
+        uintptr_t found = 0;
+        size_t count = 0;
+
+        auto section = IMAGE_FIRST_SECTION(nt);
+        for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section)
+        {
+            if ((section->Characteristics & IMAGE_SCN_MEM_READ) == 0)
+                continue;
+
+            uint8_t* begin = base + section->VirtualAddress;
+            const size_t size = section->Misc.VirtualSize;
+            if (size < length)
+                continue;
+
+            for (size_t off = 0; off <= size - length; ++off)
+            {
+                if (std::memcmp(begin + off, text, length) == 0)
+                {
+                    if (count == 0)
+                        found = reinterpret_cast<uintptr_t>(begin + off);
+                    ++count;
+                }
+            }
+        }
+
+        if (count != 1)
+        {
+            Log("FAIL ASCII %-24s count=%zu (required exactly 1)", text, count);
+            return 0;
+        }
+
+        Log("PASS ASCII %-24s RVA=0x%08X", text,
+            static_cast<unsigned>(found - reinterpret_cast<uintptr_t>(module)));
+        return found;
+    }
+
+    EngineName* ResolveProtoLitGlowNameGlobal()
+    {
+        const uintptr_t stringAddress = FindUniqueAsciiString(g_engine, "proto_lit_glow");
+        if (!stringAddress)
+            return nullptr;
+
+        auto base = reinterpret_cast<uint8_t*>(g_engine);
+        auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
+        auto nt = reinterpret_cast<IMAGE_NT_HEADERS*>(base + dos->e_lfanew);
+
+        uintptr_t xref = 0;
+        size_t xrefCount = 0;
+        auto section = IMAGE_FIRST_SECTION(nt);
+        for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section)
+        {
+            if ((section->Characteristics & IMAGE_SCN_MEM_EXECUTE) == 0 ||
+                (section->Characteristics & IMAGE_SCN_MEM_READ) == 0)
+                continue;
+
+            uint8_t* begin = base + section->VirtualAddress;
+            const size_t size = section->Misc.VirtualSize;
+            if (size < 5)
+                continue;
+
+            for (size_t off = 0; off <= size - 5; ++off)
+            {
+                if (begin[off] != 0x68)
+                    continue;
+                uint32_t imm = 0;
+                std::memcpy(&imm, begin + off + 1, sizeof(imm));
+                if (static_cast<uintptr_t>(imm) == stringAddress)
+                {
+                    if (xrefCount == 0)
+                        xref = reinterpret_cast<uintptr_t>(begin + off);
+                    ++xrefCount;
+                }
+            }
+        }
+
+        if (xrefCount != 1 || !xref)
+        {
+            Log("FAIL proto_lit_glow initializer xref count=%zu (required exactly 1)", xrefCount);
+            return nullptr;
+        }
+
+        const uint8_t* p = reinterpret_cast<const uint8_t*>(xref);
+        // Exact initializer skeleton:
+        // push <string>; lea ecx,[esp+8]; call; lea eax,[esp]; push eax;
+        // lea ecx,[esp+8]; call; lea ecx,[esp+4]; push ecx; mov ecx,<Name global>; call
+        const bool skeleton =
+            p[5] == 0x8D && p[6] == 0x4C && p[7] == 0x24 && p[8] == 0x08 &&
+            p[9] == 0xE8 &&
+            p[14] == 0x8D && p[15] == 0x04 && p[16] == 0x24 &&
+            p[17] == 0x50 &&
+            p[18] == 0x8D && p[19] == 0x4C && p[20] == 0x24 && p[21] == 0x08 &&
+            p[22] == 0xE8 &&
+            p[27] == 0x8D && p[28] == 0x4C && p[29] == 0x24 && p[30] == 0x04 &&
+            p[31] == 0x51 && p[32] == 0xB9 && p[37] == 0xE8;
+
+        if (!skeleton)
+        {
+            Log("FAIL proto_lit_glow initializer skeleton mismatch");
+            return nullptr;
+        }
+
+        uint32_t globalAddress = 0;
+        std::memcpy(&globalAddress, p + 33, sizeof(globalAddress));
+        if (!globalAddress ||
+            !IsReadableMemory(reinterpret_cast<const void*>(globalAddress), sizeof(EngineName)))
+        {
+            Log("FAIL proto_lit_glow Name global unreadable");
+            return nullptr;
+        }
+
+        Log("PASS proto_lit_glow Name global RVA=0x%08X",
+            static_cast<unsigned>(
+                static_cast<uintptr_t>(globalAddress) -
+                reinterpret_cast<uintptr_t>(g_engine)));
+        return reinterpret_cast<EngineName*>(static_cast<uintptr_t>(globalAddress));
+    }
+
     bool IsReadableMemory(const void* ptr, size_t bytes)
     {
         if (!ptr || bytes == 0)
@@ -681,12 +813,11 @@ namespace hl
         g_laserShader = nullptr;
 
         bool ok = false;
-        if (NameCtor && ShaderLookup && g_shaderManagerSlot &&
-            *g_shaderManagerSlot && LuaPushBoolean)
+        if (ShaderLookup && g_shaderManagerSlot && *g_shaderManagerSlot &&
+            g_protoLitGlowNameGlobal && LuaPushBoolean)
         {
-            EngineName shaderName{};
-            NameCtor(&shaderName, "proto_lit_glow", 1);
-            void* shader = ShaderLookup(*g_shaderManagerSlot, &shaderName);
+            void* shader =
+                ShaderLookup(*g_shaderManagerSlot, g_protoLitGlowNameGlobal);
             if (shader && IsReadableMemory(shader, sizeof(void*)))
             {
                 void* vtable = *reinterpret_cast<void**>(shader);
@@ -1618,6 +1749,7 @@ namespace hl
 
         g_shaderManagerSlot = reinterpret_cast<void**>(shaderManagerSlotAddress);
         g_renderEventGlobalSlot = reinterpret_cast<void**>(renderEventGlobalA);
+        g_protoLitGlowNameGlobal = ResolveProtoLitGlowNameGlobal();
         g_laserSightCallback = reinterpret_cast<void*>(laserCallback);
         ShaderLookup = reinterpret_cast<ShaderLookupFn>(shaderLookupTarget);
         LaserEventAlloc = reinterpret_cast<LaserEventAllocFn>(laserEventAllocTarget);
@@ -1640,6 +1772,7 @@ namespace hl
 
         if (!g_luaScriptManagerSlot || !g_physicsManagerGlobal || !g_gohTableGlobal ||
             !g_shaderManagerSlot || !g_renderEventGlobalSlot ||
+            !g_protoLitGlowNameGlobal ||
             !ShaderLookup || !LaserEventAlloc || !LaserHandleAlloc ||
             !LaserHandleValid || !LaserHandleRelease || !LaserSubmit || !RenderContext)
         {
