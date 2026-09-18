@@ -57,3 +57,21 @@ jobs:
           name: homelander-p1-v004-localoffset-win32
           path: homelander_p1_build/build_v004/
           if-no-files-found: error
+      - name: Assemble dormant v004 stage bundle
+        run: |
+          mkdir -p stage_v004/lua_p1 stage_v004/CI_EVIDENCE
+          cp homelander_p1_build/build_v004/homelander_p1_v004.asi stage_v004/
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua stage_v004/lua_p1/
+          cp homelander_p1_build/P1_LOCALOFFSET_STATIC_GATE_20260918.md stage_v004/
+          cp homelander_p1_build/homelander_p1.cpp stage_v004/homelander_p1_v004_SOURCE.cpp
+          cp homelander_p1_build/build_v004/file.txt stage_v004/CI_EVIDENCE/
+          cp homelander_p1_build/build_v004/headers.txt stage_v004/CI_EVIDENCE/
+          cp homelander_p1_build/build_v004/imports.txt stage_v004/CI_EVIDENCE/
+          cp homelander_p1_build/build_v004/sha256.txt stage_v004/CI_EVIDENCE/
+          (cd stage_v004 && sha256sum homelander_p1_v004.asi lua_p1/freeaim_local_offset_probe_v005_STAGED.lua P1_LOCALOFFSET_STATIC_GATE_20260918.md homelander_p1_v004_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v004 && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v004_LocalOffsetGate_DORMANT
+          path: stage_v004/
+          if-no-files-found: error
