@@ -628,6 +628,12 @@ namespace hl
             return nullptr;
         }
 
+        if (!IsReadableMemory(reinterpret_cast<const void*>(xref), 42))
+        {
+            Log("FAIL proto_lit_glow initializer range unreadable");
+            return nullptr;
+        }
+
         const uint8_t* p = reinterpret_cast<const uint8_t*>(xref);
         // Exact initializer skeleton:
         // push <string>; lea ecx,[esp+8]; call; lea eax,[esp]; push eax;
@@ -650,10 +656,19 @@ namespace hl
 
         uint32_t globalAddress = 0;
         std::memcpy(&globalAddress, p + 33, sizeof(globalAddress));
+
+        const uintptr_t moduleBase = reinterpret_cast<uintptr_t>(g_engine);
+        const uintptr_t moduleEnd =
+            moduleBase + static_cast<uintptr_t>(nt->OptionalHeader.SizeOfImage);
+        const uintptr_t nameAddress = static_cast<uintptr_t>(globalAddress);
+
         if (!globalAddress ||
-            !IsReadableMemory(reinterpret_cast<const void*>(globalAddress), sizeof(EngineName)))
+            nameAddress < moduleBase ||
+            nameAddress + sizeof(EngineName) < nameAddress ||
+            nameAddress + sizeof(EngineName) > moduleEnd ||
+            !IsReadableMemory(reinterpret_cast<const void*>(nameAddress), sizeof(EngineName)))
         {
-            Log("FAIL proto_lit_glow Name global unreadable");
+            Log("FAIL proto_lit_glow Name global outside/unreadable in engine image");
             return nullptr;
         }
 
