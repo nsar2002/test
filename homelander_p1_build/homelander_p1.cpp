@@ -531,6 +531,8 @@ namespace hl
         return callSite + 5 + static_cast<intptr_t>(rel);
     }
 
+    bool IsReadableMemory(const void* ptr, size_t bytes);
+
     uintptr_t FindUniqueAsciiString(HMODULE module, const char* text)
     {
         if (!module || !text || !*text)
