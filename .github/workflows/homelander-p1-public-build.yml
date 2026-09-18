@@ -1,9 +1,9 @@
-name: Build Homelander P1 ASI Public Scratch
+name: Build Homelander P1 ASI v003 FreeAim
 
 on:
   push:
     branches:
-      - homelander-p1-build-20260918
+      - homelander-p1-v003-freeaim-20260918
     paths:
       - 'homelander_p1_build/**'
       - '.github/workflows/homelander-p1-public-build.yml'
@@ -17,29 +17,63 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Install MinGW-w64 x86
+
+      - name: Install Win32 + Lua 5.1 toolchains
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686
-      - name: Build
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Static source gates
+        run: |
+          grep -Fq 'P1_RuntimeProbe_003_20260918' homelander_p1_build/homelander_p1.cpp
+          grep -Fq '"HL_GetCameraRay"' homelander_p1_build/homelander_p1.cpp
+          grep -Fq '"HL_LastRayHitIndex"' homelander_p1_build/homelander_p1.cpp
+          grep -Fq 'F9: read-only free-aim camera/raycast probe' homelander_p1_build/homelander_p1.cpp
+          grep -Fq 'g_scriptsReady = setter && math && controller;' homelander_p1_build/homelander_p1.cpp
+          if grep -Fq 'g_scriptsReady = setter && math && controller &&' homelander_p1_build/homelander_p1.cpp; then
+            echo "ERROR optional probe leaked into flight readiness"
+            exit 1
+          fi
+          grep -Fq 'p[0x142]' homelander_p1_build/homelander_p1.cpp
+          grep -Fq 'p[0x2B8]' homelander_p1_build/homelander_p1.cpp
+          grep -Fq 'p[0x25F]' homelander_p1_build/homelander_p1.cpp
+
+      - name: Lua 5.1 syntax gate
+        run: |
+          luac5.1 -p homelander_p1_build/freeaim_probe_v003.lua
+
+      - name: Build Win32 ASI
         run: |
           mkdir -p homelander_p1_build/build
-          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp             -std=gnu++17 -O2 -Wall -Wextra             -shared -static-libgcc -static-libstdc++             -Wl,--subsystem,windows             -o homelander_p1_build/build/homelander_p1.asi             -luser32
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp             -std=gnu++17 -O2 -Wall -Wextra             -shared -static-libgcc -static-libstdc++             -Wl,--subsystem,windows -Wl,--no-insert-timestamp             -o homelander_p1_build/build/homelander_p1.asi             -luser32
           test -s homelander_p1_build/build/homelander_p1.asi
-      - name: Verify
+
+      - name: Verify PE, dependencies and v003 strings
         run: |
           file homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/file.txt
           i686-w64-mingw32-objdump -f homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/headers.txt
           i686-w64-mingw32-objdump -p homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/imports.txt
+          strings -a homelander_p1_build/build/homelander_p1.asi > homelander_p1_build/build/strings.txt
+
           grep -Eiq 'pei-i386|i386' homelander_p1_build/build/headers.txt
           if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build/imports.txt; then
             echo "ERROR dynamic MinGW runtime dependency"
             exit 1
           fi
+
+          grep -Fq 'P1_RuntimeProbe_003_20260918' homelander_p1_build/build/strings.txt
+          grep -Fq 'HL_GetCameraRay' homelander_p1_build/build/strings.txt
+          grep -Fq 'HL_LastRayHitIndex' homelander_p1_build/build/strings.txt
+          grep -Fq 'F9: read-only free-aim camera/raycast probe' homelander_p1_build/build/strings.txt
+
           sha256sum homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/sha256.txt
+          stat -c 'size=%s' homelander_p1_build/build/homelander_p1.asi | tee homelander_p1_build/build/size.txt
+
       - uses: actions/upload-artifact@v4
         with:
-          name: homelander-p1-asi-public-scratch
-          path: homelander_p1_build/build/
+          name: homelander-p1-v003-freeaim
+          path: |
+            homelander_p1_build/build/
+            homelander_p1_build/freeaim_probe_v003.lua
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 14
