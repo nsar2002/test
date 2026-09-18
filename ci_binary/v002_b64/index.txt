@@ -1,0 +1,5 @@
+sha256=a22bfd8d233339705b2d3f915e657154c021cc526cd69497cfae5275813e599e
+size=2188149
+parts=10
+part_size_chars=300000
+encoding=base64_no_newlines
