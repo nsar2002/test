@@ -181,6 +181,7 @@ namespace hl
     bool g_f5Prev = false;
     bool g_f6Prev = false;
     bool g_f7Prev = false;
+    bool g_f8Prev = false;
 
 
 
@@ -968,6 +969,7 @@ namespace hl
         const bool setter = ExecuteLuaFile(L, "lua_p1\\setter_echo_probe.lua");
         const bool math = ExecuteLuaFile(L, "lua_p1\\flight_math_probe.lua");
         const bool controller = ExecuteLuaFile(L, "lua_p1\\flight_controller_v1.lua");
+        const bool heatProbe = ExecuteLuaFile(L, "lua_p1\\heatvision_probe.lua");
 
 
 
@@ -984,8 +986,8 @@ namespace hl
 
 
 
-        g_scriptsReady = setter && math && controller;
-        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = false;
+        g_scriptsReady = setter && math && controller && heatProbe;
+        g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = false;
         Log("Lua bootstrap scriptsReady=%s", g_scriptsReady ? "true" : "false");
     }
 
@@ -1695,7 +1697,7 @@ namespace hl
 
 
 
-        Log("READY. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable");
+        Log("READY. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only heatvision target probe");
         return 0;
     }
 }
