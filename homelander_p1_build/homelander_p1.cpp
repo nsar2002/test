@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_005_DUALEYE_RENDER_STAGED_20260918";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_006_LASERSIGHT_NATIVE_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -39,7 +39,12 @@ namespace hl
     using LuaPushCClosureFn = void(__cdecl*)(int, void*, int);
     using LuaPushLStringFn  = void(__cdecl*)(int, const char*, size_t);
     using LuaSetFieldFn     = void(__cdecl*)(int, int, const char*);
+    // Prototype LuaGOH is represented on the Lua stack as LIGHTUSERDATA:
+    // raw encoding high16=slot index, low16=generation.
     using LuaPushGOHFn      = void(__cdecl*)(int, uint32_t);
+    using LuaToUserDataFn   = void*(__cdecl*)(int, int);
+    using LuaToNumberFn     = float(__cdecl*)(int, int);
+    using LuaPushBooleanFn  = void(__cdecl*)(int, int);
 
     struct Vec3
     {
@@ -48,7 +53,39 @@ namespace hl
         float z;
     };
 
+    struct EngineName
+    {
+        uint32_t a;
+        uint32_t b;
+    };
+
+    struct LaserSightPayload
+    {
+        int32_t handle;
+        uint32_t context;
+        uint8_t flag;
+        uint8_t pad09[3];
+        Vec3 endpointA;
+        Vec3 endpointB;
+        float thickness;
+        float r;
+        float g;
+        float b;
+        float a;
+        void* shader;
+    };
+    static_assert(sizeof(LaserSightPayload) == 0x3C, "LaserSightPayload must be 0x3C bytes");
+
     using RenderCameraPositionFn = Vec3*(__thiscall*)(void*, Vec3*);
+    using NameCtorFn             = EngineName*(__thiscall*)(EngineName*, const char*, int);
+    using JointLocalToWorldFn    = Vec3*(__cdecl*)(Vec3*, void*, EngineName*, const Vec3*);
+    using ShaderLookupFn         = void*(__thiscall*)(void*, const EngineName*);
+    using LaserEventAllocFn      = LaserSightPayload*(__cdecl*)(void*);
+    using LaserHandleAllocFn     = int32_t*(__cdecl*)(int32_t*, void*, int);
+    using LaserHandleValidFn     = bool(__thiscall*)(int32_t*);
+    using LaserHandleReleaseFn   = void(__cdecl*)(int32_t*, int);
+    using LaserSubmitFn          = void(__cdecl*)();
+    using RenderContextFn        = uint32_t(__cdecl*)();
 
     LuaPcallFn        LuaPcall = nullptr;
     LuaGetFieldFn     LuaGetField = nullptr;
@@ -60,12 +97,32 @@ namespace hl
     LuaPushLStringFn  LuaPushLString = nullptr;
     LuaSetFieldFn     LuaSetField = nullptr;
     LuaPushGOHFn      LuaPushGOH = nullptr;
+    LuaToUserDataFn   LuaToUserData = nullptr;
+    LuaToNumberFn     LuaToNumber = nullptr;
+    LuaPushBooleanFn  LuaPushBoolean = nullptr;
+
+    NameCtorFn           NameCtor = nullptr;
+    JointLocalToWorldFn  JointLocalToWorld = nullptr;
+    ShaderLookupFn       ShaderLookup = nullptr;
+    LaserEventAllocFn    LaserEventAlloc = nullptr;
+    LaserHandleAllocFn   LaserHandleAlloc = nullptr;
+    LaserHandleValidFn   LaserHandleValid = nullptr;
+    LaserHandleReleaseFn LaserHandleRelease = nullptr;
+    LaserSubmitFn        LaserSubmit = nullptr;
+    RenderContextFn      RenderContext = nullptr;
 
     void** g_luaScriptManagerSlot = nullptr;
 
     // Free-aim v003 static bridges. These remain read-only.
     uintptr_t* g_gohTableGlobal = nullptr;
     uintptr_t* g_physicsManagerGlobal = nullptr;
+
+    void** g_shaderManagerSlot = nullptr;
+    void** g_renderEventGlobalSlot = nullptr;
+    void* g_laserSightCallback = nullptr;
+    void* g_laserShader = nullptr;
+    bool g_laserShaderGatePassed = false;
+    int32_t g_laserSightHandles[2] = {-1, -1};
 
     RenderCameraPositionFn g_originalRenderCameraPosition = nullptr;
     uint8_t* g_renderCameraTarget = nullptr;
@@ -96,10 +153,13 @@ namespace hl
     bool g_f10Prev = false;
     bool g_f11Prev = false;
     bool g_f12Prev = false;
+    bool g_f13Prev = false;
+    bool g_f14Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
     bool g_dualEyeRenderReady = false;
+    bool g_laserSightNativeReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -144,6 +204,33 @@ namespace hl
     const char* kSigGOHTableRef =
         "0F B7 01 66 3D FF FF 74 ? 8B 15 ? ? ? ? 0F B7 C0 8D 04 C2 "
         "66 8B 50 04 66 3B 51 02 75 03 8B 00 C3 33 C0 C3";
+
+    // v006 real LaserSight native route.
+    const char* kSigLuaToUserData =
+        "8B 4C 24 08 8B 54 24 04 E8 ? ? ? ? 8B 48 04 83 E9 02 74 ? "
+        "83 E9 05 74 ? 33 C0 C3";
+    const char* kSigLuaToNumber =
+        "8B 4C 24 08 8B 54 24 04 83 EC 08 E8 ? ? ? ? 83 78 04 03 74 ? "
+        "8D 0C 24 51 50 E8 ? ? ? ? 83 C4 08 85 C0 75 ? D9 EE 83 C4 08 C3 "
+        "D9 00 83 C4 08 C3";
+    const char* kSigLuaPushBoolean =
+        "8B 44 24 04 8B 48 08 33 D2 39 54 24 08 C7 41 04 01 00 00 00 "
+        "0F 95 C2 89 11 83 40 08 08 C3";
+    const char* kSigNameCtor =
+        "8B 44 24 04 56 6A 00 6A 00 50 8B F1 E8 ? ? ? ? 89 06 83 C4 0C "
+        "89 56 04 8B C6 5E C2 08 00";
+    const char* kSigJointLocalToWorld =
+        "83 EC 40 56 8B 4C 24 4C 8B 41 1C F3 0F 10 40 04 83 C0 04 "
+        "F3 0F 11 44 24 04";
+    const char* kSigLaserShaderRoute =
+        "8B 47 1C 8B 0D ? ? ? ? 53 83 C0 18 50 E8 ? ? ? ? 8B D8 85 DB";
+    const char* kSigLaserEventCreate =
+        "56 68 ? ? ? ? E8 ? ? ? ? 6A 01 8D 54 24 ? 6A 00 52 8B F0 "
+        "E8 ? ? ? ? 8B 00 83 C4 10 89 06 E8 ? ? ? ? 89 46 04 C6 46 08 00";
+    const char* kSigLaserCleanupRoute =
+        "8D 6F 2C 8B CD E8 ? ? ? ? 84 C0 74 ? 6A 00 55 E8 ? ? ? ? 83 C4 08";
+    const char* kSigLaserSubmit =
+        "A1 ? ? ? ? 50 E8 ? ? ? ? 83 C4 04 C7 05 ? ? ? ? 00 00 00 00 C3";
 
     std::string SelfRoot()
     {
