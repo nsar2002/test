@@ -1,0 +1,37 @@
+name: Homelander P1 v002 provenance rebuild
+
+on:
+  push:
+    branches:
+      - homelander-p1-v002-provenance-2f954-20260918
+  workflow_dispatch:
+
+jobs:
+  build-win32:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MinGW-w64 x86
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686
+      - name: Build
+        run: |
+          mkdir -p homelander_p1_build/provenance_build
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/provenance_build/homelander_p1.asi \
+            -luser32
+      - name: Inspect
+        run: |
+          file homelander_p1_build/provenance_build/homelander_p1.asi | tee homelander_p1_build/provenance_build/file.txt
+          i686-w64-mingw32-objdump -h homelander_p1_build/provenance_build/homelander_p1.asi | tee homelander_p1_build/provenance_build/sections.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/provenance_build/homelander_p1.asi | tee homelander_p1_build/provenance_build/imports.txt
+          strings homelander_p1_build/provenance_build/homelander_p1.asi | grep -E 'P1_RuntimeProbe|READY build=|F8: read-only' | tee homelander_p1_build/provenance_build/runtime_strings.txt
+          sha256sum homelander_p1_build/provenance_build/homelander_p1.asi | tee homelander_p1_build/provenance_build/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: homelander-p1-v002-provenance-2f954
+          path: homelander_p1_build/provenance_build/
