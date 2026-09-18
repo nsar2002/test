@@ -54,6 +54,18 @@ jobs:
           cp homelander_p1_build/build/homelander_p1.asi ci_binary/homelander_p1_v002.asi
           SHA="$(sha256sum homelander_p1_build/build/homelander_p1.asi | awk '{print $1}')"
           SIZE="$(stat -c '%s' homelander_p1_build/build/homelander_p1.asi)"
+          rm -rf ci_binary/v002_b64
+          mkdir -p ci_binary/v002_b64
+          base64 -w 0 homelander_p1_build/build/homelander_p1.asi | split -b 300000 -d -a 2 - ci_binary/v002_b64/part_
+          PARTS="$(find ci_binary/v002_b64 -type f -name 'part_*' | wc -l)"
+          cat > ci_binary/v002_b64/index.txt <<EOF
+          sha256=${SHA}
+          size=${SIZE}
+          parts=${PARTS}
+          part_size_chars=300000
+          encoding=base64_no_newlines
+          EOF
+          sed -i 's/^          //' ci_binary/v002_b64/index.txt
           cat > ci_binary/homelander_p1_v002_verification.txt <<EOF
           build_commit=${GITHUB_SHA}
           workflow_run=${GITHUB_RUN_ID}
@@ -68,6 +80,6 @@ jobs:
           sed -i 's/^          //' ci_binary/homelander_p1_v002_verification.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ci_binary/homelander_p1_v002.asi ci_binary/homelander_p1_v002_verification.txt
+          git add ci_binary/homelander_p1_v002.asi ci_binary/homelander_p1_v002_verification.txt ci_binary/v002_b64
           git diff --cached --quiet || git commit -m "CI snapshot: verified Homelander P1 v002 [skip ci]"
           git push
