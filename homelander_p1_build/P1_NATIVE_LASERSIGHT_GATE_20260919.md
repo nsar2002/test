@@ -38,7 +38,8 @@ Prerequisites are intentionally stricter than the legacy F12 ai_Laser test:
 Endpoint construction:
 - left eye = native EYEPOINT + local X(-halfSep)
 - right eye = native EYEPOINT + local X(+halfSep)
-- target = exact current F9 world hitpoint
+- target = current go_Local2World(F9/F10 target, F10-proven object-local impact offset)
+- the original F9 world hitpoint is retained only for drift logging, so a moving target does not leave the beam aimed at a stale world coordinate
 
 Safety clamps:
 - abs(halfSep) <= 0.25
