@@ -1530,6 +1530,25 @@ namespace hl
         const uintptr_t losCapture =
             RequireUnique("LineOfSightCapture", kSigLineOfSightCapture);
 
+        const uintptr_t luaToUserData =
+            RequireUnique("LuaToUserData", kSigLuaToUserData);
+        const uintptr_t luaToNumber =
+            RequireUnique("LuaToNumber", kSigLuaToNumber);
+        const uintptr_t luaPushBoolean =
+            RequireUnique("LuaPushBoolean", kSigLuaPushBoolean);
+        const uintptr_t nameCtor =
+            RequireUnique("NameCtor", kSigNameCtor);
+        const uintptr_t jointLocalToWorld =
+            RequireUnique("JointLocalToWorld", kSigJointLocalToWorld);
+        const uintptr_t laserShaderRoute =
+            RequireUnique("LaserShaderRoute", kSigLaserShaderRoute);
+        const uintptr_t laserEventCreate =
+            RequireUnique("LaserEventCreate", kSigLaserEventCreate);
+        const uintptr_t laserCleanupRoute =
+            RequireUnique("LaserCleanupRoute", kSigLaserCleanupRoute);
+        const uintptr_t laserSubmit =
+            RequireUnique("LaserSubmit", kSigLaserSubmit);
+
         // These routines exist in multiple identical specializations. They are
         // accepted only when every match embeds the same absolute global.
         const uintptr_t physicsManagerGlobal =
@@ -1539,7 +1558,10 @@ namespace hl
 
         if (!pcall || !getfield || !settop || !gettop || !tolstring || !loadbuffer ||
             !pushc || !pushls || !setfield || !pushgoh || !managerRef || !gom ||
-            !renderCamera || !losCapture || !physicsManagerGlobal || !gohTableGlobal)
+            !renderCamera || !losCapture || !physicsManagerGlobal || !gohTableGlobal ||
+            !luaToUserData || !luaToNumber || !luaPushBoolean || !nameCtor ||
+            !jointLocalToWorld || !laserShaderRoute || !laserEventCreate ||
+            !laserCleanupRoute || !laserSubmit)
             return false;
 
         LuaPcall = reinterpret_cast<LuaPcallFn>(pcall);
@@ -1552,6 +1574,61 @@ namespace hl
         LuaPushLString = reinterpret_cast<LuaPushLStringFn>(pushls);
         LuaSetField = reinterpret_cast<LuaSetFieldFn>(setfield);
         LuaPushGOH = reinterpret_cast<LuaPushGOHFn>(pushgoh);
+        LuaToUserData = reinterpret_cast<LuaToUserDataFn>(luaToUserData);
+        LuaToNumber = reinterpret_cast<LuaToNumberFn>(luaToNumber);
+        LuaPushBoolean = reinterpret_cast<LuaPushBooleanFn>(luaPushBoolean);
+        NameCtor = reinterpret_cast<NameCtorFn>(nameCtor);
+        JointLocalToWorld = reinterpret_cast<JointLocalToWorldFn>(jointLocalToWorld);
+
+        // Derive every renderer primitive from unique LaserAction sequences.
+        const uintptr_t shaderManagerSlotAddress =
+            *reinterpret_cast<const uint32_t*>(laserShaderRoute + 5);
+        const uintptr_t shaderLookupTarget =
+            ResolveRel32Target(laserShaderRoute + 14);
+
+        const uintptr_t laserCallback =
+            *reinterpret_cast<const uint32_t*>(laserEventCreate + 2);
+        const uintptr_t laserEventAllocTarget =
+            ResolveRel32Target(laserEventCreate + 6);
+        const uintptr_t laserHandleAllocTarget =
+            ResolveRel32Target(laserEventCreate + 22);
+        const uintptr_t renderContextTarget =
+            ResolveRel32Target(laserEventCreate + 34);
+
+        const uintptr_t laserHandleValidTarget =
+            ResolveRel32Target(laserCleanupRoute + 5);
+        const uintptr_t laserHandleReleaseTarget =
+            ResolveRel32Target(laserCleanupRoute + 17);
+
+        const uintptr_t renderEventGlobalA =
+            *reinterpret_cast<const uint32_t*>(laserSubmit + 1);
+        const uintptr_t renderEventGlobalB =
+            *reinterpret_cast<const uint32_t*>(laserSubmit + 16);
+
+        if (!shaderManagerSlotAddress || !shaderLookupTarget || !laserCallback ||
+            !laserEventAllocTarget || !laserHandleAllocTarget || !renderContextTarget ||
+            !laserHandleValidTarget || !laserHandleReleaseTarget ||
+            !renderEventGlobalA || renderEventGlobalA != renderEventGlobalB)
+        {
+            Log("FAIL v006 derived LaserSight route is incomplete/inconsistent");
+            return false;
+        }
+
+        g_shaderManagerSlot = reinterpret_cast<void**>(shaderManagerSlotAddress);
+        g_renderEventGlobalSlot = reinterpret_cast<void**>(renderEventGlobalA);
+        g_laserSightCallback = reinterpret_cast<void*>(laserCallback);
+        ShaderLookup = reinterpret_cast<ShaderLookupFn>(shaderLookupTarget);
+        LaserEventAlloc = reinterpret_cast<LaserEventAllocFn>(laserEventAllocTarget);
+        LaserHandleAlloc = reinterpret_cast<LaserHandleAllocFn>(laserHandleAllocTarget);
+        LaserHandleValid = reinterpret_cast<LaserHandleValidFn>(laserHandleValidTarget);
+        LaserHandleRelease = reinterpret_cast<LaserHandleReleaseFn>(laserHandleReleaseTarget);
+        LaserSubmit = reinterpret_cast<LaserSubmitFn>(laserSubmit);
+        RenderContext = reinterpret_cast<RenderContextFn>(renderContextTarget);
+
+        Log("PASS v006 LaserSight route shaderSlot=0x%08X eventSlot=0x%08X callback=0x%08X",
+            static_cast<unsigned>(shaderManagerSlotAddress - reinterpret_cast<uintptr_t>(g_engine)),
+            static_cast<unsigned>(renderEventGlobalA - reinterpret_cast<uintptr_t>(g_engine)),
+            static_cast<unsigned>(laserCallback - reinterpret_cast<uintptr_t>(g_engine)));
 
         // managerRef points at: 8B 0D <absolute address of global manager slot>
         const uintptr_t slotAddress = *reinterpret_cast<uintptr_t*>(managerRef + 2);
@@ -1559,9 +1636,12 @@ namespace hl
         g_physicsManagerGlobal = reinterpret_cast<uintptr_t*>(physicsManagerGlobal);
         g_gohTableGlobal = reinterpret_cast<uintptr_t*>(gohTableGlobal);
 
-        if (!g_luaScriptManagerSlot || !g_physicsManagerGlobal || !g_gohTableGlobal)
+        if (!g_luaScriptManagerSlot || !g_physicsManagerGlobal || !g_gohTableGlobal ||
+            !g_shaderManagerSlot || !g_renderEventGlobalSlot ||
+            !ShaderLookup || !LaserEventAlloc || !LaserHandleAlloc ||
+            !LaserHandleValid || !LaserHandleRelease || !LaserSubmit || !RenderContext)
         {
-            Log("FAIL one or more manager/global slots are null");
+            Log("FAIL one or more manager/global/native LaserSight slots are null");
             return false;
         }
 
