@@ -521,6 +521,305 @@ namespace hl
         return (raw << 16) | (raw >> 16);
     }
 
+    uintptr_t ResolveRel32Target(uintptr_t callSite)
+    {
+        if (!callSite || *reinterpret_cast<const uint8_t*>(callSite) != 0xE8)
+            return 0;
+        int32_t rel = 0;
+        std::memcpy(&rel, reinterpret_cast<const void*>(callSite + 1), sizeof(rel));
+        return callSite + 5 + static_cast<intptr_t>(rel);
+    }
+
+    bool IsReadableMemory(const void* ptr, size_t bytes)
+    {
+        if (!ptr || bytes == 0)
+            return false;
+        MEMORY_BASIC_INFORMATION mbi{};
+        if (!VirtualQuery(ptr, &mbi, sizeof(mbi)) || mbi.State != MEM_COMMIT)
+            return false;
+        const DWORD prot = mbi.Protect & 0xFFu;
+        if (prot == PAGE_NOACCESS || (mbi.Protect & PAGE_GUARD))
+            return false;
+        const uintptr_t start = reinterpret_cast<uintptr_t>(ptr);
+        const uintptr_t end = start + bytes;
+        const uintptr_t regionEnd = reinterpret_cast<uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
+        return end >= start && end <= regionEnd;
+    }
+
+    void PushLuaBool(int L, bool value)
+    {
+        if (LuaPushBoolean)
+            LuaPushBoolean(L, value ? 1 : 0);
+    }
+
+    void* ResolveLuaGOHObject(int L, int stackIndex)
+    {
+        if (!LuaToUserData || !g_gohTableGlobal)
+            return nullptr;
+
+        const uintptr_t encoded =
+            reinterpret_cast<uintptr_t>(LuaToUserData(L, stackIndex));
+        if (encoded > 0xFFFFFFFFu)
+            return nullptr;
+
+        const uint32_t raw = static_cast<uint32_t>(encoded);
+        const uint16_t index = static_cast<uint16_t>(raw >> 16);
+        const uint16_t generation = static_cast<uint16_t>(raw & 0xFFFFu);
+        if (index == 0xFFFFu || generation == 0xFFFFu)
+            return nullptr;
+
+        const uintptr_t gohTable = *g_gohTableGlobal;
+        if (!gohTable || index >= 0x1800u)
+            return nullptr;
+
+        const uintptr_t slot = gohTable + static_cast<uintptr_t>(index) * 8u;
+        if (!IsReadableMemory(reinterpret_cast<const void*>(slot), 8))
+            return nullptr;
+
+        const uint16_t storedGeneration =
+            *reinterpret_cast<const uint16_t*>(slot + 4);
+        if (storedGeneration != generation)
+            return nullptr;
+
+        return *reinterpret_cast<void* const*>(slot);
+    }
+
+    bool FiniteVec(const Vec3& v)
+    {
+        return std::isfinite(v.x) && std::isfinite(v.y) && std::isfinite(v.z);
+    }
+
+    float Distance(const Vec3& a, const Vec3& b)
+    {
+        const float dx = a.x - b.x;
+        const float dy = a.y - b.y;
+        const float dz = a.z - b.z;
+        return std::sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
+    void CleanupLaserSightHandles()
+    {
+        if (!LaserHandleValid || !LaserHandleRelease)
+            return;
+
+        for (int32_t& handle : g_laserSightHandles)
+        {
+            if (handle == -1)
+                continue;
+
+            if (LaserHandleValid(&handle))
+            {
+                LaserHandleRelease(&handle, 0);
+                Log("LaserSight one-shot handle released");
+            }
+            else
+            {
+                handle = -1;
+            }
+        }
+    }
+
+    bool SubmitLaserSightEvent(int slot, const Vec3& from, const Vec3& to,
+                               float thickness, float r, float g, float b, float a)
+    {
+        if (slot < 0 || slot >= 2 || !FiniteVec(from) || !FiniteVec(to) ||
+            !g_laserShaderGatePassed || !g_laserShader ||
+            !LaserEventAlloc || !LaserHandleAlloc || !LaserHandleValid ||
+            !LaserHandleRelease || !LaserSubmit || !RenderContext ||
+            !g_renderEventGlobalSlot || !g_laserSightCallback)
+            return false;
+
+        if (*g_renderEventGlobalSlot != nullptr)
+        {
+            Log("F14 REFUSED: engine render-event staging slot is already occupied");
+            return false;
+        }
+
+        int32_t handle = -1;
+        int32_t* handleResult = LaserHandleAlloc(&handle, nullptr, 1);
+        if (handleResult != &handle || handle == -1 || !LaserHandleValid(&handle))
+        {
+            Log("F14 FAIL: LaserSight handle allocation/validation failed");
+            return false;
+        }
+
+        LaserSightPayload* payload = LaserEventAlloc(g_laserSightCallback);
+        if (!*g_renderEventGlobalSlot || reinterpret_cast<uintptr_t>(payload) < 0x10000u)
+        {
+            LaserHandleRelease(&handle, 0);
+            Log("F14 FAIL: StructRenderEvent<LaserSightStruct> allocation failed");
+            return false;
+        }
+
+        payload->handle = handle;
+        payload->context = RenderContext();
+        payload->flag = 0;
+        payload->pad09[0] = payload->pad09[1] = payload->pad09[2] = 0;
+        payload->endpointA = from;
+        payload->endpointB = to;
+        payload->thickness = thickness;
+        payload->r = r;
+        payload->g = g;
+        payload->b = b;
+        payload->a = a;
+        payload->shader = g_laserShader;
+
+        g_laserSightHandles[slot] = handle;
+        LaserSubmit();
+
+        if (*g_renderEventGlobalSlot != nullptr)
+        {
+            Log("F14 FAIL: render-event submit did not clear staging slot");
+            return false;
+        }
+        return true;
+    }
+
+    int __cdecl LuaLaserSightShaderProbeHook(int L)
+    {
+        g_laserShaderGatePassed = false;
+        g_laserShader = nullptr;
+
+        bool ok = false;
+        if (NameCtor && ShaderLookup && g_shaderManagerSlot &&
+            *g_shaderManagerSlot && LuaPushBoolean)
+        {
+            EngineName shaderName{};
+            NameCtor(&shaderName, "proto_lit_glow", 1);
+            void* shader = ShaderLookup(*g_shaderManagerSlot, &shaderName);
+            if (shader && IsReadableMemory(shader, sizeof(void*)))
+            {
+                void* vtable = *reinterpret_cast<void**>(shader);
+                if (vtable && IsReadableMemory(vtable, sizeof(void*)))
+                {
+                    g_laserShader = shader;
+                    g_laserShaderGatePassed = true;
+                    ok = true;
+                    Log("F13 PASS: proto_lit_glow resolved as pure3d::Shader*=%p vtable=%p",
+                        shader, vtable);
+                }
+            }
+        }
+
+        if (!ok)
+            Log("F13 FAIL: allowlisted proto_lit_glow shader did not resolve safely");
+
+        PushLuaBool(L, ok);
+        return LuaPushBoolean ? 1 : 0;
+    }
+
+    int __cdecl LuaLaserSightSubmitDualHook(int L)
+    {
+        bool ok = false;
+
+        if (!LuaGetTop || !LuaToNumber || !LuaToUserData || !LuaPushBoolean ||
+            !NameCtor || !JointLocalToWorld)
+        {
+            Log("F14 FAIL: one or more native bridge primitives unresolved");
+            PushLuaBool(L, false);
+            return LuaPushBoolean ? 1 : 0;
+        }
+
+        if (LuaGetTop(L) != 13)
+        {
+            Log("F14 REFUSED: expected exactly 13 arguments");
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        void* playerObject = ResolveLuaGOHObject(L, 1);
+        const Vec3 expectedEye{
+            LuaToNumber(L, 2), LuaToNumber(L, 3), LuaToNumber(L, 4)};
+        const Vec3 target{
+            LuaToNumber(L, 5), LuaToNumber(L, 6), LuaToNumber(L, 7)};
+        float halfSep = LuaToNumber(L, 8);
+        const float thickness = LuaToNumber(L, 9);
+        const float red = LuaToNumber(L, 10);
+        const float green = LuaToNumber(L, 11);
+        const float blue = LuaToNumber(L, 12);
+        const float alpha = LuaToNumber(L, 13);
+
+        if (!playerObject || !FiniteVec(expectedEye) || !FiniteVec(target) ||
+            !std::isfinite(halfSep) || !std::isfinite(thickness) ||
+            !std::isfinite(red) || !std::isfinite(green) ||
+            !std::isfinite(blue) || !std::isfinite(alpha))
+        {
+            Log("F14 REFUSED: invalid player/NaN/Inf input");
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        halfSep = std::fabs(halfSep);
+        if (halfSep > 0.25f || thickness < 0.001f || thickness > 0.50f ||
+            red < 0.0f || red > 1.0f || green < 0.0f || green > 1.0f ||
+            blue < 0.0f || blue > 1.0f || alpha < 0.0f || alpha > 1.0f)
+        {
+            Log("F14 REFUSED: separation/thickness/RGBA outside safety bounds");
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        EngineName eyeName{};
+        NameCtor(&eyeName, "EYEPOINT", 1);
+
+        const Vec3 centerLocal{0.0f, 0.0f, 0.0f};
+        const Vec3 leftLocal{-halfSep, 0.0f, 0.0f};
+        const Vec3 rightLocal{halfSep, 0.0f, 0.0f};
+        Vec3 actualEye{};
+        Vec3 leftEye{};
+        Vec3 rightEye{};
+
+        JointLocalToWorld(&actualEye, playerObject, &eyeName, &centerLocal);
+        JointLocalToWorld(&leftEye, playerObject, &eyeName, &leftLocal);
+        JointLocalToWorld(&rightEye, playerObject, &eyeName, &rightLocal);
+
+        if (!FiniteVec(actualEye) || !FiniteVec(leftEye) || !FiniteVec(rightEye))
+        {
+            Log("F14 REFUSED: joint-local endpoint transform produced invalid vector");
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        const float centerError = Distance(actualEye, expectedEye);
+        if (!std::isfinite(centerError) || centerError > 0.02f)
+        {
+            Log("F14 REFUSED: native EYEPOINT center disagrees with fresh Lua getter | error=%.6f",
+                centerError);
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        const float beamDistance = Distance(actualEye, target);
+        if (!std::isfinite(beamDistance) || beamDistance < 0.05f || beamDistance > 1200.0f)
+        {
+            Log("F14 REFUSED: target distance outside 0.05..1200 | distance=%.3f",
+                beamDistance);
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        const bool leftOK =
+            SubmitLaserSightEvent(0, leftEye, target, thickness, red, green, blue, alpha);
+        const bool rightOK =
+            leftOK && SubmitLaserSightEvent(
+                1, rightEye, target, thickness, red, green, blue, alpha);
+
+        ok = leftOK && rightOK;
+        if (!ok)
+        {
+            CleanupLaserSightHandles();
+            Log("F14 FAIL: dual LaserSight submit did not complete");
+        }
+        else
+        {
+            Log("F14 PASS: two real LaserSight render events submitted | centerError=%.6f distance=%.3f",
+                centerError, beamDistance);
+        }
+
+        PushLuaBool(L, ok);
+        return 1;
+    }
+
     bool ResolvePhysicsOwnerGOH(uint32_t physicsHandle, uint32_t& outRawGOH)
     {
         outRawGOH = 0;
