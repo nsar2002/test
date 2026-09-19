@@ -1,0 +1,274 @@
+{
+  "schema": "homelander-p1-runtime-promotion/1.0",
+  "created": "2026-09-19",
+  "baseline": {
+    "stage": "v001",
+    "asiSha256": "577be0ad57823b8cf562bee014d2656819ff5c4159ef74b3c195e842d747b104",
+    "loaderSha256": "bc48bab2cf07eaf616e23ba9eef1922ea5e8590f722b6657a8f2ed986fe6f20e",
+    "originalBinkSha256": "dba257f26517d57ecf3c62aca7cccfabbad868dddf97160f71c9ab81d37a8627"
+  },
+  "forbiddenLogRegex": "(?im)(FATAL|FAIL signature|FAIL consistent ref|Lua compile error|Lua runtime error|Unhandled exception|Access violation|\\bABORT:|\\bREFUSED:)",
+  "stages": [
+    {
+      "stage": "v003",
+      "predecessor": "v001",
+      "display": "FreeAim F9",
+      "package": "packages/v003.zip",
+      "packageSha256": "23e125109da26f268534a7db429a8c8d51af6cc63d06d2a374f874fb68f3a7f2",
+      "driveId": "1DkjdxWZaDe-Ar9rWNg7hOLrfibxywGGL",
+      "asiPath": "payload/homelander_p1.asi",
+      "luaRoot": "payload/lua_p1",
+      "asiSha256": "1845aff900e77f7c98e1ef0b37a2ea83c1c293ad74d01dc8fb136a198c9027c2",
+      "buildId": "P1_RuntimeProbe_003_FREEAIM_STAGED_20260918",
+      "gate": "F9",
+      "keys": "F4 -> aim at a nearby NPC/vehicle -> F9",
+      "visible": false,
+      "required": [
+        "READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918",
+        "F4: read-only discovery \\+ flight math probe",
+        "\\[HOMELANDER_P1_FREEAIM_V004\\] CAMERA \\|",
+        "\\[HOMELANDER_P1_FREEAIM_V004\\] HIT \\|[^\\r\\n]*hitGOH=(?!nil\\b)"
+      ]
+    },
+    {
+      "stage": "v004",
+      "predecessor": "v003",
+      "display": "LocalOffset F10",
+      "package": "packages/v004.zip",
+      "packageSha256": "18072f5aac11cb04477f28a97cb0501eee6c92973d992c63b7a2a23b24c36a61",
+      "driveId": "1SBq4PiRfCLJ39yq1BHsv_JFjGWPZJAiR",
+      "asiPath": "homelander_p1_v004.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "69fd33f4561944137226b0f50540b96274cc988ed9834d08303f114574177769",
+      "buildId": "P1_RuntimeProbe_004_LOCALOFFSET_STAGED_20260918",
+      "gate": "F10",
+      "keys": "F4 -> aim at a nearby NPC/vehicle -> F9 -> F10",
+      "visible": false,
+      "required": [
+        "READY build=P1_RuntimeProbe_004_LOCALOFFSET_STAGED_20260918",
+        "\\[HOMELANDER_P1_LOCALOFFSET_V005\\] PASS: stored verified target-local offset for later render gate"
+      ]
+    },
+    {
+      "stage": "v005",
+      "predecessor": "v004",
+      "display": "EYEPOINT F11",
+      "package": "packages/v005.zip",
+      "packageSha256": "a9e6d9941fc79e720631affea10864f5e3f362b04ce1acf5916cf7db7f684329",
+      "driveId": "1Bgg8zLcwWCVgk2yYx8rXeKIMZQArhnVF",
+      "asiPath": "homelander_p1_v005.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "8944842eb60a3932ad6a308edfcbb4939edc883beaab0564c8048a47cd3e8f7b",
+      "buildId": "P1_RuntimeProbe_005_DUALEYE_RENDER_STAGED_20260918",
+      "gate": "F11",
+      "keys": "F4 -> F11",
+      "visible": false,
+      "required": [
+        "READY build=P1_RuntimeProbe_005_DUALEYE_RENDER_STAGED_20260918",
+        "\\[HOMELANDER_P1_EYE_ORIGIN_V006\\] PASS: EYEPOINT resolved"
+      ]
+    },
+    {
+      "stage": "v006",
+      "predecessor": "v005",
+      "display": "Native LaserSight F13/F14",
+      "package": "packages/v006.zip",
+      "packageSha256": "df0133021804a976dfcab8e06b9b3b3c3b61ceb3d0f2dc40de74b5a26920645f",
+      "driveId": "1FgD8HyxPgvFIPAu8wtLCuHpbzpVRU3Ce",
+      "asiPath": "homelander_p1_v006.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "4d8bb29873d62cbab29c9a0956fc6f89d7f6d39eecdf4328075720cff10cc8b4",
+      "buildId": "P1_RuntimeProbe_006_LASERSIGHT_NATIVE_STAGED_20260919",
+      "gate": "F14",
+      "keys": "F4 -> aim -> F9 -> F10 -> F11 -> F13 -> F14",
+      "visible": true,
+      "visiblePrompt": "Confirm the two real LaserSight eye beams were visibly rendered at the intended hit point.",
+      "required": [
+        "READY build=P1_RuntimeProbe_006_LASERSIGHT_NATIVE_STAGED_20260919",
+        "F13 PASS: proto_lit_glow resolved as pure3d::Shader",
+        "F14 PASS: two real LaserSight render events submitted"
+      ]
+    },
+    {
+      "stage": "v007",
+      "predecessor": "v006",
+      "display": "Held LaserSight F15 stability",
+      "package": "packages/v007.zip",
+      "packageSha256": "df2c9b7e623869f0ac176a2d1e506f91cbab044446f0ad3bef5f385d8f948470",
+      "driveId": "1UyN0hcTdUuYHFJCunRYb1OLMOV1Dcael",
+      "asiPath": "homelander_p1_v007.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "354962e58268994039aa874df2441c9f4eeb38d155edd3c8a715e8a5515f3289",
+      "buildId": "P1_RuntimeProbe_007_HELD_LASERSIGHT_STAGED_20260919",
+      "gate": "F15",
+      "keys": "F4 -> aim -> F9 -> F10 -> F11 -> F13 -> F14 -> F15, then hold stable until 120-frame PASS",
+      "visible": true,
+      "visiblePrompt": "Confirm the held dual-eye beam was visibly present while the 120-frame stability proof completed.",
+      "required": [
+        "READY build=P1_RuntimeProbe_007_HELD_LASERSIGHT_STAGED_20260919",
+        "\\[HOMELANDER_P1_LASERSIGHT_HELD_V009\\] STABILITY PASS \\| 120 consecutive successful held render frames",
+        "F15 NATIVE STABILITY PASS: 120 consecutive successful held submits"
+      ]
+    },
+    {
+      "stage": "v009",
+      "predecessor": "v007",
+      "display": "Dynamic free-aim F16 stability",
+      "package": "packages/v009.zip",
+      "packageSha256": "708993eb7aacd6a018fa3427cc4b6218e8a0be44a5c4193c3e67f14fbd1a80cd",
+      "driveId": "1KrATukOJrq93uoAf5zCELYHzeY0Z6Wju",
+      "asiPath": "homelander_p1_v009.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "61a3c7c94d0dc69eeb71855e6d1a21b1afcad769f994c74d3ff07c5ddd19483c",
+      "buildId": "P1_RuntimeProbe_009_DYNAMIC_STABILITY_STAGED_20260919",
+      "gate": "F16",
+      "keys": "F4 -> aim -> F9 -> F10 -> F11 -> F13 -> F14 -> F15 (120) -> F16 (120)",
+      "visible": true,
+      "visiblePrompt": "Confirm the dynamic dual-eye beam visibly followed the current free-aim hit while the 120-submit proof completed.",
+      "required": [
+        "READY build=P1_RuntimeProbe_009_DYNAMIC_STABILITY_STAGED_20260919",
+        "\\[HOMELANDER_P1_DYNAMIC_AIM_V010\\] STABILITY PASS \\| 120 successful dynamic LaserSight submits \\(Lua \\+ native\\)",
+        "F16 NATIVE STABILITY PASS: 120 successful dynamic submits"
+      ]
+    },
+    {
+      "stage": "v010",
+      "predecessor": "v009",
+      "display": "One-shot damage F17",
+      "package": "packages/v010.zip",
+      "packageSha256": "df545fb86b6a17814e1b75536da8fb599ed199289364bbf2c9bcf9717393c5af",
+      "driveId": "1DUzLmVq5RtI4oS1tWYAlMnT_uFD9_SVz",
+      "asiPath": "homelander_p1_v010.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "c0635c3820bb1a349bd5634cb809ddc0bfe3fdfdd9628092f083ed15a8a8c909",
+      "buildId": "P1_RuntimeProbe_010_DAMAGE_ONESHOT_STAGED_20260919",
+      "gate": "F17",
+      "keys": "F4 -> aim valid non-player -> F9 -> F10 -> F11 -> F13 -> F14 -> F15 (120) -> F16 (120) -> F17 once",
+      "visible": false,
+      "required": [
+        "READY build=P1_RuntimeProbe_010_DAMAGE_ONESHOT_STAGED_20260919",
+        "\\[HOMELANDER_P1_DAMAGE_V011\\] PASS: one-shot go_ApplyDamage submitted \\| amount="
+      ]
+    },
+    {
+      "stage": "v011",
+      "predecessor": "v010",
+      "display": "Impact VFX F18",
+      "package": "packages/v011.zip",
+      "packageSha256": "1be0c7047017141ddf42afbabc158ab4d16c9d63f62d1f8a4bbf962cbf83daa5",
+      "driveId": "16YR-vwtNapK1ktlX5bW9DUBDBLRRshfN",
+      "asiPath": "homelander_p1_v011.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "cd70072746a011570a3d970b223dbe37f24a0d4afc4afca8b4c44519f2e0c2ae",
+      "buildId": "P1_RuntimeProbe_011_IMPACT_VFX_STAGED_20260919",
+      "gate": "F18",
+      "keys": "Rebuild same-session F13/F14/F15/F16 chain -> F17 once -> F18 once",
+      "visible": true,
+      "visiblePrompt": "Confirm missileImpact001 was visibly rendered at the saved F17 world hit position.",
+      "required": [
+        "READY build=P1_RuntimeProbe_011_IMPACT_VFX_STAGED_20260919",
+        "\\[HOMELANDER_P1_IMPACT_V012\\] SUBMITTED: one-shot impact VFX \\| effect=missileImpact001"
+      ]
+    },
+    {
+      "stage": "v012",
+      "predecessor": "v011",
+      "display": "Target continuity F19",
+      "package": "packages/v012.zip",
+      "packageSha256": "a2bfb90a75b00fa1b6d230f15a3a3df12c0fcfcbeb201e056084c392a74312cc",
+      "driveId": "151DvdpPXU5jlYiSA-sX9SXuggyRXTNyM",
+      "asiPath": "homelander_p1_v012.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "1c5d9e2a0e85e30abeca158077929dd74c268baab3592f57e7de46acfcd6a3db",
+      "buildId": "P1_RuntimeProbe_012_TARGET_CONTINUITY_STAGED_20260919",
+      "gate": "F19",
+      "keys": "Rebuild same-session chain through F18 -> F19, keep aim on exact target for >=2s",
+      "visible": true,
+      "visiblePrompt": "Confirm the F18 generic impact was visibly rendered before starting F19 continuity proof.",
+      "required": [
+        "READY build=P1_RuntimeProbe_012_TARGET_CONTINUITY_STAGED_20260919",
+        "\\[HOMELANDER_P1_CONTINUITY_V013\\] PASS \\| sameTargetSeconds="
+      ]
+    },
+    {
+      "stage": "v013",
+      "predecessor": "v012",
+      "display": "DOT cadence dry-run F20",
+      "package": "packages/v013.zip",
+      "packageSha256": "cc4471944b2a8567510b385059f428acc9a404440439ea8e5bbd3e91b8ccdf10",
+      "driveId": "1KRjH_knlmFNTSzQw2SOLVtJ_dRGHPz8L",
+      "asiPath": "homelander_p1_v013.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "051ae4ec0467e28b062a729bd2bb31b5ee533bd2aa35312694cf8d12ef532273",
+      "buildId": "P1_RuntimeProbe_013_DOT_DRYRUN_STAGED_20260919",
+      "gate": "F20",
+      "keys": "Rebuild same-session chain through F19 -> F20, hold exact target for >=3s",
+      "visible": true,
+      "visiblePrompt": "Confirm the F18 generic impact was visibly rendered in this same-session prerequisite chain.",
+      "required": [
+        "READY build=P1_RuntimeProbe_013_DOT_DRYRUN_STAGED_20260919",
+        "\\[HOMELANDER_P1_DOT_DRYRUN_V014\\] PASS \\| READ ONLY \\| seconds="
+      ]
+    },
+    {
+      "stage": "v014",
+      "predecessor": "v013",
+      "display": "DamageAndHit payload F21",
+      "package": "packages/v014.zip",
+      "packageSha256": "6f4dbb15b8502d2fd31867d707c370acffec3f4a1fab9f3ad6f0ef40e3703df1",
+      "driveId": "1RgTARNVeAVsg7eaGfmk7pCbH66--o13n",
+      "asiPath": "homelander_p1_v014.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "2572a11b0c32164b20d046df2816238128b773532aa06142b310c0feb4a8aa55",
+      "buildId": "P1_RuntimeProbe_014_DAMAGEHIT_PAYLOAD_STAGED_20260919",
+      "gate": "F21",
+      "keys": "Rebuild same-session chain through F20 -> F21 once while still on exact target",
+      "visible": true,
+      "visiblePrompt": "Confirm the F18 generic impact was visibly rendered in this same-session prerequisite chain.",
+      "required": [
+        "READY build=P1_RuntimeProbe_014_DAMAGEHIT_PAYLOAD_STAGED_20260919",
+        "\\[HOMELANDER_P1_DAMAGEHIT_PAYLOAD_V015\\] PASS READ ONLY \\| target stable \\| distance="
+      ]
+    },
+    {
+      "stage": "v015",
+      "predecessor": "v014",
+      "display": "Target classification/VFX route F22",
+      "package": "packages/v015.zip",
+      "packageSha256": "5c91bb79fc1699372c9a4fe5936df822c9aef1e9afb4309fad022e249bb9cf14",
+      "driveId": "1mwWfz2tAKET0Ye0G9x7pkSq88fKMBRDE",
+      "asiPath": "homelander_p1_v015.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "a7583acc1659d5657c0b6ec6e389c23dd1f8b5d1632c0a75434eb026fb2e2a84",
+      "buildId": "P1_RuntimeProbe_015_TARGET_VFX_ROUTE_STAGED_20260919",
+      "gate": "F22",
+      "keys": "Rebuild same-session chain through F21 -> F22 once",
+      "visible": true,
+      "visiblePrompt": "Confirm the F18 generic impact was visibly rendered in this same-session prerequisite chain.",
+      "required": [
+        "READY build=P1_RuntimeProbe_015_TARGET_VFX_ROUTE_STAGED_20260919",
+        "\\[HOMELANDER_P1_TARGET_VFX_ROUTE_V016\\] PASS READ ONLY \\| route="
+      ]
+    },
+    {
+      "stage": "v016",
+      "predecessor": "v015",
+      "display": "Exact VFX asset allowlist F23",
+      "package": "packages/v016.zip",
+      "packageSha256": "2185a3101defd0fc29660aa94f39b3d9736eda7269acd43c64db80fef16051e8",
+      "driveId": "10XP-InbviemjEHOz5PBi8lKRnAmtNpOw",
+      "asiPath": "homelander_p1_v016.asi",
+      "luaRoot": "lua_p1",
+      "asiSha256": "af77edf981c07e8a5774dbbad51cf00ff9d9cee264afddc59c49e4dc3071df8e",
+      "buildId": "P1_RuntimeProbe_016_VFX_ASSET_ALLOWLIST_STAGED_20260919",
+      "gate": "F23",
+      "keys": "Rebuild same-session chain through F22 -> F23 once",
+      "visible": true,
+      "visiblePrompt": "Confirm the F18 generic impact was visibly rendered in this same-session prerequisite chain.",
+      "required": [
+        "READY build=P1_RuntimeProbe_016_VFX_ASSET_ALLOWLIST_STAGED_20260919",
+        "\\[HOMELANDER_P1_VFX_ASSET_ALLOWLIST_V017\\] PASS READ ONLY \\| route="
+      ]
+    }
+  ]
+}
