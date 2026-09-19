@@ -23,6 +23,7 @@ overrides = {
     "freeaim_local_offset_probe_v005_STAGED.lua": "freeaim_local_offset_probe_v005_attempt_DORMANT.lua",
     "eye_origin_probe_v006_STAGED.lua": "eye_origin_probe_v006_epoch_DORMANT.lua",
     "dual_eye_freeaim_render_v007_STAGED.lua": "dual_eye_freeaim_render_v007_f10_f11_epoch_DORMANT.lua",
+    "lasersight_dynamic_aim_gate_v010_STAGED.lua": "lasersight_dynamic_aim_gate_v010_finite_DORMANT.lua",
 }
 baselines = {
     "runtime_probe.lua", "setter_echo_probe.lua",
@@ -60,7 +61,7 @@ inventory = []
 for name in names:
     if name in overrides:
         source = repo / "lua_p1" / overrides[name]
-        role = "guarded-F9-F12-byte-override"
+        role = "guarded-native-path-source-override"
     elif name in baselines:
         source = repo / "v003_transfer" / "lua_p1" / name
         role = "original-v003-byte-identical-baseline"
@@ -79,7 +80,7 @@ for name in names:
         "sha256": hashlib.sha256(payload).hexdigest(),
     })
 assert len(inventory) == 22
-assert len([v for v in inventory if v["role"] == "guarded-F9-F12-byte-override"]) == 4
+assert len([v for v in inventory if v["role"] == "guarded-native-path-source-override"]) == 5
 
 report = {
     "schema": "homelander-p1-r008-staged-source-integration/1.0",
@@ -103,4 +104,4 @@ report = {
 (destination / "INTEGRATION_MANIFEST.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
-print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, four guarded override bytes, original v003 baselines intact")
+print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, five guarded override bytes, original v003 baselines intact")
