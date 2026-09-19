@@ -124,3 +124,5 @@ try {
 }finally {
  if(Test-Path -LiteralPath $tmp){Remove-Item -LiteralPath $tmp -Recurse -Force}
 }
+# Last expected negative child has nonzero LASTEXITCODE; the fixture itself passed.
+exit 0
