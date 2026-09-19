@@ -129,7 +129,14 @@ eq(effect_calls,0,"zero autoload VFX")
 eq(laser_one_shot,0,"zero autoload laser")
 print("P1_R018_ASSEMBLED_22_SCRIPT_NATIVE_ORDER_ZERO_AUTO_MUTATION_PASS")
 
-assert(Homelander_FreeAimProbe(),"F9 assembled fresh camera/LOS target")
+-- Definition loading may clear the global discovery state; simulate an F4
+-- player acquisition only AFTER native-order module initialization.
+HOMELANDER_PLAYER="A"
+local f9ok=Homelander_FreeAimProbe()
+if not f9ok then
+ for _,line in ipairs(logs) do print("R018_DIAGNOSTIC "..line) end
+end
+assert(f9ok,"F9 assembled fresh camera/LOS target")
 assert(Homelander_FreeAimLocalOffsetProbe(),"F10 assembled exact F9 target-local hit")
 assert(Homelander_EyeOriginProbeV006(),"F11 assembled eye for current A")
 assert(Homelander_DualEyeFreeAimRenderProbe(),"F12 assembled mock two eyes")
