@@ -1,4 +1,4 @@
-# V6-M4B0 — FUNCTIONAL APL SPARSIFIER MVP — PUBLIC EXECUTION MIRROR
+> **WITHDRAWN BEFORE EXECUTION / SUPERSEDED.** This draft was never executed. It is superseded by canonical V6-M4B0 per-hemisphere functional APL protocol commit `21e3c82bc091731f0ed733b01734adce3a74b905` and formal PASS result commit `2c03026d01c93619dcf206e8af1660ac08350f32`. The global 4064-KC competition pool below MUST NOT be executed or treated as canonical. It is retained only for audit history.\n\n# V6-M4B0 — FUNCTIONAL APL SPARSIFIER MVP — PUBLIC EXECUTION MIRROR
 
 Canonical private frozen protocol commit: `eb00869cc6bf4413a1c2c9542ed6b43e1a74af4b`.
 
