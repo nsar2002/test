@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_007_HELD_LASERSIGHT_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_008_DYNAMIC_AIM_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -125,6 +125,8 @@ namespace hl
     void* g_laserShader = nullptr;
     bool g_laserShaderGatePassed = false;
     bool g_laserOneShotPassed = false;
+    bool g_laserHeldStabilityPassed = false;
+    uint32_t g_laserHeldSubmitFrames = 0;
     int32_t g_laserSightHandles[2] = {-1, -1};
 
     RenderCameraPositionFn g_originalRenderCameraPosition = nullptr;
@@ -159,12 +161,14 @@ namespace hl
     bool g_f13Prev = false;
     bool g_f14Prev = false;
     bool g_f15Prev = false;
+    bool g_f16Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
     bool g_dualEyeRenderReady = false;
     bool g_laserSightNativeReady = false;
     bool g_laserSightHeldReady = false;
+    bool g_laserSightDynamicReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -939,6 +943,8 @@ namespace hl
     {
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
+        g_laserHeldStabilityPassed = false;
+        g_laserHeldSubmitFrames = 0;
         g_laserShader = nullptr;
 
         bool ok = false;
@@ -981,13 +987,29 @@ namespace hl
         }
 
         const int argc = LuaGetTop(L);
-        const bool heldSubmit = (argc == 14) && (LuaToNumber(L, 14) > 0.5f);
-        const char* gateLabel = heldSubmit ? "F15" : "F14";
+        int submitMode = 0; // 0=F14 one-shot, 1=F15 held, 2=F16 dynamic
+        if (argc == 14)
+        {
+            const float rawMode = LuaToNumber(L, 14);
+            if (rawMode > 0.5f && rawMode < 1.5f)
+                submitMode = 1;
+            else if (rawMode > 1.5f && rawMode < 2.5f)
+                submitMode = 2;
+            else
+            {
+                Log("LaserSight REFUSED: unsupported submit mode %.3f", rawMode);
+                PushLuaBool(L, false);
+                return 1;
+            }
+        }
+
+        const bool heldSubmit = submitMode == 1;
+        const bool dynamicSubmit = submitMode == 2;
+        const char* gateLabel = dynamicSubmit ? "F16" : (heldSubmit ? "F15" : "F14");
 
         if (argc != 13 && argc != 14)
         {
-            Log("%s REFUSED: expected 13 args (one-shot) or 14 args (held quiet submit)",
-                gateLabel);
+            Log("%s REFUSED: expected 13 args or 14 args with mode 1/2", gateLabel);
             PushLuaBool(L, false);
             return 1;
         }
@@ -995,6 +1017,13 @@ namespace hl
         if (heldSubmit && !g_laserOneShotPassed)
         {
             Log("F15 REFUSED: native F14 one-shot gate has not passed in this session");
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        if (dynamicSubmit && !g_laserHeldStabilityPassed)
+        {
+            Log("F16 REFUSED: native 120-frame held stability gate has not passed");
             PushLuaBool(L, false);
             return 1;
         }
@@ -1082,11 +1111,23 @@ namespace hl
             Log("%s FAIL/PARTIAL: dual LaserSight submit did not complete; any live handle will release next tick",
                 gateLabel);
         }
-        else if (!heldSubmit)
+        else if (submitMode == 0)
         {
             g_laserOneShotPassed = true;
+            g_laserHeldStabilityPassed = false;
+            g_laserHeldSubmitFrames = 0;
             Log("F14 PASS: two real LaserSight render events submitted | centerError=%.6f distance=%.3f",
                 centerError, beamDistance);
+        }
+        else if (heldSubmit)
+        {
+            if (g_laserHeldSubmitFrames < 0xFFFFFFFFu)
+                ++g_laserHeldSubmitFrames;
+            if (!g_laserHeldStabilityPassed && g_laserHeldSubmitFrames >= 120u)
+            {
+                g_laserHeldStabilityPassed = true;
+                Log("F15 NATIVE STABILITY PASS: 120 consecutive successful held submits");
+            }
         }
 
         PushLuaBool(L, ok);
@@ -1308,6 +1349,8 @@ namespace hl
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
+        g_laserHeldStabilityPassed = false;
+        g_laserHeldSubmitFrames = 0;
         g_laserShader = nullptr;
         CleanupLaserSightHandles();
 
