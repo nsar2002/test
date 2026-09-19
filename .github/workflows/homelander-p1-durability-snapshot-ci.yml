@@ -1,0 +1,173 @@
+name: Homelander P1 Durability Snapshot CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-durability-snapshot-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua'
+      - 'homelander_p1_build/P1_DURABILITY_ABI_20260919.md'
+      - 'homelander_p1_build/P1_DURABILITY_ABI_EVIDENCE_20260919.json'
+      - 'homelander_p1_build/DURABILITY_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-durability-snapshot-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify branch scope against canonical v016
+        run: |
+          git diff --name-only 030e936dcef1196d51d9adb9c79ea71080a82b23...HEAD | tee /tmp/changed.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          allowed={
+            'homelander_p1_build/homelander_p1.cpp',
+            'homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua',
+            'homelander_p1_build/P1_DURABILITY_ABI_20260919.md',
+            'homelander_p1_build/P1_DURABILITY_ABI_EVIDENCE_20260919.json',
+            'homelander_p1_build/DURABILITY_REPRO_TRIGGER.txt',
+            '.github/workflows/homelander-p1-durability-snapshot-ci.yml',
+          }
+          changed={x.strip() for x in Path('/tmp/changed.txt').read_text().splitlines() if x.strip()}
+          bad=changed-allowed
+          assert not bad, f'unexpected files changed from canonical v016: {sorted(bad)}'
+          PY
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Validate durability snapshot Lua
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua
+
+      - name: Build staged durability ASI
+        run: |
+          mkdir -p homelander_p1_build/build_durability
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi \
+            -luser32
+          test -s homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi
+
+      - name: Verify PE32 imports and build identity
+        run: |
+          file homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi | tee homelander_p1_build/build_durability/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi | tee homelander_p1_build/build_durability/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi | tee homelander_p1_build/build_durability/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_durability/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_durability/imports.txt; then exit 1; fi
+          grep -q 'P1_DurabilitySnapshot_001_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+
+      - name: Validate frozen ABI evidence
+        run: |
+          python3 - <<'PY'
+          import json
+          p='homelander_p1_build/P1_DURABILITY_ABI_EVIDENCE_20260919.json'
+          d=json.load(open(p,'r',encoding='utf-8'))
+          assert d['schema']=='homelander-p1-durability-abi-evidence/1.0'
+          assert d['active_prototypeenginef']['size_bytes']==20210960
+          assert d['active_prototypeenginef']['sha256']=='ed0870eb24ace5565a0245ade42114f0724b881d3d75b793f376e9bb184f8d51'
+          assert d['typed_factories']['getter_float_goh']['factory']=='0x10289900'
+          assert d['typed_factories']['setter_void_goh_float']['factory']=='0x102816E0'
+          assert d['typed_factories']['setter_void_goh_bool']['factory']=='0x10280270'
+          pairs=[
+            ('go_GetHealth','go_SetHealth'),
+            ('go_GetMaxHealth','go_SetMaxHealth'),
+            ('go_GetDamageScale','go_SetDamageScale'),
+          ]
+          for get,setter in pairs:
+              g=d['functions'][get]; s=d['functions'][setter]
+              assert g['return']=='float' and g['args']==['engine::LuaGOH']
+              assert s['return']=='void' and s['args']==['engine::LuaGOH','float']
+              assert g['reversible_pair']==setter and s['reversible_pair']==get
+          assert d['functions']['go_SetDamageable']['args']==['engine::LuaGOH','bool']
+          assert d['functions']['go_SetDamageable']['reversible_pair'] is None
+          assert d['reversible_first_preset_fields']==['health','maxHealth','damageScale']
+          for absent in ['go_GetDamageable','go_IsDamageable','go_GetNoPushback']:
+              assert absent in d['exact_absent_getters']
+          assert d['runtime_mutation_proven'] is False
+          PY
+
+      - name: Verify F24 native read-only wiring
+        run: |
+          C=homelander_p1_build/homelander_p1.cpp
+          grep -q 'g_f24Prev' "$C"
+          grep -q 'g_durabilitySnapshotReady' "$C"
+          grep -q 'durability_snapshot_probe_v018_STAGED.lua' "$C"
+          grep -q 'RisingEdge(VK_F24, g_f24Prev, inputEnabled)' "$C"
+          grep -q 'Homelander_DurabilitySnapshotV018' "$C"
+          grep -q 'F24: one-shot READ-ONLY reversible durability snapshot' "$C"
+
+      - name: Verify snapshot getter set and mutation boundary
+        run: |
+          P=homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua
+          grep -q 'go_GetHealth' "$P"
+          grep -q 'go_GetMaxHealth' "$P"
+          grep -q 'go_GetDamageScale' "$P"
+          grep -q 'HOMELANDER_DURABILITY_MUTATION_AUTHORIZED = false' "$P"
+          grep -q 'PASS READ ONLY' "$P"
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua').read_text()
+          forbidden=[
+            'go_SetHealth','go_SetMaxHealth','go_SetDamageScale','go_SetDamageable',
+            'go_SetNoPushback','go_SetMinHealth','go_SetProportionalDamageScale',
+            'go_SetDamageScaleByAttackType','go_ApplyDamage','go_ApplyDamageAndHit',
+            'phys_SetLinearVelocity','go_Teleport','go_PlayerTeleport','em_AddWorldEffect',
+            'ai_Laser(','HL_LaserSightSubmitDual'
+          ]
+          for token in forbidden:
+              assert token not in s, f'forbidden mutation in F24 snapshot: {token}'
+          PY
+
+      - name: Verify reversibility documentation is conservative
+        run: |
+          D=homelander_p1_build/P1_DURABILITY_ABI_20260919.md
+          grep -q 'no exact `go_GetDamageable` or `go_IsDamageable`' "$D"
+          grep -q 'no exact `go_GetNoPushback`' "$D"
+          grep -q 'F24 performs getters only' "$D"
+          grep -q 'same-value setter echo' "$D"
+          grep -q 'Never include damageable/noPushback' "$D"
+
+      - name: Hash build and sources
+        run: |
+          sha256sum homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi | tee homelander_p1_build/build_durability/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua
+          sha256sum homelander_p1_build/P1_DURABILITY_ABI_20260919.md
+          sha256sum homelander_p1_build/P1_DURABILITY_ABI_EVIDENCE_20260919.json
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant durability bundle
+        run: |
+          mkdir -p stage_durability/lua_p1 stage_durability/CI_EVIDENCE
+          cp homelander_p1_build/build_durability/homelander_p1_durability_snapshot_STAGED.asi stage_durability/
+          cp homelander_p1_build/lua_p1/durability_snapshot_probe_v018_STAGED.lua stage_durability/lua_p1/
+          cp homelander_p1_build/P1_DURABILITY_ABI_20260919.md stage_durability/
+          cp homelander_p1_build/P1_DURABILITY_ABI_EVIDENCE_20260919.json stage_durability/
+          cp homelander_p1_build/homelander_p1.cpp stage_durability/homelander_p1_durability_SOURCE.cpp
+          cp homelander_p1_build/build_durability/file.txt stage_durability/CI_EVIDENCE/
+          cp homelander_p1_build/build_durability/headers.txt stage_durability/CI_EVIDENCE/
+          cp homelander_p1_build/build_durability/imports.txt stage_durability/CI_EVIDENCE/
+          cp homelander_p1_build/build_durability/sha256.txt stage_durability/CI_EVIDENCE/
+          (cd stage_durability && sha256sum homelander_p1_durability_snapshot_STAGED.asi lua_p1/*.lua P1_DURABILITY_ABI_20260919.md P1_DURABILITY_ABI_EVIDENCE_20260919.json homelander_p1_durability_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_durability && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_DurabilitySnapshot_001_DORMANT
+          path: stage_durability/
+          if-no-files-found: error
