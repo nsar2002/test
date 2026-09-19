@@ -64,6 +64,24 @@ ai_Laser=function() submits=submits+1 end
 assert(Homelander_DualEyeFreeAimRenderProbe(),"F12 accepts same-epoch F9/F10")
 eq(submits,2,"two mocked eyes on positive epoch")
 
+-- A fresh F10 invalidates a prior successful F12 receipt even for the same hit.
+assert(Homelander_FreeAimLocalOffsetProbe(),"repeated F10 valid")
+eq(HOMELANDER_DUAL_EYE_RENDER_LAST_OK,false,"new F10 resets prior F12 success")
+eq(HOMELANDER_DUAL_EYE_RENDER_LAST_TARGET,nil,"new F10 resets prior rendered target")
+assert(Homelander_DualEyeFreeAimRenderProbe(),"new F12 after fresh F10")
+eq(HOMELANDER_DUAL_EYE_RENDER_LAST_OK,true,"new F12 sets fresh success")
+local camera=HL_GetCameraFrame
+HL_GetCameraFrame=function() return "broken" end
+assert(not Homelander_FreeAimProbe(),"new failed F9 refuses malformed frame")
+eq(HOMELANDER_DUAL_EYE_RENDER_LAST_OK,false,"new F9 attempt clears earlier rendered success")
+eq(HOMELANDER_DUAL_EYE_RENDER_LAST_TARGET,nil,"failed F9 clears earlier render target")
+HL_GetCameraFrame=camera
+assert(Homelander_FreeAimProbe(),"rebuild F9 proof after failed new attempt")
+assert(Homelander_FreeAimLocalOffsetProbe(),"rebuild F10 proof")
+assert(Homelander_EyeOriginProbeV006(),"rebuild F11 proof")
+assert(Homelander_DualEyeFreeAimRenderProbe(),"rebuild F12 proof")
+print("P1_F9_F10_INVALIDATE_OLD_F12_RECEIPT_PASS")
+
 -- Prevent forged stale same-player/target proof if F9 generation changes.
 local saved_epoch=HOMELANDER_FREEAIM_EPOCH
 HOMELANDER_FREEAIM_EPOCH=saved_epoch+1
