@@ -1,0 +1,26 @@
+name: Homelander R006 Synthetic First-v003 Launcher and Observer (No Real Game)
+
+on:
+  push:
+    branches:
+      - homelander-p1-r006-windows-firstgate-fixture-20260919
+    paths:
+      - 'homelander_p1_build/tests/r006_windows_firstgate/**'
+      - '.github/workflows/homelander-r006-firstgate-synthetic-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fake-game-firstgate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run original R006 first-v003 PowerShell launcher and observer against benign fake EXE
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $fixture = Join-Path $env:GITHUB_WORKSPACE 'homelander_p1_build/tests/r006_windows_firstgate/P1_R006_WINDOWS_FIRST_GATE_FIXTURE.ps1'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fixture | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "R006 synthetic first-live launcher failed: $LASTEXITCODE" }
