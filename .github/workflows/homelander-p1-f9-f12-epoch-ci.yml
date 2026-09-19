@@ -1,0 +1,66 @@
+name: Homelander P1 F9-F12 epoch provenance (dormant)
+on:
+  push:
+    branches: [homelander-p1-f9-f12-epoch-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-source-mocks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Frozen live stages and native bootstrap unchanged
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          base='f32e79a49a5f3981b33cdbfc4858bd40eccb9f97'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allow={
+            'homelander_p1_build/lua_p1/freeaim_probe_v004_epoch_DORMANT.lua',
+            'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_epoch_DORMANT.lua',
+            'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_epoch_DORMANT.lua',
+            'homelander_p1_build/tests/f9_f12_epoch_reentrancy.lua',
+            'homelander_p1_build/P1_F9_F12_EPOCH_REENTRANCY_DORMANT_20260919.md',
+            '.github/workflows/homelander-p1-f9-f12-epoch-ci.yml'
+          }
+          assert changed<=allow, 'Unexpected live-game/stage/native change: '+repr(sorted(changed-allow))
+          for p in ('homelander_p1_build/homelander_p1.cpp',
+            'homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua',
+            'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua',
+            'homelander_p1_build/lua_p1/eye_origin_probe_v006_STAGED.lua',
+            'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_STAGED.lua'):
+            assert subprocess.check_output(['git','show',base+':'+p])==Path(p).read_bytes(),p
+          print('P1_EPOCH_FROZEN_STAGES_AND_NATIVE_IMMUTABLE_PASS')
+          PY
+      - name: Install independent Lua 5.1
+        run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - name: Parse and execute actual-source reentrant callbacks
+        run: |
+          for f in \
+            homelander_p1_build/lua_p1/freeaim_probe_v004_epoch_DORMANT.lua \
+            homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_epoch_DORMANT.lua \
+            homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_epoch_DORMANT.lua \
+            homelander_p1_build/tests/f9_f12_epoch_reentrancy.lua; do
+              luac5.1 -p "$f"
+          done
+          lua5.1 homelander_p1_build/tests/f9_f12_epoch_reentrancy.lua
+      - name: Package source-only atomic chain
+        run: |
+          mkdir -p stage/lua_p1 stage/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/freeaim_probe_v004_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/tests/f9_f12_epoch_reentrancy.lua stage/CI_EVIDENCE/
+          cp homelander_p1_build/P1_F9_F12_EPOCH_REENTRANCY_DORMANT_20260919.md stage/
+          (cd stage && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          test "$(find stage/lua_p1 -type f | wc -l)" -eq 4
+          ! find stage -type f | grep -Ei '\.(asi|exe|dll|ps1|bat)$'
+          echo P1_F9_F12_EPOCH_SOURCE_ONLY_BUNDLE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F9_F12_EpochGuard_SOURCE_ONLY_DORMANT
+          path: stage/
