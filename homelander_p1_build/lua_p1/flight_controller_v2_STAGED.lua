@@ -126,10 +126,16 @@ end
 -- Revalidate immediately before all velocity writes: an engine callback can
 -- change the player handle or F5 proof after the entrypoint guard ran.
 local function flight_provenance_ok(h)
-    return h ~= nil and HOMELANDER_SETTER_ECHO_PASSED == true and
+    local good=h ~= nil and HOMELANDER_SETTER_ECHO_PASSED == true and
         HOMELANDER_PLAYER == h and exact_echo_binding(h) and valid_player(h) and
         HOMELANDER_PLAYER == h and HOMELANDER_SETTER_ECHO_PASSED == true and
         exact_echo_binding(h)
+    if not good then
+        -- A later A->B->A identity roundtrip must require a fresh verified F5,
+        -- not reuse the approval that was invalid at any observed check.
+        HOMELANDER_FLIGHT_V22_ECHO_PLAYER=nil
+    end
+    return good
 end
 
 local function normalized_copy(v)
@@ -499,6 +505,8 @@ function Homelander_FlightDisableV2(restorePreflightVelocity)
         local okMag, restoreMag=pcall(function() return v:magnitude() end)
         if not okMag or not finite(restoreMag) then
             log("RESTORE SKIPPED: saved velocity is non-finite")
+        elseif not flight_provenance_ok(h) then
+            log("RESTORE SKIPPED: player/F5 proof changed while checking saved velocity")
         else
             local ok,err=pcall(phys_SetLinearVelocity,h,v,S.selector)
             if not ok then log("WARN: pre-flight velocity restore failed | "..tostring(err)) end
