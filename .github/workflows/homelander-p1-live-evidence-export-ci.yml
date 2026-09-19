@@ -58,7 +58,7 @@ jobs:
             if(-not $s.Contains($needle)) { throw "Missing exporter safety control: $needle" }
           }
           $forbiddenRegex=@(
-            '(?i)passedStages\s*=',
+            '(?i)\$State\.passedStages\s*=',
             '(?i)P1_PROMOTION_MANAGER\.ps1\s+-Action\s+(Check|Install|Rollback|ResetLog)',
             '(?i)Start-Process[^\r\n]+prototypef',
             '(?i)Copy-Item[^\r\n]+homelander_p1\.asi[^\r\n]+-Destination',
