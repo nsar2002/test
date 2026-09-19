@@ -63,3 +63,6 @@ v003 F9 runtime PASS -> v004 F10 PASS -> v005 F11 PASS -> v006 F13 PASS -> v006 
 
 After a live held-render stability PASS, the next independent stage may add quiet per-frame free-aim reacquisition.
 Damage/DOT/VFX remain later independent gates.
+
+## Reproducibility trigger
+A second CI build is intentionally requested after the first green package using unchanged C++/Lua source hashes.
