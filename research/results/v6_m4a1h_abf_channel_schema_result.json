@@ -1,0 +1,804 @@
+{
+  "classification": "BLOCKED_M4A1H_ADC_IDENTITY_NOT_SELF_DESCRIBING",
+  "files": [
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250609/250608e01f06SD/250609f02c01R/250609f02c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250609/250608e01f06SD/250609f02c02L/250609f02c02L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250609/250608e10f03SD/250609f01c01R/250609f01c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f01SD/250610f01c01L/250610f01c01L_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f01SD/250610f01c01L/250610f01c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f03SD/250610f02c01L/250610f02c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f12SD/250610f04c01L/250610f04c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f16SD/250610f03c01R/250610f03c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250610/250609e01f16SD/250610f03c01R/250610f03c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250611/250611f01c01R/250610e01f16SD/250611f01c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 6
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250611/250611f01c01R/250610e01f16SD/250611f01c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250612/250612f03c01R/250611e01f12SD/250612f03c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250612/250612f03c01R/250611e01f12SD/250612f03c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250613/250613f01c01R/250612e01f09SD/250613f01c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250613/250613f01c01R/250612e01f09SD/250613f01c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250613/250613f02c01R/250612e01f01SD/250613f02c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_RNAi_ctrl_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_RNAi_ctrl_kk/250613/250613f02c01R/250612e01f01SD/250613f02c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250516/250515e01f05SD/250516f01c01R/250516f01c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250520/250519e01f12SD/250520f01c01L/250520f01c01L_IC_fp_0001.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250522/250521e01f20SD/250522f01c01R/250522f01c01R_IC_AHP_2nA_0000.abf",
+      "sweep_count": 12
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250522/250521e01f20SD/250522f01c01R/250522f01c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250523/250522e01f12SD/250523f01c01L/250523f01c01L_IC_AHP_2na_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250523/250522e01f12SD/250523f01c01L/250523f01c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250523/250522e01f16SD/250523f02c01R/250523f02c01R_IC_AHP_2na_0000.abf",
+      "sweep_count": 6
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250523/250522e01f16SD/250523f02c01R/250523f02c01R_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "mV"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250526/250523e01f16SD/250526f01c01R/250526f01c01R_IC_fp_0001.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250612/250612f01c01L/250611e10f01SD/250612f01c01L_IC_AHP_2nA_0000.abf",
+      "sweep_count": 5
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250612/250612f01c01L/250611e10f01SD/250612f01c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_AHP_2nA",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250612/250612f02c01L/250611e10f08SD/250612f02c01L_IC_AHP_2nA_0000.abf",
+      "sweep_count": 6
+    },
+    {
+      "abf_version": "2.9.0.0",
+      "adc_count": 2,
+      "adc_names": [
+        "IN 0",
+        "I_MTest 1"
+      ],
+      "adc_units": [
+        "mV",
+        "pA"
+      ],
+      "dac_names": [
+        "Cmd 0",
+        "Cmd 1"
+      ],
+      "dac_units": [
+        "pA",
+        "mV"
+      ],
+      "data_rate_hz": 10000.0,
+      "group": "APL_SK_RNAi_kk",
+      "kind": "IC_fp",
+      "semantic_candidates": [],
+      "source_name": "Ephys_sparse coding/APL_SD_APL_SKRNAi_Fig4H-J/raw/APL_SK_RNAi_kk/250612/250612f02c01L/250611e10f08SD/250612f02c01L_IC_fp_0000.abf",
+      "sweep_count": 26
+    }
+  ],
+  "frozen_tokens": [
+    "membranepotential",
+    "membranevoltage",
+    "vm",
+    "vmem",
+    "vmon",
+    "vmonitor"
+  ],
+  "guardrails": {
+    "amin_loaded": false,
+    "command_waveform_samples_read": false,
+    "m4v0_numeric_values_opened": false,
+    "mnq_loaded": false,
+    "response_metric_computed": false,
+    "voltage_samples_read": false
+  },
+  "reason": "ABF headers do not provide one consistent membrane-voltage ADC under the frozen exact-name rule",
+  "semantic_indexes": [],
+  "semantic_names": []
+}
