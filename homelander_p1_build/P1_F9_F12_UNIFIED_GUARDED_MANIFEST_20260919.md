@@ -1,0 +1,10 @@
+# Homelander Prototype 1 — F9/F10/F11/F12 guarded source overlay (DORMANT)
+Date: 2026-09-19. Branch: homelander-p1-f10-finite-20260919.
+
+Order and purpose: freeaim_probe_v004_failclosed_DORMANT.lua is paired F9, publishes exact player/target proof and clears old F9/F10 state per entry; freeaim_local_offset_probe_v005_finite_DORMANT.lua is F10, consumes same-player F9 and rejects stale/nonfinite target-local offset; eye_origin_probe_v006_failclosed_DORMANT.lua is F11, invalidates old eye proof and verifies original player after getter callbacks; dual_eye_freeaim_render_v007_failclosed_DORMANT.lua is F12, consumes same-player F9+F10+F11 proof and refuses the right-eye call on detected player/target changes after left-eye submission.
+
+This is ONE dependency-bound set: do not mix only some guarded files into older stages. Source-only offline release contains NO ASI, EXE, DLL, game installer, working game-root mutation, native bootstrap wiring or permission to skip real stages. Original v003 through v016 stage archives and R007 first-v003 release remain frozen. This package is NOT the next live installer.
+
+Evidence: deterministic Lua 5.1 actual-source mocks execute F9→F10→F11→F12; original source failures include stale F9, stale F10, stale F11, second F12 call after player switch and NaN F10 proof consumed by original F12. Guarded suite retains positive valid two-eye submission; cannot establish actual eye-ray geometry, current line-of-sight, engine callback ABI or graphics correctness. Once one ai_Laser call has executed, the overlay cannot undo its side effect. An atomic native player/session epoch would be required to detect switch-away-back within a callback; unchanged valid F9/F10 proof is not single-use.
+
+First actual-user-game step is still R007 stage v003 BOOT/F4/F9, CLOSE game, manager Check against authentic log and visual confirmation before any v004. Never install this unified source bundle into the active game before separate release repackage/hash revalidation and observed live stage evidence.
