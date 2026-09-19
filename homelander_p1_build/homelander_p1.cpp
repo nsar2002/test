@@ -890,12 +890,20 @@ namespace hl
             Log("LaserSight REFUSED: cached shader/vtable is no longer readable");
             g_laserShaderGatePassed = false;
             g_laserOneShotPassed = false;
+            g_laserHeldStabilityPassed = false;
+            g_laserHeldSubmitFrames = 0;
+            return false;
+        }
+
+        if (g_laserSightHandles[slot] != -1)
+        {
+            Log("LaserSight REFUSED: slot %d still owns a live handle; wait for next GOM cleanup", slot);
             return false;
         }
 
         if (*g_renderEventGlobalSlot != nullptr)
         {
-            Log("F14 REFUSED: engine render-event staging slot is already occupied");
+            Log("LaserSight REFUSED: engine render-event staging slot is already occupied");
             return false;
         }
 
@@ -971,6 +979,21 @@ namespace hl
             Log("F13 FAIL: allowlisted proto_lit_glow shader did not resolve safely");
 
         PushLuaBool(L, ok);
+        return LuaPushBoolean ? 1 : 0;
+    }
+
+    int __cdecl LuaLaserSightResetHeldGateHook(int L)
+    {
+        g_laserHeldStabilityPassed = false;
+        g_laserHeldSubmitFrames = 0;
+        PushLuaBool(L, true);
+        Log("F15 native stability counter reset");
+        return LuaPushBoolean ? 1 : 0;
+    }
+
+    int __cdecl LuaLaserSightHeldStabilityProbeHook(int L)
+    {
+        PushLuaBool(L, g_laserHeldStabilityPassed);
         return LuaPushBoolean ? 1 : 0;
     }
 
