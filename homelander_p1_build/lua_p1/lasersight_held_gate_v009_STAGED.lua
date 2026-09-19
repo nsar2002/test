@@ -113,6 +113,16 @@ function Homelander_LaserSightHeldToggleV009()
         return false
     end
 
+    if type(HL_LaserSightResetHeldGate) ~= "function" then
+        log("REFUSED: native held-stability reset bridge unavailable")
+        return false
+    end
+    local okReset, resetResult = pcall(HL_LaserSightResetHeldGate)
+    if not okReset or resetResult ~= true then
+        log("REFUSED: native held-stability reset failed | " .. tostring(resetResult))
+        return false
+    end
+
     HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
     HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
     S.enabled = true
