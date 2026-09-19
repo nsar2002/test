@@ -192,9 +192,20 @@ function Homelander_LaserSightHeldTickV009()
     end
 
     S.frames = S.frames + 1
+
+    local max_frames = tonumber(HOMELANDER_LASERSIGHT_MAX_HELD_FRAMES) or 600
+    if max_frames < 60 then max_frames = 60 end
+    if max_frames > 3600 then max_frames = 3600 end
+
     if (S.frames % 120) == 0 then
-        log("HEARTBEAT | successful held render frames=" .. tostring(S.frames))
+        log("HEARTBEAT | successful held render frames=" .. tostring(S.frames) ..
+            " maxFrames=" .. tostring(max_frames))
     end
+
+    if S.frames >= max_frames then
+        disable("automatic held-render timeout at " .. tostring(max_frames) .. " frames")
+    end
+
     return true
 end
 
