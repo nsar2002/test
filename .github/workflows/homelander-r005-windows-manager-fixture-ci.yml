@@ -1,0 +1,26 @@
+name: Homelander R005 Windows Synthetic Promotion Manager (No Game)
+
+on:
+  push:
+    branches:
+      - homelander-p1-r005-windows-wrapper-ci-20260919
+    paths:
+      - 'homelander_p1_build/tests/r005_windows_manager/**'
+      - '.github/workflows/homelander-r005-windows-manager-fixture-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-stage-manager:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run exact unchanged R005 manager on disposable v001/v003 fixture
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $fixture = Join-Path $env:GITHUB_WORKSPACE 'homelander_p1_build/tests/r005_windows_manager/P1_R005_WINDOWS_MANAGER_FIXTURE.ps1'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fixture | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "Windows manager synthetic fixture failed: $LASTEXITCODE" }
