@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_016_VFX_ASSET_ALLOWLIST_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_DurabilitySnapshot_001_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -171,6 +171,7 @@ namespace hl
     bool g_f21Prev = false;
     bool g_f22Prev = false;
     bool g_f23Prev = false;
+    bool g_f24Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
@@ -185,6 +186,7 @@ namespace hl
     bool g_damageHitPayloadReady = false;
     bool g_targetVfxRouteReady = false;
     bool g_vfxAssetAllowlistReady = false;
+    bool g_durabilitySnapshotReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -1440,6 +1442,7 @@ namespace hl
         g_damageHitPayloadReady = ExecuteLuaFile(L, "lua_p1\\damagehit_payload_probe_v015_STAGED.lua");
         g_targetVfxRouteReady = ExecuteLuaFile(L, "lua_p1\\target_vfx_route_probe_v016_STAGED.lua");
         g_vfxAssetAllowlistReady = ExecuteLuaFile(L, "lua_p1\\vfx_asset_allowlist_probe_v017_STAGED.lua");
+        g_durabilitySnapshotReady = ExecuteLuaFile(L, "lua_p1\\durability_snapshot_probe_v018_STAGED.lua");
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
@@ -1452,8 +1455,8 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s",
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = g_f24Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s durabilitySnapshot=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1469,7 +1472,8 @@ namespace hl
             g_dotDryRunReady ? "true" : "false",
             g_damageHitPayloadReady ? "true" : "false",
             g_targetVfxRouteReady ? "true" : "false",
-            g_vfxAssetAllowlistReady ? "true" : "false");
+            g_vfxAssetAllowlistReady ? "true" : "false",
+            g_durabilitySnapshotReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1732,6 +1736,19 @@ namespace hl
             else
             {
                 Log("F23 ignored: VFX asset allowlist staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F24, g_f24Prev, inputEnabled))
+        {
+            if (g_durabilitySnapshotReady)
+            {
+                Log("F24: one-shot READ-ONLY reversible durability snapshot");
+                CallLua0(L, "Homelander_DurabilitySnapshotV018");
+            }
+            else
+            {
+                Log("F24 ignored: durability snapshot staged Lua did not load");
             }
         }
 
