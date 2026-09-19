@@ -48,6 +48,11 @@ assert len(references) == 24, f"Native load occurrences changed: {len(references
 assert len(names) == 22, f"Native script inventory changed: {names}"
 assert set(overrides) <= set(names)
 assert baselines <= set(names)
+load_order = []
+for name in references:
+    if name not in load_order:
+        load_order.append(name)
+assert len(load_order) == 22
 assert not destination.exists(), f"Refuse to overwrite previous candidate: {destination}"
 lua_dest.mkdir(parents=True)
 
@@ -91,6 +96,10 @@ report = {
     "frozen_r007_release_modified": False,
     "first_live_gate": "ORIGINAL R007 stage v003 BOOT -> F4 -> F9; close game; Check",
 }
+(destination / "CI_EVIDENCE").mkdir(parents=True, exist_ok=True)
+(destination / "CI_EVIDENCE" / "native_bootstrap_load_order.txt").write_text(
+    "\\n".join(load_order) + "\\n", encoding="utf-8"
+)
 (destination / "INTEGRATION_MANIFEST.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
