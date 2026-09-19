@@ -1,0 +1,30 @@
+name: Homelander P1 F10 Finite Mock CI
+on:
+  push:
+    branches:
+      - homelander-p1-f10-finite-20260919
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lua 5.1
+        run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - name: Parse and execute source regression
+        run: |
+          luac5.1 -p homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_finite_DORMANT.lua
+          luac5.1 -p homelander_p1_build/tests/f10_finite_to_f12_integration.lua
+          lua5.1 homelander_p1_build/tests/f10_finite_to_f12_integration.lua
+      - name: Artifact
+        run: |
+          mkdir -p stage/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_finite_DORMANT.lua stage/
+          cp homelander_p1_build/tests/f10_finite_to_f12_integration.lua stage/CI_EVIDENCE/
+          (cd stage && sha256sum freeaim_local_offset_probe_v005_finite_DORMANT.lua CI_EVIDENCE/f10_finite_to_f12_integration.lua > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F10_Finite_SOURCE_ONLY_DORMANT
+          path: stage/
