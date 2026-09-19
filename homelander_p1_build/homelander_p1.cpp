@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_016_VFX_ASSET_ALLOWLIST_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_FlightV2_001_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -185,6 +185,7 @@ namespace hl
     bool g_damageHitPayloadReady = false;
     bool g_targetVfxRouteReady = false;
     bool g_vfxAssetAllowlistReady = false;
+    bool g_flightGroundProbeReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -1424,7 +1425,8 @@ namespace hl
         ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
         const bool setter = ExecuteLuaFile(L, "lua_p1\\setter_echo_probe.lua");
         const bool math = ExecuteLuaFile(L, "lua_p1\\flight_math_probe.lua");
-        const bool controller = ExecuteLuaFile(L, "lua_p1\\flight_controller_v1.lua");
+        const bool controller = ExecuteLuaFile(L, "lua_p1\\flight_controller_v2_STAGED.lua");
+        g_flightGroundProbeReady = ExecuteLuaFile(L, "lua_p1\\flight_ground_probe_v018_STAGED.lua");
         const bool heatProbe = ExecuteLuaFile(L, "lua_p1\\heatvision_probe.lua");
         g_freeAimReady = ExecuteLuaFile(L, "lua_p1\\freeaim_probe_v004_STAGED.lua");
         g_localOffsetReady = ExecuteLuaFile(L, "lua_p1\\freeaim_local_offset_probe_v005_STAGED.lua");
@@ -1453,7 +1455,7 @@ namespace hl
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
             g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s",
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s flightGroundProbe=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1469,7 +1471,8 @@ namespace hl
             g_dotDryRunReady ? "true" : "false",
             g_damageHitPayloadReady ? "true" : "false",
             g_targetVfxRouteReady ? "true" : "false",
-            g_vfxAssetAllowlistReady ? "true" : "false");
+            g_vfxAssetAllowlistReady ? "true" : "false",
+            g_flightGroundProbeReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1500,6 +1503,8 @@ namespace hl
                 CallLua0(L, "Homelander_TargetContinuityForceDisableV013", false);
             if (g_dotDryRunReady)
                 CallLua0(L, "Homelander_DOTDryRunForceDisableV014", false);
+            if (g_scriptsReady)
+                CallLua0(L, "Homelander_FlightForceDisableV2", false);
         }
 
         if (!g_scriptsReady)
@@ -1510,6 +1515,8 @@ namespace hl
             Log("F4: read-only discovery + flight math probe");
             ExecuteLuaFile(L, "lua_p1\\runtime_probe.lua");
             CallLua0(L, "Homelander_FlightMathProbe_Verified");
+            if (g_flightGroundProbeReady)
+                CallLua0(L, "Homelander_FlightGroundProbeV018", false);
         }
 
         if (RisingEdge(VK_F5, g_f5Prev, inputEnabled))
@@ -1521,14 +1528,14 @@ namespace hl
 
         if (RisingEdge(VK_F6, g_f6Prev, inputEnabled))
         {
-            Log("F6: flight enable requested");
-            CallLua0(L, "Homelander_FlightEnableVerified");
+            Log("F6: Flight V2 enable requested");
+            CallLua0(L, "Homelander_FlightEnableVerifiedV2");
         }
 
         if (RisingEdge(VK_F7, g_f7Prev, inputEnabled))
         {
-            Log("F7: flight disable requested");
-            CallLua0(L, "Homelander_FlightDisable");
+            Log("F7: Flight V2 disable + pre-flight velocity restore requested");
+            CallLua0(L, "Homelander_FlightDisableV2");
         }
 
         if (RisingEdge(VK_F8, g_f8Prev, inputEnabled))
@@ -1744,8 +1751,8 @@ namespace hl
         if (inputEnabled && g_dotDryRunReady)
             CallLua0(L, "Homelander_DOTDryRunTickV014", false);
 
-        // Silent while disabled. The Lua controller returns immediately.
-        CallLua0(L, "Homelander_FlightNativeTick", false);
+        // Silent while disabled. Flight V2 returns immediately until F6 passes its setter/player gates.
+        CallLua0(L, "Homelander_FlightNativeTickV2", false);
     }
 
     int __stdcall GOMUpdateHook(int a1, int a2, float deltaTime)
