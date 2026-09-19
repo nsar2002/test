@@ -30,7 +30,7 @@ jobs:
             'homelander_p1_build/homelander_p1.cpp'
           )
           foreach($f in $frozen){
-            $baseline=(git show "$base"\:$f | Out-String)
+            $baseline=(git show "${base}:$f" | Out-String)
             $current=(Get-Content -LiteralPath $f -Raw)
             if ($baseline.Replace("`r`n","`n").TrimEnd() -cne $current.Replace("`r`n","`n").TrimEnd()) { throw "Original source changed: $f" }
           }
