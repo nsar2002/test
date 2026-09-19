@@ -1,0 +1,60 @@
+name: P1 R027 one-shot isolated Lua diagnostic no-gameplay CI
+on:
+  push:
+    branches: [homelander-p1-r027-one-shot-diagnostic-handoff-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-one-shot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify official game, v003 first gate, R018-R026 research remain unchanged
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='64d2963adba6ac39e333c5157c8f74b7899f99c7'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={
+            '.github/workflows/homelander-p1-r027-one-shot-diagnostic-ci.yml',
+            'homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua',
+            'homelander_p1_build/tests/r027_one_shot_readonly_fixture.lua',
+            'homelander_p1_build/tests/r027_isolated_handoff.md',
+          }
+          assert changed<=allowed, 'Unauthorized original game/firstgate change: '+repr(changed-allowed)
+          print('P1_R027_ORIGINAL_GAME_R007_R018_R026_FROZEN_AND_NO_SECOND_ASI_PASS')
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - name: Verify default OFF by exact source and syntax check both Lua5.1 files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path('homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua').read_text()
+          assert 'local ENABLE_CAMERA_OBSERVER = false' in src
+          assert 'HOMELANDER_PLAYER =' not in src and 'HOMELANDER_PLAYER=' not in src
+          assert 'HOMELANDER_SETTER_ECHO_PASSED =' not in src
+          for forbidden in ('go_ApplyDamage','phys_SetLinearVelocity','em_AddWorldEffect','cm_SetCameraAvatar('):
+              assert forbidden not in src, forbidden
+          print('P1_R027_NO_PLAYER_ASSIGNMENT_OR_GAMEPLAY_SETTER_AND_CAMERA_DEFAULT_OFF_PASS')
+          PY
+          luac5.1 -p homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua
+          luac5.1 -p homelander_p1_build/tests/r027_one_shot_readonly_fixture.lua
+      - name: Lua5.1 strict userdata and no-engine-call default plus explicit camera opt-in negatives
+        run: |
+          lua5.1 homelander_p1_build/tests/r027_one_shot_readonly_fixture.lua homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua
+      - name: Deliver a single optional standalone text script only
+        run: |
+          mkdir -p stage_r027
+          cp homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua stage_r027/
+          cp homelander_p1_build/tests/r027_isolated_handoff.md stage_r027/
+          (cd stage_r027 && sha256sum *.lua *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r027 -type f | grep -Ei '\\.(dll|asi|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R027_SOURCE_ONLY_NO_LOADER_ASI_MANAGER_GAME_FILE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R027_OneShot_CloneOnly_PlayerDiagnostics_DefaultCameraOff_SOURCE_ONLY
+          path: stage_r027/
+          if-no-files-found: error
