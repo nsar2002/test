@@ -1,0 +1,127 @@
+name: Homelander P1 Live Gate Assistant CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-live-gate-assistant-20260919
+    paths:
+      - 'homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1'
+      - 'homelander_p1_build/runtime_promotion/LIVE_GATE_ASSISTANT.md'
+      - 'homelander_p1_build/runtime_promotion/promotion_manifest.json'
+      - '.github/workflows/homelander-p1-live-gate-assistant-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-live-observer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse PowerShell source
+        shell: pwsh
+        run: |
+          $path=(Resolve-Path 'homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1').Path
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.ToString() }
+            throw "PowerShell parser found $($errors.Count) error(s)."
+          }
+          Write-Host 'PowerShell AST parse PASS'
+
+      - name: Run observer self-test
+        shell: pwsh
+        run: |
+          & ./homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 -Action SelfTest
+          if($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Test positive v003 evidence fixture
+        shell: pwsh
+        run: |
+          @'
+          READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918
+          F4: read-only discovery + flight math probe
+          [HOMELANDER_P1_FREEAIM_V004] CAMERA | pos=1,2,3
+          [HOMELANDER_P1_FREEAIM_V004] HIT | fraction=0.5 hitGOH=12345
+          '@ | Set-Content -LiteralPath good_v003.log -Encoding UTF8
+          & ./homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 -Action EvaluateLog -Stage v003 -LogPath good_v003.log
+          if($LASTEXITCODE -ne 0) { throw "Expected good fixture exit 0, got $LASTEXITCODE" }
+
+      - name: Test incomplete v003 fixture fails closed
+        shell: pwsh
+        run: |
+          @'
+          READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918
+          F4: read-only discovery + flight math probe
+          [HOMELANDER_P1_FREEAIM_V004] CAMERA | pos=1,2,3
+          '@ | Set-Content -LiteralPath incomplete_v003.log -Encoding UTF8
+          & ./homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 -Action EvaluateLog -Stage v003 -LogPath incomplete_v003.log
+          if($LASTEXITCODE -ne 4) { throw "Expected incomplete fixture exit 4, got $LASTEXITCODE" }
+
+      - name: Test forbidden evidence blocks
+        shell: pwsh
+        run: |
+          @'
+          READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918
+          FATAL synthetic test
+          F4: read-only discovery + flight math probe
+          [HOMELANDER_P1_FREEAIM_V004] CAMERA | pos=1,2,3
+          [HOMELANDER_P1_FREEAIM_V004] HIT | fraction=0.5 hitGOH=12345
+          '@ | Set-Content -LiteralPath forbidden_v003.log -Encoding UTF8
+          & ./homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 -Action EvaluateLog -Stage v003 -LogPath forbidden_v003.log
+          if($LASTEXITCODE -ne 5) { throw "Expected forbidden fixture exit 5, got $LASTEXITCODE" }
+
+      - name: Verify non-authoritative trust boundary
+        shell: pwsh
+        run: |
+          $p='homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1'
+          $s=Get-Content -LiteralPath $p -Raw
+          $required=@(
+            "authoritative=$false",
+            "visualConfirmed=$false",
+            "Observer candidate only",
+            "Observer never writes PASS receipts",
+            "Use P1_PROMOTION_MANAGER.ps1 -Action ResetLog",
+            "Refusing stale-evidence risk"
+          )
+          foreach($needle in $required) {
+            if(-not $s.Contains($needle)) { throw "Missing trust-boundary control: $needle" }
+          }
+          $forbidden=@(
+            'SendKeys',
+            'keybd_event',
+            'SetForegroundWindow',
+            'P1_PROMOTION_MANAGER.ps1 -Action Check',
+            'P1_PROMOTION_MANAGER.ps1 -Action Install',
+            'Add-Pass',
+            'passedStages =',
+            "Copy-Item -LiteralPath $srcAsi",
+            "Copy-Item -LiteralPath $srcLua"
+          )
+          foreach($needle in $forbidden) {
+            if($s.Contains($needle)) { throw "Forbidden automation/mutation primitive present: $needle" }
+          }
+          Write-Host 'Observer trust boundary PASS'
+
+      - name: Verify launch and monitoring semantics
+        shell: pwsh
+        run: |
+          $s=Get-Content 'homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1' -Raw
+          $need=@(
+            "Start-Process -FilePath $exe -WorkingDirectory $Root -PassThru",
+            "Get-Process -Id ([int]$session.processId)",
+            "homelander_p1_runtime.log",
+            "Get-LogEvaluation",
+            "Write-Candidate",
+            "LOG_COMPLETE",
+            "PROCESS_EXITED_INCOMPLETE",
+            "TIMEOUT"
+          )
+          foreach($needle in $need) {
+            if(-not $s.Contains($needle)) { throw "Missing observer behavior: $needle" }
+          }
+          Write-Host 'Launch/monitor semantics PASS'
