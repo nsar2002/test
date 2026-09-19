@@ -36,7 +36,7 @@ print("P1_PREVIOUS_F11_SAME_PLAYER_NESTED_STALE_EYE_REPRODUCED")
 -- New F11 preserves the newer eye proof and returns false for old callback.
 dofile(newF11)
 mode="nested_f11";nested=false
-local first=HOMELANDER_EYE_ORIGIN_EPOCH
+local first=HOMELANDER_EYE_ORIGIN_EPOCH or 0
 assert(not Homelander_EyeOriginProbeV006(),"new F11 rejects stale outer callback")
 eq(HOMELANDER_EYE_ORIGIN.x,2,"newer nested F11 eye remains current")
 eq(HOMELANDER_EYE_ORIGIN_VERIFIED,true,"valid nested F11 proof is preserved")
