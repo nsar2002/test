@@ -112,7 +112,9 @@ def selftest():
     struct.pack_into("<III", b, p+12, 0xDF0000, 0x7E000, 0x381000)
     # Fixture mappings deliberately use explicit VA->file section offset.
     def map_va(va):
-        if va >= 0x10DF0000:\n            return 0x381000 + va - 0x10DF0000\n        return va - IMAGE_BASE
+        if va >= 0x10DF0000:
+            return 0x381000 + va - 0x10DF0000
+        return va - IMAGE_BASE
     for va, expected in ((REG_VA, REG_BYTES), (THUNK_VA, THUNK_BYTES),
                          (IMPL_VA, IMPL_PROLOGUE), (OUTPUT_VA, OUTPUT_BYTES),
                          (SELECT_VA, SELECT_BYTES), (NAME_VA, NAME)):
