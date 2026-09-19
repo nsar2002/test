@@ -7,7 +7,7 @@ $managerText = [System.IO.File]::ReadAllText($src, [System.Text.Encoding]::UTF8)
 $normalizedSource = Join-Path $env:RUNNER_TEMP ('p1_r005_manager_normalized_' + [guid]::NewGuid().ToString('N') + '.ps1')
 [System.IO.File]::WriteAllText($normalizedSource, $managerText, ([System.Text.UTF8Encoding]::new($false)))
 $actualManager = (Get-FileHash -LiteralPath $normalizedSource -Algorithm SHA256).Hash.ToLowerInvariant()
-$expectedManager = '4a7f8f03dd3f63c2e024214a434a3948852f31257ca7616096e0f4784b70d735'
+$expectedManager = '50cef5262c61c8a7ad83ee49c9aabb1ba6a714252c130b1d03494788668d0e87'
 if ($actualManager -ne $expectedManager) { throw "Test manager normalized source does not match R006 ASCII manager: $actualManager" }
 $work = Join-Path $env:RUNNER_TEMP ('P1_R005_SYNTHETIC_' + [guid]::NewGuid().ToString('N'))
 $pack = Join-Path $work 'pack'
@@ -125,6 +125,18 @@ $liveState = Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\st
 if (@($liveState.passedStages).Count -ne 0) { throw 'First live launcher illegally recorded synthetic PASS state' }
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_OBSERVER_CHAIN_PASS_NO_AUTHORITY'
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_FIXTURE_PASS_NO_REAL_GAME'
+# R007 regression: the real OS still runs the fake game for four seconds,
+# and complete observer text is NEVER sufficient to authorize Check during it.
+if (!(Get-Process -Name 'prototypef' -ErrorAction SilentlyContinue)) {
+    throw 'Fake game unexpectedly exited before the R007 Check-in-progress regression'
+}
+RunManager -ManagerArgs @('-Action','Check','-Stage','v003') -Expected 1
+$preExit=Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\state.json') -Raw | ConvertFrom-Json
+if (@($preExit.passedStages).Count -ne 0) {
+    throw 'R007 manager wrote PASS while fake game was still running'
+}
+Write-Host 'R007_WINDOWS_CHECK_REJECTS_RUNNING_GAME_AND_LEAVES_NO_PASS'
+
 
 # The first-live observer may return before the fake game process exits.
 # Confirm the OS process has really terminated before any next-stage mutation.
