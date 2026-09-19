@@ -63,7 +63,7 @@ jobs:
           from pathlib import Path
           src=Path('homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua').read_text()
           offset=Path('homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua').read_text()
-          assert src.count('clear_f9_f10_results()')==3, 'one definition, one F9 entry, one hit callback'
+          assert src.count('clear_f9_f10_results()')==4, 'one definition, one F9 entry, two hit callback failclosed sites'
           assert src.count('HOMELANDER_FREEAIM_HIT = nil')>=2
           for token in ('go_ApplyDamage(', 'go_ApplyDamageAndHit(', 'go_SetHealth(',
                         'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect('):
@@ -73,6 +73,8 @@ jobs:
           assert 'freeaim_local_offset_probe_v005_failclosed_DORMANT.lua' not in native,'Dormant F10 wired without live gate'
           assert offset.count('clear_f10_results()')==2, 'one definition and one explicit F10 entry reset'
           assert 'HOMELANDER_PLAYER ~= original_player' in offset
+          assert 'HOMELANDER_FREEAIM_VERIFIED_PLAYER = player' in src
+          assert 'HOMELANDER_FREEAIM_VERIFIED_PLAYER ~= original_player' in offset
           for token in ('go_ApplyDamage(', 'go_SetHealth(', 'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect('):
               assert token not in offset, 'Unexpected game mutator in F10 source: '+token
           print('P1_V003_F9_GUARDED_SOURCE_AUDIT_PASS_NO_NATIVE_ACTIVATION')
