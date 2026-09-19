@@ -1,0 +1,75 @@
+name: Homelander P1 Grab ABI and Dormant Observer CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-grab-abi-readonly-20260919
+    paths:
+      - 'homelander_p1_build/P1_GRAB_ABI_READONLY_20260919.md'
+      - 'homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua'
+      - 'homelander_p1_build/tests/grab_state_v01_test.lua'
+      - 'homelander_p1_build/GRAB_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-grab-readonly-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  grab-source-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Lock branch to dormant files
+        run: |
+          git diff --name-only 030e936dcef1196d51d9adb9c79ea71080a82b23...HEAD > /tmp/grab_changes.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          changed={x.strip() for x in Path('/tmp/grab_changes.txt').read_text().splitlines() if x.strip()}
+          allowed={
+            'homelander_p1_build/P1_GRAB_ABI_READONLY_20260919.md',
+            'homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua',
+            'homelander_p1_build/tests/grab_state_v01_test.lua',
+            'homelander_p1_build/GRAB_REPRO_TRIGGER.txt',
+            '.github/workflows/homelander-p1-grab-readonly-ci.yml'
+          }
+          assert changed<=allowed, f'Unexpected installer/native/gameplay changes: {sorted(changed-allowed)}'
+          assert 'homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua' in changed
+          PY
+      - name: Install Lua 5.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+      - name: Run strict read-only grab-state test
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua
+          "$LUAC" -p homelander_p1_build/tests/grab_state_v01_test.lua
+          lua5.1 homelander_p1_build/tests/grab_state_v01_test.lua
+      - name: Audit exact getter and zero guessed slot or mutations
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua').read_text()
+          assert s.count('pcall(go_IsGrabbed,player)')==1
+          forbidden=('go_GetGrabbedObject(', 'go_GetGrabSlot(', 'go_AttachObjectToGrabSlot(',
+                     'go_GrabbedDetach(', 'phys_SetLinearVelocity(', 'go_ApplyDamage(',
+                     'go_SetHealth(', 'go_Teleport(', 'em_AddWorldEffect(')
+          for name in forbidden:
+              assert name not in s, f'unproven or mutating call: {name}'
+          print('P1_GRAB_SOURCE_AUDIT_PASS: one read-only bool getter, no guessed slot or mutation')
+          PY
+      - name: Package isolated dormant probe with hashes
+        run: |
+          mkdir -p stage_grab/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua stage_grab/
+          cp homelander_p1_build/tests/grab_state_v01_test.lua stage_grab/CI_EVIDENCE/
+          cp homelander_p1_build/P1_GRAB_ABI_READONLY_20260919.md stage_grab/
+          (cd stage_grab && sha256sum grab_state_v01_DORMANT.lua CI_EVIDENCE/grab_state_v01_test.lua P1_GRAB_ABI_READONLY_20260919.md > SHA256SUMS.txt)
+          (cd stage_grab && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_GrabStateObserver_DORMANT
+          path: stage_grab/
