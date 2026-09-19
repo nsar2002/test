@@ -1,0 +1,62 @@
+name: P1 R025 exact engine camera-character read-only candidate
+on:
+  push:
+    branches: [homelander-p1-r025-camera-character-readonly-candidate-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject changes to original v003, official manager, native code and R018-R024
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base="077164be48b1aa4d0d3baf66e3da2b5715539fdd"
+          changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
+          allowed={
+            ".github/workflows/homelander-p1-r025-camera-character-ci.yml",
+            "homelander_p1_build/tests/r025_closest_camera_character_observer_SOURCE_ONLY.lua",
+            "homelander_p1_build/tests/r025_camera_candidate_readonly_fixture.lua",
+            "homelander_p1_build/tests/r025_static_closest_camera_abi_audit.py",
+            "homelander_p1_build/tests/r025_readme.md",
+          }
+          assert changed<=allowed, "Unauthorized game/stage/source modification: "+repr(changed-allowed)
+          print("P1_R025_GAME_OFFICIAL_R007_NATIVE_R018_R024_IMMUTABLE_PASS")
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - name: Actual Lua5.1 syntax and all closest-camera candidate fail-closed cases
+        run: |
+          luac5.1 -p homelander_p1_build/tests/r025_closest_camera_character_observer_SOURCE_ONLY.lua
+          luac5.1 -p homelander_p1_build/tests/r025_camera_candidate_readonly_fixture.lua
+          lua5.1 homelander_p1_build/tests/r025_camera_candidate_readonly_fixture.lua homelander_p1_build/tests/r025_closest_camera_character_observer_SOURCE_ONLY.lua
+      - name: SHA-pinned engine PE32 candidate registration/trampoline test on SYNTHETIC bytes only
+        run: |
+          python3 -m py_compile homelander_p1_build/tests/r025_static_closest_camera_abi_audit.py
+          python3 homelander_p1_build/tests/r025_static_closest_camera_abi_audit.py --selftest
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path("homelander_p1_build/tests/r025_static_closest_camera_abi_audit.py").read_text()
+          assert "ed0870eb24ace5565a0245ade42114f0724b881d3d75b793f376e9bb184f8d51" in src
+          assert "current_player_identified" in src and '"original_v003_GATE_PASS": False' in src
+          assert "ctypes" not in src and "subprocess" not in src
+          print("P1_R025_USER_EXACT_GAME_DLL_PINNED_NOT_EXECUTED_NOT_REDISTRIBUTED_PASS")
+          PY
+      - name: Publish source and safety guidance only
+        run: |
+          mkdir -p stage_r025
+          cp homelander_p1_build/tests/r025_closest_camera_character_observer_SOURCE_ONLY.lua stage_r025/
+          cp homelander_p1_build/tests/r025_static_closest_camera_abi_audit.py stage_r025/
+          cp homelander_p1_build/tests/r025_readme.md stage_r025/
+          (cd stage_r025 && sha256sum *.lua *.py *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r025 -type f | grep -Ei '\\.(dll|asi|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R025_SOURCE_ONLY_NO_INSTALLER_NO_ENGINE_BINARY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R025_ClosestCameraGOH_ReadOnly_candidate_SOURCE_ONLY_NOT_INSTALLABLE
+          path: stage_r025/
+          if-no-files-found: error
