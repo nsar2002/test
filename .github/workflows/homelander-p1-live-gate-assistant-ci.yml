@@ -146,8 +146,8 @@ jobs:
             throw "Launcher parser found $($errors.Count) error(s)."
           }
           $s=Get-Content -LiteralPath $path -Raw
-          if(-not $s.Contains("& $Manager -Action Install -Stage v003 -PrototypeRoot $Root")) { throw 'Launcher does not contain exact v003 install call.' }
-          if(-not $s.Contains("& $Observer -Action Observe -Stage v003 -PrototypeRoot $Root")) { throw 'Launcher does not contain exact v003 observer call.' }
+          if(-not $s.Contains('& $Manager -Action Install -Stage v003 -PrototypeRoot $Root')) { throw 'Launcher does not contain exact v003 install call.' }
+          if(-not $s.Contains('& $Observer -Action Observe -Stage v003 -PrototypeRoot $Root')) { throw 'Launcher does not contain exact v003 observer call.' }
           if($s -match '(?i)-Action\s+Check') { throw 'Launcher must never record Check/PASS.' }
           if($s -match '(?i)-Stage\s+v00(4|5|6|7|8|9)|-Stage\s+v01[0-6]') { throw 'Launcher must not contain a later-stage install/observe action.' }
           if(-not $s.Contains('Refusing any skip or later-stage action')) { throw 'Missing no-skip guard.' }
