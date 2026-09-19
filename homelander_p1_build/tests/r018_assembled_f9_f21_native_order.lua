@@ -120,7 +120,7 @@ for name in io.lines(order) do
  assert(name:match("^[%w_]+%.lua$"),"unexpected native module path: "..tostring(name))
  assert(not loaded[name],"native module loaded twice: "..name)
  loaded[name]=true
- assert(dofile(stage.."/lua_p1/"..name)==nil or true)
+ dofile(stage.."/lua_p1/"..name)
  file_count=file_count+1
 end
 eq(file_count,22,"actual assembled native module count")
