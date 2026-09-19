@@ -27,11 +27,12 @@ end
 HOMELANDER_PLAYER="A"
 dofile(newestF9)
 dofile(priorF10)
-assert(Homelander_FreeAimProbe(),"fresh F9 at world z5")
+assert(Homelander_FreeAimProbe(),"fresh F9 before nested transform")
+local world_hit_z=HOMELANDER_FREEAIM_HIT_POS.z
 shift=0;armed=true;nested=false
 assert(Homelander_FreeAimLocalOffsetProbe(),"previous F10 overwrites newer nested offset")
 eq(nested,true,"old F10 nested during ROUNDTRIP log")
-eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET.z,5,"prior F10 wrongly replaced newer z4 offset with stale z5")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET.z,world_hit_z,"prior F10 wrongly replaced newer offset with stale old origin")
 eq(HOMELANDER_FREEAIM_F10_EPOCH,HOMELANDER_FREEAIM_VERIFIED_EPOCH,"old F10 F9 epoch alone does not detect nested F10")
 print("P1_PREVIOUS_F10_SAME_F9_REENTRANT_STALE_OFFSET_REPRODUCED")
 
@@ -43,7 +44,7 @@ local priorAttempt=HOMELANDER_FREEAIM_F10_ATTEMPT or 0
 assert(not Homelander_FreeAimLocalOffsetProbe(),"new F10 outer must reject nested newer offset")
 eq(HOMELANDER_FREEAIM_F10_ATTEMPT,priorAttempt+2,"nested F10 increments its own attempt")
 eq(HOMELANDER_FREEAIM_F10_VERIFIED_ATTEMPT,HOMELANDER_FREEAIM_F10_ATTEMPT,"newer nested F10 publishes its own attempt")
-eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET.z,4,"newest F10 z4 persists despite old callback")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET.z,world_hit_z-1,"newest F10 offset persists despite old callback")
 print("P1_R010_F10_SAME_F9_NESTED_STALE_OFFSET_FAILCLOSED_PASS")
 
 armed=false
