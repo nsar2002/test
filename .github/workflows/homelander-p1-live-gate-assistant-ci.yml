@@ -63,6 +63,7 @@ jobs:
           $code=$LASTEXITCODE
           if($code -ne 4) { throw "Expected incomplete fixture exit 4, got $code" }
           Write-Host 'Incomplete fixture fail-closed PASS'
+          exit 0
 
       - name: Test forbidden evidence blocks
         shell: pwsh
@@ -78,6 +79,7 @@ jobs:
           $code=$LASTEXITCODE
           if($code -ne 5) { throw "Expected forbidden fixture exit 5, got $code" }
           Write-Host 'Forbidden fixture hard-block PASS'
+          exit 0
 
       - name: Verify non-authoritative trust boundary
         shell: pwsh
