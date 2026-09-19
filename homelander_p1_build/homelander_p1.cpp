@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_006_LASERSIGHT_NATIVE_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_007_HELD_LASERSIGHT_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -124,6 +124,7 @@ namespace hl
     void* g_laserSightCallback = nullptr;
     void* g_laserShader = nullptr;
     bool g_laserShaderGatePassed = false;
+    bool g_laserOneShotPassed = false;
     int32_t g_laserSightHandles[2] = {-1, -1};
 
     RenderCameraPositionFn g_originalRenderCameraPosition = nullptr;
@@ -157,11 +158,13 @@ namespace hl
     bool g_f12Prev = false;
     bool g_f13Prev = false;
     bool g_f14Prev = false;
+    bool g_f15Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
     bool g_dualEyeRenderReady = false;
     bool g_laserSightNativeReady = false;
+    bool g_laserSightHeldReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -926,6 +929,7 @@ namespace hl
     int __cdecl LuaLaserSightShaderProbeHook(int L)
     {
         g_laserShaderGatePassed = false;
+        g_laserOneShotPassed = false;
         g_laserShader = nullptr;
 
         bool ok = false;
@@ -967,9 +971,21 @@ namespace hl
             return LuaPushBoolean ? 1 : 0;
         }
 
-        if (LuaGetTop(L) != 13)
+        const int argc = LuaGetTop(L);
+        const bool heldSubmit = (argc == 14) && (LuaToNumber(L, 14) > 0.5f);
+        const char* gateLabel = heldSubmit ? "F15" : "F14";
+
+        if (argc != 13 && argc != 14)
         {
-            Log("F14 REFUSED: expected exactly 13 arguments");
+            Log("%s REFUSED: expected 13 args (one-shot) or 14 args (held quiet submit)",
+                gateLabel);
+            PushLuaBool(L, false);
+            return 1;
+        }
+
+        if (heldSubmit && !g_laserOneShotPassed)
+        {
+            Log("F15 REFUSED: native F14 one-shot gate has not passed in this session");
             PushLuaBool(L, false);
             return 1;
         }
@@ -1054,10 +1070,12 @@ namespace hl
             // Do not release a successfully queued first beam in the same call.
             // Match LaserAction lifetime: any allocated/submitted handle is released
             // by CleanupLaserSightHandles() at the beginning of the next GOM tick.
-            Log("F14 FAIL/PARTIAL: dual LaserSight submit did not complete; any live handle will release next tick");
+            Log("%s FAIL/PARTIAL: dual LaserSight submit did not complete; any live handle will release next tick",
+                gateLabel);
         }
-        else
+        else if (!heldSubmit)
         {
+            g_laserOneShotPassed = true;
             Log("F14 PASS: two real LaserSight render events submitted | centerError=%.6f distance=%.3f",
                 centerError, beamDistance);
         }
