@@ -22,6 +22,7 @@ jobs:
           allowed={
            "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
            "homelander_p1_build/tests/r008_22lua_integration/README_SOURCE_ONLY.md",
+           "homelander_p1_build/tests/r008_22lua_integration/bootstrap_definition_smoke.lua",
            ".github/workflows/homelander-p1-r008-22lua-integration-ci.yml"}
           assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
           print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
@@ -48,6 +49,12 @@ jobs:
           done
           test "$N" -eq 22
           echo P1_R008_ALL_22_NATIVE_LUA_SCRIPT_SYNTAX_PASS
+      - name: Load all 22 staged runtime definitions in actual native order without gameplay writes
+        run: |
+          lua5.1 homelander_p1_build/tests/r008_22lua_integration/bootstrap_definition_smoke.lua \
+            stage_r008_22lua_SOURCE_ONLY \
+            stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/native_bootstrap_load_order.txt
+          cp homelander_p1_build/tests/r008_22lua_integration/bootstrap_definition_smoke.lua stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/
       - name: Execute full F9-F12 actual-source numeric provenance mocks
         run: |
           lua5.1 homelander_p1_build/tests/f9_numeric_epoch_integration.lua
