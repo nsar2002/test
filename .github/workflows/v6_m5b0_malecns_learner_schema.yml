@@ -1,4 +1,5 @@
 name: V6 M5B0 learner schema gate
+# trigger revision 1; no scientific rule change
 
 on:
   push:
