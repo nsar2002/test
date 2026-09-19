@@ -41,6 +41,8 @@ end
 
 function Homelander_LaserSightShaderProbeV008()
     HOMELANDER_LASERSIGHT_SHADER_PASSED = false
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
     log("F13 BEGIN — READ ONLY")
 
     if type(HL_LaserSightShaderProbe) ~= "function" then
@@ -61,6 +63,8 @@ function Homelander_LaserSightShaderProbeV008()
 end
 
 function Homelander_LaserSightOneShotV008()
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
     log("F14 BEGIN — ONE-SHOT REAL LASERSIGHT RENDER")
 
     if HOMELANDER_LASERSIGHT_SHADER_PASSED ~= true then
