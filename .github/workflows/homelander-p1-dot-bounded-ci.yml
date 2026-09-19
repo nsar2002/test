@@ -1,0 +1,83 @@
+name: Homelander P1 Bounded DOT Source Staging CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-dot-bounded-staging-20260919
+    paths:
+      - 'homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua'
+      - 'homelander_p1_build/tests/dot_bounded_v028_test.lua'
+      - 'homelander_p1_build/P1_DOT_BOUNDED_V028_DORMANT_20260919.md'
+      - 'homelander_p1_build/DOT_BOUNDED_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-dot-bounded-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-dormant-dot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Lock branch to new unactivated DOT source/tests
+        run: |
+          git diff --name-only f4024b1b64fae5d920eb31f791b4655e58d3f38c...HEAD > /tmp/dot_changed.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          changed={x.strip() for x in Path('/tmp/dot_changed.txt').read_text().splitlines() if x.strip()}
+          allowed={
+              'homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua',
+              'homelander_p1_build/tests/dot_bounded_v028_test.lua',
+              'homelander_p1_build/P1_DOT_BOUNDED_V028_DORMANT_20260919.md',
+              'homelander_p1_build/DOT_BOUNDED_REPRO_TRIGGER.txt',
+              '.github/workflows/homelander-p1-dot-bounded-ci.yml'
+          }
+          assert changed<=allowed, f'Unexpected active/native/gameplay modifications: {sorted(changed-allowed)}'
+          assert 'homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua' in changed
+          PY
+      - name: Install Lua 5.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+      - name: Parse and exercise bounded damage source with mocked engine
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua
+          "$LUAC" -p homelander_p1_build/tests/dot_bounded_v028_test.lua
+          lua5.1 homelander_p1_build/tests/dot_bounded_v028_test.lua
+      - name: Inspect strict mutation site and zero native activation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path('homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua').read_text()
+          c=Path('homelander_p1_build/homelander_p1.cpp').read_text()
+          assert 'dot_bounded_damage_v028_DORMANT.lua' not in c, 'forbidden native bootstrap activation'
+          assert 'Homelander_DOTBoundedTickV028' not in c, 'forbidden automatic native tick wiring'
+          assert src.count('pcall(go_ApplyDamage,target,MAX_PER_EVENT)')==1, 'expected one guarded damage site'
+          assert src.count('go_ApplyDamage(')==1, 'unexpected damage API site'
+          assert 'local MAX_EVENTS=3' in src and 'local MAX_PER_EVENT=0.10' in src
+          assert 'S.lifetime_events=S.lifetime_events+1' in src
+          assert 'HOMELANDER_DOT_DRYRUN_PASSED=false' in src
+          forbidden=('go_ApplyDamageAndHit(', 'go_SetHealth(', 'go_SetMaxHealth(',
+                     'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect(',
+                     'go_AttachObjectToGrabSlot(', 'go_GrabbedDetach(')
+          for token in forbidden:
+              assert token not in src, f'forbidden additional mutation: {token}'
+          print('P1_DOT_BOUNDED_SOURCE_AUDIT_PASS: exactly one guarded damage site, 3x0.1 cap, no native activation')
+          PY
+      - name: Package dormant source and offline evidence only
+        run: |
+          mkdir -p stage_dot/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/dot_bounded_damage_v028_DORMANT.lua stage_dot/
+          cp homelander_p1_build/tests/dot_bounded_v028_test.lua stage_dot/CI_EVIDENCE/
+          cp homelander_p1_build/P1_DOT_BOUNDED_V028_DORMANT_20260919.md stage_dot/
+          (cd stage_dot && sha256sum dot_bounded_damage_v028_DORMANT.lua CI_EVIDENCE/dot_bounded_v028_test.lua P1_DOT_BOUNDED_V028_DORMANT_20260919.md > SHA256SUMS.txt)
+          (cd stage_dot && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_BoundedDOT_v028_SOURCE_ONLY_DORMANT
+          path: stage_dot/
+          if-no-files-found: error
