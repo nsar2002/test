@@ -1,0 +1,73 @@
+name: V6 M4A1H ABF channel schema gate
+
+on:
+  push:
+    paths:
+      - ".github/workflows/v6_m4a1h_abf_channel_schema.yml"
+      - "fly_mnq/v6_m4a1h_abf_channel_schema.py"
+      - "research/v6_m4a1h_abf_channel_schema_protocol.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  header-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install frozen dependencies
+        run: |
+          python -m pip install --disable-pip-version-check requests==2.32.3 pyabf==2.3.8
+      - name: Freeze execution bytes
+        run: |
+          mkdir -p v6_m4a1h_out
+          sha256sum fly_mnq/v6_m4a1h_abf_channel_schema.py > v6_m4a1h_out/preexecution_sha256.txt
+          sha256sum research/v6_m4a1h_abf_channel_schema_protocol.md >> v6_m4a1h_out/preexecution_sha256.txt
+          sha256sum research/results/v6_m4a0_chen_ephys_schema_result.json >> v6_m4a1h_out/preexecution_sha256.txt
+      - name: Execute header-only gate
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m4a1h_abf_channel_schema.py | tee v6_m4a1h_out/stdout.txt
+          mv v6_m4a1h_result.json v6_m4a1h_out/
+      - name: Enforce vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m4a1h_out/v6_m4a1h_result.json"))
+          assert r["classification"] in {
+            "PASS_M4A1H_DETERMINISTIC_ADC_IDENTITY",
+            "BLOCKED_M4A1H_ADC_IDENTITY_NOT_SELF_DESCRIBING",
+          }
+          print("FORMAL_CLASSIFICATION",r["classification"])
+          PY
+      - name: Hash outputs
+        run: |
+          : > v6_m4a1h_out/output_sha256.txt
+          for f in v6_m4a1h_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m4a1h_out/output_sha256.txt
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fly-mnq-v6-m4a1h-abf-channel-schema
+          path: v6_m4a1h_out/
+          retention-days: 14
+      - name: Persist formal result
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m4a1h_out/v6_m4a1h_result.json research/results/v6_m4a1h_abf_channel_schema_result.json
+          cp v6_m4a1h_out/output_sha256.txt research/results/v6_m4a1h_abf_channel_schema_output_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m4a1h_abf_channel_schema_result.json research/results/v6_m4a1h_abf_channel_schema_output_sha256.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "V6-M4A1H: record ABF channel schema result [skip ci]"
+            git push
+          fi
