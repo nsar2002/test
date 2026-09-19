@@ -1,0 +1,87 @@
+name: Homelander P1 v003 Runtime Harness CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-runtime-v003-harness-20260919
+    paths:
+      - 'homelander_p1_runtime/**'
+      - '.github/workflows/homelander-p1-v003-runtime-harness-ci.yml'
+      - 'homelander_p1_runtime/V003_HARNESS_REPRO_TRIGGER.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse all PowerShell
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem homelander_p1_runtime -File | Where-Object { $_.Extension -in @('.ps1','.psm1') }
+          foreach($f in $files) {
+            [scriptblock]::Create((Get-Content -LiteralPath $f.FullName -Raw)) | Out-Null
+            Write-Host "PARSE PASS $($f.Name)"
+          }
+
+      - name: Run deterministic parser tests
+        shell: pwsh
+        run: |
+          ./homelander_p1_runtime/TEST_V003_GATE_PARSER.ps1
+
+      - name: Verify fail-closed runtime invariants
+        shell: bash
+        run: |
+          R=homelander_p1_runtime/RUN_V003_LIVE_GATE.ps1
+          C=homelander_p1_runtime/CHECK_V003_SESSION.ps1
+          P=homelander_p1_runtime/P1_V003_GATE_PARSER.psm1
+          grep -q 'Assert-SourceTransferManifest' "$R"
+          grep -q 'Move-Item -LiteralPath $Log' "$R"
+          grep -q 'pre_session_runtime.log' "$R"
+          grep -q 'READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918' "$R"
+          grep -q 'F9 fresh HIT evidence captured' "$R"
+          grep -q 'No automatic promotion to v004 was performed' "$R"
+          grep -q 'RollbackOnFail' "$R"
+          grep -q 'No automatic rollback was performed' "$R"
+          grep -q 'fresh_hit' "$P"
+          grep -q 'camera_measurement' "$P"
+          grep -q 'no_mutation_hotkey_dispatch' "$P"
+          grep -q "'F5:', 'F6:', 'F7:'" "$P"
+          grep -q 'exit 30' "$C"
+          if grep -Eq 'SendKeys|keybd_event|SetForegroundWindow|Stop-Process.*prototypef|taskkill.*prototypef' "$R"; then
+            echo "Unsafe input injection or automatic game kill found"
+            exit 1
+          fi
+
+      - name: Verify v003 provenance constants
+        shell: bash
+        run: |
+          R=homelander_p1_runtime/RUN_V003_LIVE_GATE.ps1
+          D=homelander_p1_runtime/P1_V003_RUNTIME_SESSION_HARNESS_20260919.md
+          grep -q '1845AFF900E77F7C98E1EF0B37A2EA83C1C293AD74D01DC8FB136A198C9027C2' "$R"
+          grep -q 'BC48BAB2CF07EAF616E23BA9EEF1922EA5E8590F722B6657A8F2ED986FE6F20E' "$R"
+          grep -q 'DBA257F26517D57ECF3C62ACA7CCCFABBAD868DDF97160F71C9AB81D37A8627' "$R"
+          grep -q 'v003 remains active until the next ordered gate is explicitly staged' "$R"
+          grep -q 'evaluates only the clean session evidence' "$D"
+
+      - name: Hash harness sources
+        shell: bash
+        run: |
+          mkdir -p runtime_harness_artifact
+          cp homelander_p1_runtime/P1_V003_GATE_PARSER.psm1 runtime_harness_artifact/
+          cp homelander_p1_runtime/RUN_V003_LIVE_GATE.ps1 runtime_harness_artifact/
+          cp homelander_p1_runtime/CHECK_V003_SESSION.ps1 runtime_harness_artifact/
+          cp homelander_p1_runtime/P1_V003_RUNTIME_SESSION_HARNESS_20260919.md runtime_harness_artifact/
+          cp homelander_p1_runtime/TEST_V003_GATE_PARSER.ps1 runtime_harness_artifact/
+          (cd runtime_harness_artifact && sha256sum * > RUNTIME_HARNESS_SHA256SUMS.txt)
+          cat runtime_harness_artifact/RUNTIME_HARNESS_SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v003_RuntimeSessionHarness
+          path: runtime_harness_artifact/
+          if-no-files-found: error
