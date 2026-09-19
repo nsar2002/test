@@ -1,0 +1,2076 @@
+{
+  "canonical_private_protocol_commit": "9fc5b987d0c897dc9b3285b33c955cf003def9bd",
+  "classification": "PASS_M5B3B_COMPARTMENT_GATING_MVP_QUALIFIED",
+  "criteria": {
+    "A_exact_prerequisites": true,
+    "B_every_included_fast_dan_body_mapped": true,
+    "C_every_exact_mbon_body_mapped": true,
+    "D_every_single_compartment_mbon_has_gate": true,
+    "E_alpha_beta_has_eligible_edge": true,
+    "E_alpha_prime_beta_prime_has_eligible_edge": true,
+    "E_gamma_has_eligible_edge": true,
+    "F_eligible_is_strict_subset_of_exact_kc_mbon": true,
+    "G_no_weight_performance_market_criterion": true
+  },
+  "fast_dan": {
+    "body_count": 328,
+    "gate_population_by_compartment": {
+      "B'1": [
+        103433,
+        108576,
+        115868,
+        142660,
+        146774,
+        150983,
+        152291,
+        152326,
+        154387,
+        157370,
+        159831,
+        161596,
+        162116,
+        162631,
+        164279,
+        164601,
+        167073,
+        174255,
+        175232,
+        183567,
+        198507,
+        202330,
+        203682,
+        203885,
+        207122,
+        209656,
+        212684,
+        215940,
+        217737,
+        218518,
+        224160,
+        231413,
+        243477,
+        933708
+      ],
+      "B'2": [
+        72601,
+        83852,
+        92324,
+        94250,
+        94922,
+        97990,
+        98265,
+        105362,
+        107986,
+        110653,
+        126501,
+        127659,
+        131419,
+        132513,
+        134265,
+        134769,
+        134869,
+        135046,
+        135287,
+        135290,
+        136024,
+        136215,
+        137373,
+        140271,
+        141246,
+        141510,
+        142238,
+        142898,
+        144126,
+        145022,
+        145324,
+        145371,
+        147591,
+        148328,
+        148469,
+        150828,
+        151013,
+        151133,
+        151993,
+        152056,
+        152997,
+        154230,
+        155329,
+        157767,
+        158651,
+        160277,
+        161079,
+        163194,
+        163883,
+        163951,
+        165187,
+        168020,
+        168080,
+        169027,
+        170467,
+        171959,
+        174384,
+        176460,
+        177202,
+        190296,
+        190297,
+        190635,
+        192245,
+        196030,
+        196985,
+        207463,
+        213743,
+        217007,
+        226452,
+        230802,
+        257650,
+        259089,
+        291665,
+        336850,
+        518137,
+        523553,
+        525787,
+        532715,
+        577933,
+        580579,
+        909818
+      ],
+      "B1": [
+        28434,
+        29565,
+        32865,
+        36624,
+        48113,
+        60930,
+        66934,
+        142528,
+        143120,
+        149869,
+        150034,
+        170450,
+        178945,
+        180403,
+        200973,
+        224205,
+        518072,
+        520403,
+        528100,
+        544257,
+        544359,
+        547260,
+        553201,
+        920537
+      ],
+      "B2": [
+        37845,
+        46794,
+        108429,
+        109793,
+        115617,
+        120259,
+        124918,
+        125080,
+        128076,
+        137321,
+        144678,
+        146773,
+        151013,
+        153035,
+        157683,
+        157816,
+        158196,
+        163883,
+        168020,
+        168080,
+        169027,
+        169674,
+        170467,
+        174384,
+        176429,
+        177202,
+        177603,
+        177800,
+        178539,
+        186566,
+        190297,
+        218583,
+        239873,
+        259486,
+        292203,
+        297139,
+        336850,
+        341512,
+        516044,
+        523791,
+        544770,
+        567409,
+        580579,
+        909818
+      ],
+      "a'1": [
+        11752,
+        14182
+      ],
+      "a'2": [
+        14225,
+        512326
+      ],
+      "a'3": [
+        21145,
+        515048
+      ],
+      "a1": [
+        114661,
+        119763,
+        137539,
+        138822,
+        139706,
+        145749,
+        147857,
+        157016,
+        204930,
+        215931,
+        224500,
+        238644,
+        273182,
+        319321,
+        520616
+      ],
+      "a2": [
+        14225,
+        512326
+      ],
+      "a3": [
+        529512,
+        529516
+      ],
+      "pedc": [
+        11327,
+        11900
+      ],
+      "y1": [
+        11327,
+        11618,
+        11900,
+        13428
+      ],
+      "y2": [
+        11752,
+        14182
+      ],
+      "y3": [
+        61360,
+        91391,
+        91875,
+        96571,
+        104460,
+        105447,
+        111665,
+        113001,
+        126900,
+        135171,
+        138585,
+        139280,
+        139378,
+        144625,
+        146418,
+        152428,
+        157257,
+        158917,
+        196622,
+        206851,
+        520384,
+        552362
+      ],
+      "y4": [
+        39617,
+        47196,
+        49043,
+        55210,
+        58941,
+        60273,
+        65524,
+        65559,
+        65886,
+        69722,
+        74743,
+        75922,
+        76362,
+        86066,
+        86156,
+        86431,
+        87177,
+        90678,
+        90902,
+        95523,
+        96497,
+        98554,
+        102936,
+        103255,
+        104713,
+        105365,
+        107285,
+        109624,
+        114522,
+        117782,
+        119499,
+        120768,
+        122062,
+        129430,
+        131607,
+        133019,
+        135578,
+        136144,
+        137595,
+        142538,
+        146058,
+        147184,
+        152019,
+        152044,
+        152385,
+        153771,
+        157134,
+        158372,
+        161153,
+        162050,
+        174672,
+        174862,
+        175459,
+        175964,
+        178101,
+        178487,
+        184778,
+        197920,
+        212160,
+        226708,
+        242429,
+        523382,
+        523942,
+        524069
+      ],
+      "y5": [
+        53285,
+        62731,
+        63391,
+        74856,
+        80744,
+        83277,
+        88477,
+        90867,
+        93704,
+        99089,
+        100258,
+        113067,
+        114216,
+        114700,
+        129563,
+        135290,
+        138629,
+        141510,
+        141615,
+        144315,
+        145094,
+        145148,
+        146603,
+        150177,
+        153931,
+        155916,
+        156028,
+        156046,
+        159062,
+        159158,
+        161079,
+        164086,
+        165365,
+        167009,
+        169278,
+        176460,
+        181924,
+        185518,
+        197691,
+        198758,
+        205884,
+        212085,
+        252045,
+        325731,
+        506819,
+        523638,
+        533294,
+        543677
+      ]
+    },
+    "type_count": 21,
+    "types_present": [
+      "PAM01",
+      "PAM02",
+      "PAM03",
+      "PAM04",
+      "PAM05",
+      "PAM06",
+      "PAM07",
+      "PAM08",
+      "PAM09",
+      "PAM10",
+      "PAM11",
+      "PAM12",
+      "PAM13",
+      "PAM14",
+      "PAM15",
+      "PPL101",
+      "PPL102",
+      "PPL103",
+      "PPL104",
+      "PPL105",
+      "PPL106"
+    ]
+  },
+  "guardrails": {
+    "amin_numeric_opened": false,
+    "direct_dan_mbon_required_for_gate": false,
+    "edge_weight_threshold_applied": false,
+    "learning_rate_selected": false,
+    "m4v0_numeric_opened": false,
+    "market_reward_pnl_opened": false,
+    "multi_compartment_mbon_edges_plastic": false,
+    "plasticity_executed": false,
+    "reward_valence_assigned": false,
+    "synapse_coordinates_opened": false
+  },
+  "identity": {
+    "all_kc_mbon_weights_finite_positive": true,
+    "counts": {
+      "DAN": 340,
+      "KC": 4064,
+      "MBON": 97
+    },
+    "exact_kc_mbon_edge_count_parity": true,
+    "exact_kc_mbon_edges_reconstructed": 61210,
+    "m5b2_expected_kc_mbon_edges": 61210
+  },
+  "mbon_mapping": {
+    "body_count": 97,
+    "multi_compartment_bodies": 40,
+    "outside_fast_lobe_map_bodies": 2,
+    "per_body": [
+      {
+        "bodyId": 10013,
+        "compartments": [
+          "y5",
+          "B'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON01(y5B'2a)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON01"
+      },
+      {
+        "bodyId": 10079,
+        "compartments": [
+          "B1"
+        ],
+        "eligible_edges": 943,
+        "eligible_raw_weight": 11675.0,
+        "instance": "MBON06(B1>a)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON06"
+      },
+      {
+        "bodyId": 10267,
+        "compartments": [
+          "a3"
+        ],
+        "eligible_edges": 833,
+        "eligible_raw_weight": 4929.0,
+        "instance": "MBON14(a3)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 10495,
+        "compartments": [
+          "y4"
+        ],
+        "eligible_edges": 853,
+        "eligible_raw_weight": 19140.0,
+        "instance": "MBON05(y4>y1y2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON05"
+      },
+      {
+        "bodyId": 10599,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 577,
+        "eligible_raw_weight": 2041.0,
+        "instance": "MBON35(y2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON35"
+      },
+      {
+        "bodyId": 10704,
+        "compartments": [
+          "y1",
+          "pedc"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON11(y1pedc>a/B)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON11"
+      },
+      {
+        "bodyId": 10804,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON20(y1y2)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON20"
+      },
+      {
+        "bodyId": 10816,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 367,
+        "eligible_raw_weight": 5367.0,
+        "instance": "MBON31(a'1a)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON31"
+      },
+      {
+        "bodyId": 10826,
+        "compartments": [
+          "y4",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON21(y4y5)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON21"
+      },
+      {
+        "bodyId": 11145,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON20(y1y2)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON20"
+      },
+      {
+        "bodyId": 11176,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 309,
+        "eligible_raw_weight": 1982.0,
+        "instance": "MBON26(b'2d)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON26"
+      },
+      {
+        "bodyId": 11402,
+        "compartments": [
+          "y1",
+          "pedc"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON11(y1pedc>a/B)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON11"
+      },
+      {
+        "bodyId": 11455,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 928,
+        "eligible_raw_weight": 7093.0,
+        "instance": "MBON32(y2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON32"
+      },
+      {
+        "bodyId": 11777,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 129,
+        "eligible_raw_weight": 213.0,
+        "instance": "MBON15(a'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 11785,
+        "compartments": [
+          "y2",
+          "y3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON33(y2y3)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON33"
+      },
+      {
+        "bodyId": 11805,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 371,
+        "eligible_raw_weight": 5126.0,
+        "instance": "MBON31(a'1a)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON31"
+      },
+      {
+        "bodyId": 11873,
+        "compartments": [
+          "a3"
+        ],
+        "eligible_edges": 868,
+        "eligible_raw_weight": 5488.0,
+        "instance": "MBON14(a3)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 11990,
+        "compartments": [],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON22(calyx)_R",
+        "somaSide": "R",
+        "status": "outside_fast_lobe_map",
+        "type": "MBON22"
+      },
+      {
+        "bodyId": 12690,
+        "compartments": [
+          "B1"
+        ],
+        "eligible_edges": 1001,
+        "eligible_raw_weight": 13790.0,
+        "instance": "MBON06(B1>a)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON06"
+      },
+      {
+        "bodyId": 12726,
+        "compartments": [
+          "a'2"
+        ],
+        "eligible_edges": 333,
+        "eligible_raw_weight": 5334.0,
+        "instance": "MBON13(a'2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON13"
+      },
+      {
+        "bodyId": 12859,
+        "compartments": [
+          "a1"
+        ],
+        "eligible_edges": 956,
+        "eligible_raw_weight": 5636.0,
+        "instance": "MBON07(a1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 12918,
+        "compartments": [],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON22(calyx)_L",
+        "somaSide": "L",
+        "status": "outside_fast_lobe_map",
+        "type": "MBON22"
+      },
+      {
+        "bodyId": 13728,
+        "compartments": [
+          "y2",
+          "a'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON12(y2a'1)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON12"
+      },
+      {
+        "bodyId": 13768,
+        "compartments": [
+          "y2",
+          "a'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON12(y2a'1)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON12"
+      },
+      {
+        "bodyId": 14221,
+        "compartments": [
+          "a2"
+        ],
+        "eligible_edges": 872,
+        "eligible_raw_weight": 6940.0,
+        "instance": "MBON18(a2sc)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON18"
+      },
+      {
+        "bodyId": 15626,
+        "compartments": [
+          "a1"
+        ],
+        "eligible_edges": 882,
+        "eligible_raw_weight": 5085.0,
+        "instance": "MBON07(a1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 15708,
+        "compartments": [
+          "B2",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON24(B2y5)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON24"
+      },
+      {
+        "bodyId": 17946,
+        "compartments": [
+          "a3"
+        ],
+        "eligible_edges": 887,
+        "eligible_raw_weight": 6719.0,
+        "instance": "MBON14(a3)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 18406,
+        "compartments": [
+          "B2",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON24(B2y5)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON24"
+      },
+      {
+        "bodyId": 18603,
+        "compartments": [
+          "a1"
+        ],
+        "eligible_edges": 878,
+        "eligible_raw_weight": 5425.0,
+        "instance": "MBON07(a1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 18713,
+        "compartments": [
+          "y3",
+          "B'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON09(y3B'1)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON09"
+      },
+      {
+        "bodyId": 19267,
+        "compartments": [
+          "y3",
+          "B'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON09(y3B'1)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON09"
+      },
+      {
+        "bodyId": 19366,
+        "compartments": [
+          "a3"
+        ],
+        "eligible_edges": 849,
+        "eligible_raw_weight": 5081.0,
+        "instance": "MBON14(a3)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 20835,
+        "compartments": [
+          "a2"
+        ],
+        "eligible_edges": 636,
+        "eligible_raw_weight": 1632.0,
+        "instance": "MBON23(a2sp)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON23"
+      },
+      {
+        "bodyId": 21242,
+        "compartments": [
+          "y3",
+          "B'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON09(y3B'1)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON09"
+      },
+      {
+        "bodyId": 26485,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 207,
+        "eligible_raw_weight": 1242.0,
+        "instance": "MBON28(a'3a)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON28"
+      },
+      {
+        "bodyId": 26853,
+        "compartments": [
+          "a2",
+          "a3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON19(a2p3p)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON19"
+      },
+      {
+        "bodyId": 28622,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 206,
+        "eligible_raw_weight": 1037.0,
+        "instance": "MBON28(a'3a)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON28"
+      },
+      {
+        "bodyId": 31016,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 267,
+        "eligible_raw_weight": 1480.0,
+        "instance": "MBON17(a'3m)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON17"
+      },
+      {
+        "bodyId": 31083,
+        "compartments": [
+          "a'1",
+          "a'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON15-like(a'1a'2)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON15-like"
+      },
+      {
+        "bodyId": 33617,
+        "compartments": [
+          "a2",
+          "a3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON19(a2p3p)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON19"
+      },
+      {
+        "bodyId": 36094,
+        "compartments": [
+          "a2",
+          "a3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON19(a2p3p)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON19"
+      },
+      {
+        "bodyId": 38853,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 201,
+        "eligible_raw_weight": 416.0,
+        "instance": "MBON15(a'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 38859,
+        "compartments": [
+          "a'1",
+          "a'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON15-like(a'1a'2)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON15-like"
+      },
+      {
+        "bodyId": 39608,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 130,
+        "eligible_raw_weight": 425.0,
+        "instance": "MBON10(B'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 41692,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 270,
+        "eligible_raw_weight": 1540.0,
+        "instance": "MBON17(a'3m)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON17"
+      },
+      {
+        "bodyId": 44619,
+        "compartments": [
+          "a'1",
+          "a'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON15-like(a'1a'2)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON15-like"
+      },
+      {
+        "bodyId": 47551,
+        "compartments": [
+          "a2",
+          "a3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON19(a2p3p)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON19"
+      },
+      {
+        "bodyId": 49262,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 94,
+        "eligible_raw_weight": 169.0,
+        "instance": "MBON10(B'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 58401,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 199,
+        "eligible_raw_weight": 385.0,
+        "instance": "MBON15(a'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 70924,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 216,
+        "eligible_raw_weight": 482.0,
+        "instance": "MBON10(B'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 76585,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 114,
+        "eligible_raw_weight": 154.0,
+        "instance": "MBON25-like(y2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 87077,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON25(y1y2)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON25"
+      },
+      {
+        "bodyId": 92112,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 32,
+        "eligible_raw_weight": 35.0,
+        "instance": "MBON34(y2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON34"
+      },
+      {
+        "bodyId": 110448,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON25-like(y1y2)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 133427,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 123,
+        "eligible_raw_weight": 206.0,
+        "instance": "MBON10(B'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 160320,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 230,
+        "eligible_raw_weight": 375.0,
+        "instance": "MBON25-like(y2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 187741,
+        "compartments": [
+          "a'1",
+          "a'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON15-like(a'1a'2)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON15-like"
+      },
+      {
+        "bodyId": 208566,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 38,
+        "eligible_raw_weight": 45.0,
+        "instance": "MBON34(y2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON34"
+      },
+      {
+        "bodyId": 394860,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON25(y1y2)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON25"
+      },
+      {
+        "bodyId": 508595,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 666,
+        "eligible_raw_weight": 2614.0,
+        "instance": "MBON35(y2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON35"
+      },
+      {
+        "bodyId": 512788,
+        "compartments": [
+          "a2"
+        ],
+        "eligible_edges": 851,
+        "eligible_raw_weight": 6985.0,
+        "instance": "MBON18(a2sc)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON18"
+      },
+      {
+        "bodyId": 512789,
+        "compartments": [
+          "a2"
+        ],
+        "eligible_edges": 562,
+        "eligible_raw_weight": 1302.0,
+        "instance": "MBON23(a2sp)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON23"
+      },
+      {
+        "bodyId": 513174,
+        "compartments": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON30(y1y2y3)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON30"
+      },
+      {
+        "bodyId": 513387,
+        "compartments": [
+          "a'2",
+          "a'3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON17-like(a'2a'3)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON17-like"
+      },
+      {
+        "bodyId": 513391,
+        "compartments": [
+          "a'2",
+          "a'3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON17-like(a'2a'3)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON17-like"
+      },
+      {
+        "bodyId": 514853,
+        "compartments": [
+          "a'2"
+        ],
+        "eligible_edges": 340,
+        "eligible_raw_weight": 4860.0,
+        "instance": "MBON13(a'2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON13"
+      },
+      {
+        "bodyId": 515015,
+        "compartments": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON30(y1y2y3)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON30"
+      },
+      {
+        "bodyId": 515034,
+        "compartments": [
+          "y5"
+        ],
+        "eligible_edges": 297,
+        "eligible_raw_weight": 3205.0,
+        "instance": "MBON27(y5d)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON27"
+      },
+      {
+        "bodyId": 515338,
+        "compartments": [
+          "a1"
+        ],
+        "eligible_edges": 935,
+        "eligible_raw_weight": 6694.0,
+        "instance": "MBON07(a1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 519128,
+        "compartments": [
+          "y5"
+        ],
+        "eligible_edges": 321,
+        "eligible_raw_weight": 2404.0,
+        "instance": "MBON27(y5d)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON27"
+      },
+      {
+        "bodyId": 519131,
+        "compartments": [
+          "y2"
+        ],
+        "eligible_edges": 981,
+        "eligible_raw_weight": 6071.0,
+        "instance": "MBON32(y2)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON32"
+      },
+      {
+        "bodyId": 519368,
+        "compartments": [
+          "y2",
+          "a'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON12(y2a'1)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON12"
+      },
+      {
+        "bodyId": 519371,
+        "compartments": [
+          "y4"
+        ],
+        "eligible_edges": 1146,
+        "eligible_raw_weight": 17180.0,
+        "instance": "MBON05(y4>y1y2)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON05"
+      },
+      {
+        "bodyId": 519373,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 616,
+        "eligible_raw_weight": 10309.0,
+        "instance": "MBON03(B'2mp)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON03"
+      },
+      {
+        "bodyId": 519619,
+        "compartments": [
+          "y4",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON29(y4y5)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON29"
+      },
+      {
+        "bodyId": 520151,
+        "compartments": [
+          "y5",
+          "B'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON01(y5B'2a)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON01"
+      },
+      {
+        "bodyId": 520186,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 286,
+        "eligible_raw_weight": 1571.0,
+        "instance": "MBON16(a'3ap)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON16"
+      },
+      {
+        "bodyId": 520395,
+        "compartments": [
+          "a'1"
+        ],
+        "eligible_edges": 158,
+        "eligible_raw_weight": 292.0,
+        "instance": "MBON15(a'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 521086,
+        "compartments": [
+          "y2",
+          "a'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON12(y2a'1)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON12"
+      },
+      {
+        "bodyId": 521526,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 633,
+        "eligible_raw_weight": 13695.0,
+        "instance": "MBON03(B'2mp)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON03"
+      },
+      {
+        "bodyId": 522444,
+        "compartments": [
+          "B2",
+          "B'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON02(B2B'2a)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON02"
+      },
+      {
+        "bodyId": 522749,
+        "compartments": [
+          "B2",
+          "B'2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON02(B2B'2a)_L",
+        "somaSide": "L",
+        "status": "multi_compartment",
+        "type": "MBON02"
+      },
+      {
+        "bodyId": 523043,
+        "compartments": [
+          "y2",
+          "y3"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON33(y2y3)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON33"
+      },
+      {
+        "bodyId": 523060,
+        "compartments": [
+          "y3",
+          "B'1"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON09(y3B'1)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON09"
+      },
+      {
+        "bodyId": 523628,
+        "compartments": [
+          "y4",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON21(y4y5)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON21"
+      },
+      {
+        "bodyId": 523987,
+        "compartments": [
+          "y4",
+          "y5"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON29(y4y5)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON29"
+      },
+      {
+        "bodyId": 524733,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 210,
+        "eligible_raw_weight": 398.0,
+        "instance": "MBON10(B'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 524893,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 268,
+        "eligible_raw_weight": 2575.0,
+        "instance": "MBON26(b'2d)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON26"
+      },
+      {
+        "bodyId": 525780,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 840,
+        "eligible_raw_weight": 3746.0,
+        "instance": "MBON04(B'2mp_bilateral)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON04"
+      },
+      {
+        "bodyId": 530875,
+        "compartments": [
+          "B'2"
+        ],
+        "eligible_edges": 799,
+        "eligible_raw_weight": 3057.0,
+        "instance": "MBON04(B'2mp_bilateral)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON04"
+      },
+      {
+        "bodyId": 531829,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 164,
+        "eligible_raw_weight": 372.0,
+        "instance": "MBON10(B'1)_L",
+        "somaSide": "L",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 540383,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 68,
+        "eligible_raw_weight": 98.0,
+        "instance": "MBON10(B'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 556300,
+        "compartments": [
+          "y1",
+          "y2"
+        ],
+        "eligible_edges": 0,
+        "eligible_raw_weight": 0.0,
+        "instance": "MBON25-like(y1y2)_R",
+        "somaSide": "R",
+        "status": "multi_compartment",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 558665,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 192,
+        "eligible_raw_weight": 387.0,
+        "instance": "MBON10(B'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 562782,
+        "compartments": [
+          "a'3"
+        ],
+        "eligible_edges": 318,
+        "eligible_raw_weight": 2039.0,
+        "instance": "MBON16(a'3ap)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON16"
+      },
+      {
+        "bodyId": 579919,
+        "compartments": [
+          "B'1"
+        ],
+        "eligible_edges": 82,
+        "eligible_raw_weight": 158.0,
+        "instance": "MBON10(B'1)_R",
+        "somaSide": "R",
+        "status": "single_compartment",
+        "type": "MBON10"
+      }
+    ],
+    "single_compartment_bodies": 55,
+    "single_compartment_without_gate": [],
+    "unresolved_bodies": 0
+  },
+  "plastic_edges": {
+    "eligible_edge_count": 26532,
+    "eligible_fraction_of_kc_mbon_edges": 0.433458585198497,
+    "eligible_raw_weight": 216699.0,
+    "eligible_unique_kcs": 4061,
+    "eligible_unique_mbons": 55,
+    "major_system_edge_counts": {
+      "alpha_beta": 11953,
+      "alpha_prime_beta_prime": 8396,
+      "gamma": 6183,
+      "other": 0
+    },
+    "per_compartment": {
+      "B'1": {
+        "edge_count": 1279,
+        "gate_dan_body_count": 34,
+        "gate_dan_body_ids": [
+          103433,
+          108576,
+          115868,
+          142660,
+          146774,
+          150983,
+          152291,
+          152326,
+          154387,
+          157370,
+          159831,
+          161596,
+          162116,
+          162631,
+          164279,
+          164601,
+          167073,
+          174255,
+          175232,
+          183567,
+          198507,
+          202330,
+          203682,
+          203885,
+          207122,
+          209656,
+          212684,
+          215940,
+          217737,
+          218518,
+          224160,
+          231413,
+          243477,
+          933708
+        ],
+        "raw_weight": 2695.0,
+        "unique_kc_bodies": 626,
+        "unique_mbon_bodies": 9
+      },
+      "B'2": {
+        "edge_count": 3465,
+        "gate_dan_body_count": 81,
+        "gate_dan_body_ids": [
+          72601,
+          83852,
+          92324,
+          94250,
+          94922,
+          97990,
+          98265,
+          105362,
+          107986,
+          110653,
+          126501,
+          127659,
+          131419,
+          132513,
+          134265,
+          134769,
+          134869,
+          135046,
+          135287,
+          135290,
+          136024,
+          136215,
+          137373,
+          140271,
+          141246,
+          141510,
+          142238,
+          142898,
+          144126,
+          145022,
+          145324,
+          145371,
+          147591,
+          148328,
+          148469,
+          150828,
+          151013,
+          151133,
+          151993,
+          152056,
+          152997,
+          154230,
+          155329,
+          157767,
+          158651,
+          160277,
+          161079,
+          163194,
+          163883,
+          163951,
+          165187,
+          168020,
+          168080,
+          169027,
+          170467,
+          171959,
+          174384,
+          176460,
+          177202,
+          190296,
+          190297,
+          190635,
+          192245,
+          196030,
+          196985,
+          207463,
+          213743,
+          217007,
+          226452,
+          230802,
+          257650,
+          259089,
+          291665,
+          336850,
+          518137,
+          523553,
+          525787,
+          532715,
+          577933,
+          580579,
+          909818
+        ],
+        "raw_weight": 35364.0,
+        "unique_kc_bodies": 1710,
+        "unique_mbon_bodies": 6
+      },
+      "B1": {
+        "edge_count": 1944,
+        "gate_dan_body_count": 24,
+        "gate_dan_body_ids": [
+          28434,
+          29565,
+          32865,
+          36624,
+          48113,
+          60930,
+          66934,
+          142528,
+          143120,
+          149869,
+          150034,
+          170450,
+          178945,
+          180403,
+          200973,
+          224205,
+          518072,
+          520403,
+          528100,
+          544257,
+          544359,
+          547260,
+          553201,
+          920537
+        ],
+        "raw_weight": 25465.0,
+        "unique_kc_bodies": 1942,
+        "unique_mbon_bodies": 2
+      },
+      "a'1": {
+        "edge_count": 1425,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          11752,
+          14182
+        ],
+        "raw_weight": 11799.0,
+        "unique_kc_bodies": 738,
+        "unique_mbon_bodies": 6
+      },
+      "a'2": {
+        "edge_count": 673,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          14225,
+          512326
+        ],
+        "raw_weight": 10194.0,
+        "unique_kc_bodies": 673,
+        "unique_mbon_bodies": 2
+      },
+      "a'3": {
+        "edge_count": 1554,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          21145,
+          515048
+        ],
+        "raw_weight": 8909.0,
+        "unique_kc_bodies": 684,
+        "unique_mbon_bodies": 6
+      },
+      "a1": {
+        "edge_count": 3651,
+        "gate_dan_body_count": 15,
+        "gate_dan_body_ids": [
+          114661,
+          119763,
+          137539,
+          138822,
+          139706,
+          145749,
+          147857,
+          157016,
+          204930,
+          215931,
+          224500,
+          238644,
+          273182,
+          319321,
+          520616
+        ],
+        "raw_weight": 22840.0,
+        "unique_kc_bodies": 1875,
+        "unique_mbon_bodies": 4
+      },
+      "a2": {
+        "edge_count": 2921,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          14225,
+          512326
+        ],
+        "raw_weight": 16859.0,
+        "unique_kc_bodies": 1838,
+        "unique_mbon_bodies": 4
+      },
+      "a3": {
+        "edge_count": 3437,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          529512,
+          529516
+        ],
+        "raw_weight": 22217.0,
+        "unique_kc_bodies": 1794,
+        "unique_mbon_bodies": 4
+      },
+      "y2": {
+        "edge_count": 3566,
+        "gate_dan_body_count": 2,
+        "gate_dan_body_ids": [
+          11752,
+          14182
+        ],
+        "raw_weight": 18428.0,
+        "unique_kc_bodies": 1924,
+        "unique_mbon_bodies": 8
+      },
+      "y4": {
+        "edge_count": 1999,
+        "gate_dan_body_count": 64,
+        "gate_dan_body_ids": [
+          39617,
+          47196,
+          49043,
+          55210,
+          58941,
+          60273,
+          65524,
+          65559,
+          65886,
+          69722,
+          74743,
+          75922,
+          76362,
+          86066,
+          86156,
+          86431,
+          87177,
+          90678,
+          90902,
+          95523,
+          96497,
+          98554,
+          102936,
+          103255,
+          104713,
+          105365,
+          107285,
+          109624,
+          114522,
+          117782,
+          119499,
+          120768,
+          122062,
+          129430,
+          131607,
+          133019,
+          135578,
+          136144,
+          137595,
+          142538,
+          146058,
+          147184,
+          152019,
+          152044,
+          152385,
+          153771,
+          157134,
+          158372,
+          161153,
+          162050,
+          174672,
+          174862,
+          175459,
+          175964,
+          178101,
+          178487,
+          184778,
+          197920,
+          212160,
+          226708,
+          242429,
+          523382,
+          523942,
+          524069
+        ],
+        "raw_weight": 36320.0,
+        "unique_kc_bodies": 1717,
+        "unique_mbon_bodies": 2
+      },
+      "y5": {
+        "edge_count": 618,
+        "gate_dan_body_count": 48,
+        "gate_dan_body_ids": [
+          53285,
+          62731,
+          63391,
+          74856,
+          80744,
+          83277,
+          88477,
+          90867,
+          93704,
+          99089,
+          100258,
+          113067,
+          114216,
+          114700,
+          129563,
+          135290,
+          138629,
+          141510,
+          141615,
+          144315,
+          145094,
+          145148,
+          146603,
+          150177,
+          153931,
+          155916,
+          156028,
+          156046,
+          159062,
+          159158,
+          161079,
+          164086,
+          165365,
+          167009,
+          169278,
+          176460,
+          181924,
+          185518,
+          197691,
+          198758,
+          205884,
+          212085,
+          252045,
+          325731,
+          506819,
+          523638,
+          533294,
+          543677
+        ],
+        "raw_weight": 5609.0,
+        "unique_kc_bodies": 618,
+        "unique_mbon_bodies": 2
+      }
+    },
+    "total_kc_mbon_edge_count": 61210
+  },
+  "prerequisite_parity": {
+    "annotation_hash_match": true,
+    "body_ids_unique": true,
+    "identity_counts_exact": true,
+    "m5b2_pass": true,
+    "m5b3a_pass": true,
+    "weights_hash_match": true
+  },
+  "reason": "all frozen source, mapping and eligible-edge criteria passed",
+  "source_sha256": {
+    "annotations": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2",
+    "weights": "e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1"
+  }
+}
