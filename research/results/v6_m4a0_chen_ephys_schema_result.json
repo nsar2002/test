@@ -1,0 +1,12 @@
+{
+  "classification": "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
+  "guardrails": {
+    "amin_loaded": false,
+    "archive_member_decompressed": false,
+    "archive_member_payload_opened": false,
+    "m3f4_residual_used": false,
+    "mnq_loaded": false,
+    "model_fit": false
+  },
+  "reason": "exception: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+}
