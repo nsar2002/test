@@ -1,0 +1,75 @@
+name: V6 M5B3A compartment label schema
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v6_m5b3a_compartment_label_schema.yml"
+      - "fly_mnq/v6_m5b3a_compartment_label_schema.py"
+      - "research/v6_m5b3a_compartment_label_schema_protocol.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.10"
+      - name: Install pinned dependencies
+        run: python -m pip install --disable-pip-version-check pandas==2.2.3 pyarrow==17.0.0
+      - name: Acquire pinned annotation source
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m5b3a_work v6_m5b3a_out
+          curl --fail --location --retry 5 --retry-delay 5             -o v6_m5b3a_work/body-annotations.feather             https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
+          echo '2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2  v6_m5b3a_work/body-annotations.feather' | sha256sum -c -
+      - name: Freeze execution bytes
+        run: |
+          sha256sum research/v6_m5b3a_compartment_label_schema_protocol.md fly_mnq/v6_m5b3a_compartment_label_schema.py             | tee v6_m5b3a_out/preexecution_sha256.txt
+      - name: Execute frozen source-schema audit
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m5b3a_compartment_label_schema.py | tee v6_m5b3a_out/stdout.txt
+      - name: Enforce vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m5b3a_out/v6_m5b3a_compartment_label_schema_result.json"))
+          allowed={"PASS_M5B3A_COMPARTMENT_LABEL_SCHEMA_QUALIFIED","BLOCKED_M5B3A_COMPARTMENT_LABEL_SCHEMA"}
+          print("FORMAL_CLASSIFICATION",r["classification"])
+          if r["classification"] not in allowed: raise SystemExit(2)
+          PY
+      - name: Hash outputs
+        run: |
+          : > v6_m5b3a_out/output_sha256.txt
+          for f in v6_m5b3a_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m5b3a_out/output_sha256.txt
+          done
+          cat v6_m5b3a_out/output_sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fly-mnq-v6-m5b3a-compartment-label-schema
+          path: v6_m5b3a_out/
+          retention-days: 14
+          compression-level: 0
+      - name: Persist formal result
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m5b3a_out/v6_m5b3a_compartment_label_schema_result.json research/results/v6_m5b3a_compartment_label_schema_result.json
+          cp v6_m5b3a_out/output_sha256.txt research/results/v6_m5b3a_compartment_label_schema_output_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m5b3a_compartment_label_schema_result.json research/results/v6_m5b3a_compartment_label_schema_output_sha256.txt
+          if git diff --cached --quiet; then echo "No result change"; else
+            git commit -m "V6-M5B3A: record compartment-label schema result [skip ci]"
+            git push
+          fi
