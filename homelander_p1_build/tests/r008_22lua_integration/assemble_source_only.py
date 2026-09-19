@@ -30,6 +30,7 @@ overrides = {
     "impact_vfx_gate_v012_STAGED.lua": "impact_vfx_gate_v012_reserved_DORMANT.lua",
     "target_continuity_probe_v013_STAGED.lua": "target_continuity_probe_v013_player_DORMANT.lua",
     "dot_dryrun_scheduler_v014_STAGED.lua": "dot_dryrun_scheduler_v014_player_DORMANT.lua",
+    "damagehit_payload_probe_v015_STAGED.lua": "damagehit_payload_probe_v015_player_DORMANT.lua",
 }
 baselines = {
     "runtime_probe.lua", "setter_echo_probe.lua",
@@ -86,7 +87,7 @@ for name in names:
         "sha256": hashlib.sha256(payload).hexdigest(),
     })
 assert len(inventory) == 22
-assert len([v for v in inventory if v["role"] == "guarded-native-path-source-override"]) == 11
+assert len([v for v in inventory if v["role"] == "guarded-native-path-source-override"]) == 12
 
 report = {
     "schema": "homelander-p1-r008-staged-source-integration/1.0",
@@ -110,4 +111,4 @@ report = {
 (destination / "INTEGRATION_MANIFEST.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
-print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, eleven guarded override bytes, original v003 baselines intact")
+print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, twelve guarded override bytes, original v003 baselines intact")
