@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_008_DYNAMIC_AIM_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_009_DYNAMIC_STABILITY_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -127,6 +127,8 @@ namespace hl
     bool g_laserOneShotPassed = false;
     bool g_laserHeldStabilityPassed = false;
     uint32_t g_laserHeldSubmitFrames = 0;
+    bool g_laserDynamicStabilityPassed = false;
+    uint32_t g_laserDynamicSubmitFrames = 0;
     int32_t g_laserSightHandles[2] = {-1, -1};
 
     RenderCameraPositionFn g_originalRenderCameraPosition = nullptr;
@@ -892,6 +894,8 @@ namespace hl
             g_laserOneShotPassed = false;
             g_laserHeldStabilityPassed = false;
             g_laserHeldSubmitFrames = 0;
+            g_laserDynamicStabilityPassed = false;
+            g_laserDynamicSubmitFrames = 0;
             return false;
         }
 
@@ -953,6 +957,8 @@ namespace hl
         g_laserOneShotPassed = false;
         g_laserHeldStabilityPassed = false;
         g_laserHeldSubmitFrames = 0;
+        g_laserDynamicStabilityPassed = false;
+        g_laserDynamicSubmitFrames = 0;
         g_laserShader = nullptr;
 
         bool ok = false;
@@ -986,14 +992,31 @@ namespace hl
     {
         g_laserHeldStabilityPassed = false;
         g_laserHeldSubmitFrames = 0;
+        g_laserDynamicStabilityPassed = false;
+        g_laserDynamicSubmitFrames = 0;
         PushLuaBool(L, true);
-        Log("F15 native stability counter reset");
+        Log("F15 native stability counter reset; downstream dynamic proof invalidated");
         return LuaPushBoolean ? 1 : 0;
     }
 
     int __cdecl LuaLaserSightHeldStabilityProbeHook(int L)
     {
         PushLuaBool(L, g_laserHeldStabilityPassed);
+        return LuaPushBoolean ? 1 : 0;
+    }
+
+    int __cdecl LuaLaserSightResetDynamicGateHook(int L)
+    {
+        g_laserDynamicStabilityPassed = false;
+        g_laserDynamicSubmitFrames = 0;
+        PushLuaBool(L, true);
+        Log("F16 native dynamic stability counter reset");
+        return LuaPushBoolean ? 1 : 0;
+    }
+
+    int __cdecl LuaLaserSightDynamicStabilityProbeHook(int L)
+    {
+        PushLuaBool(L, g_laserDynamicStabilityPassed);
         return LuaPushBoolean ? 1 : 0;
     }
 
@@ -1139,17 +1162,31 @@ namespace hl
             g_laserOneShotPassed = true;
             g_laserHeldStabilityPassed = false;
             g_laserHeldSubmitFrames = 0;
+            g_laserDynamicStabilityPassed = false;
+            g_laserDynamicSubmitFrames = 0;
             Log("F14 PASS: two real LaserSight render events submitted | centerError=%.6f distance=%.3f",
                 centerError, beamDistance);
         }
         else if (heldSubmit)
         {
+            g_laserDynamicStabilityPassed = false;
+            g_laserDynamicSubmitFrames = 0;
             if (g_laserHeldSubmitFrames < 0xFFFFFFFFu)
                 ++g_laserHeldSubmitFrames;
             if (!g_laserHeldStabilityPassed && g_laserHeldSubmitFrames >= 120u)
             {
                 g_laserHeldStabilityPassed = true;
                 Log("F15 NATIVE STABILITY PASS: 120 consecutive successful held submits");
+            }
+        }
+        else if (dynamicSubmit)
+        {
+            if (g_laserDynamicSubmitFrames < 0xFFFFFFFFu)
+                ++g_laserDynamicSubmitFrames;
+            if (!g_laserDynamicStabilityPassed && g_laserDynamicSubmitFrames >= 120u)
+            {
+                g_laserDynamicStabilityPassed = true;
+                Log("F16 NATIVE STABILITY PASS: 120 successful dynamic submits");
             }
         }
 
@@ -1381,6 +1418,8 @@ namespace hl
         g_laserOneShotPassed = false;
         g_laserHeldStabilityPassed = false;
         g_laserHeldSubmitFrames = 0;
+        g_laserDynamicStabilityPassed = false;
+        g_laserDynamicSubmitFrames = 0;
         g_laserShader = nullptr;
         CleanupLaserSightHandles();
 
