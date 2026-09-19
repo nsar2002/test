@@ -7,8 +7,8 @@ $managerText = [System.IO.File]::ReadAllText($src, [System.Text.Encoding]::UTF8)
 $normalizedSource = Join-Path $env:RUNNER_TEMP ('p1_r005_manager_normalized_' + [guid]::NewGuid().ToString('N') + '.ps1')
 [System.IO.File]::WriteAllText($normalizedSource, $managerText, ([System.Text.UTF8Encoding]::new($false)))
 $actualManager = (Get-FileHash -LiteralPath $normalizedSource -Algorithm SHA256).Hash.ToLowerInvariant()
-$expectedManager = 'dc3868b0c9e6ad416f85600fbc64ceb7957fa0e72475cc815c40f7f94d6d476a'
-if ($actualManager -ne $expectedManager) { throw "Test manager is not byte-identical to R005: $actualManager" }
+$expectedManager = '4a7f8f03dd3f63c2e024214a434a3948852f31257ca7616096e0f4784b70d735'
+if ($actualManager -ne $expectedManager) { throw "Test manager normalized source does not match R006 ASCII manager: $actualManager" }
 $work = Join-Path $env:RUNNER_TEMP ('P1_R005_SYNTHETIC_' + [guid]::NewGuid().ToString('N'))
 $pack = Join-Path $work 'pack'
 $root = Join-Path $work 'Game Root With Spaces'
