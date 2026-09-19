@@ -131,3 +131,28 @@ jobs:
             if(-not $s.Contains($needle)) { throw "Missing observer behavior: $needle" }
           }
           Write-Host 'Launch/monitor semantics PASS'
+
+      - name: Assemble validated live-assistant artifact
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path live_assistant_release | Out-Null
+          Copy-Item homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 live_assistant_release/
+          Copy-Item homelander_p1_build/runtime_promotion/LIVE_GATE_ASSISTANT.md live_assistant_release/
+          Copy-Item homelander_p1_build/runtime_promotion/promotion_manifest.json live_assistant_release/
+          @'
+          branch=homelander-p1-live-gate-assistant-20260919
+          commit=${{ github.sha }}
+          ci_run=${{ github.run_id }}
+          status=WINDOWS_CI_VALIDATED
+          authoritative_pass_writer=P1_PROMOTION_MANAGER.ps1_only
+          '@ | Set-Content -LiteralPath live_assistant_release/VALIDATION.txt -Encoding UTF8
+          Get-ChildItem live_assistant_release -File | ForEach-Object {
+            $h=(Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$h  $($_.Name)"
+          } | Set-Content -LiteralPath live_assistant_release/SHA256SUMS.txt -Encoding ASCII
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_LiveGateAssistant_v001_VALIDATED
+          path: live_assistant_release/
+          if-no-files-found: error
