@@ -1,4 +1,5 @@
 name: V6 M4A1H ABF channel schema gate
+# trigger revision 1: header-schema-only, no rule change
 
 on:
   push:
