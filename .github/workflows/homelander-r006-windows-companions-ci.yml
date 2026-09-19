@@ -51,3 +51,4 @@ jobs:
           Write-Host 'R006_WINDOWS_OBSERVER_FATAL_LOG_REJECT_PASS'
           # No actual game was started and no authoritative receipt was written.
           Write-Host 'R006_WINDOWS_COMPANION_SUITE_PASS_NO_REAL_GAME'
+          exit 0 # Negative log tests intentionally return 4/5; do not leak those statuses as CI failure.
