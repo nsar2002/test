@@ -1,0 +1,99 @@
+name: Homelander P1 Live Evidence Export CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-live-gate-assistant-20260919
+    paths:
+      - 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1'
+      - 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.cmd'
+      - 'homelander_p1_build/runtime_promotion/LIVE_EVIDENCE_EXPORT.md'
+      - 'homelander_p1_build/runtime_promotion/promotion_manifest.json'
+      - '.github/workflows/homelander-p1-live-evidence-export-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-evidence-exporter:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse exporter PowerShell
+        shell: pwsh
+        run: |
+          $path=(Resolve-Path 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1').Path
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.ToString() }
+            throw "PowerShell parser found $($errors.Count) error(s)."
+          }
+          Write-Host 'Exporter AST parse PASS'
+
+      - name: Run archive round-trip SelfTest
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -File ./homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1 -Action SelfTest
+          if($LASTEXITCODE -ne 0) { throw "Exporter SelfTest exit $LASTEXITCODE" }
+
+      - name: Verify read-only promotion boundary
+        shell: pwsh
+        run: |
+          $s=Get-Content 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1' -Raw
+          $required=@(
+            "Prototype is running. Close the game before exporting a stable evidence snapshot.",
+            "Promotion state mismatch",
+            "Assert-Identity",
+            "EVIDENCE_SUMMARY.json",
+            "authoritativeReceiptsCopied",
+            "observerEvidenceCopied",
+            "This archive does not create, modify, or imply any live-gate PASS.",
+            "No PASS state or gameplay file was modified."
+          )
+          foreach($needle in $required) {
+            if(-not $s.Contains($needle)) { throw "Missing exporter safety control: $needle" }
+          }
+          $forbiddenRegex=@(
+            '(?i)passedStages\s*=',
+            '(?i)P1_PROMOTION_MANAGER\.ps1\s+-Action\s+(Check|Install|Rollback|ResetLog)',
+            '(?i)Start-Process[^\r\n]+prototypef',
+            '(?i)Copy-Item[^\r\n]+homelander_p1\.asi[^\r\n]+-Destination',
+            '(?i)Remove-Item[^\r\n]+homelander_p1\.asi',
+            '(?i)Remove-Item[^\r\n]+lua_p1'
+          )
+          foreach($rx in $forbiddenRegex) {
+            if($s -match $rx) { throw "Forbidden promotion/game mutation matched: $rx" }
+          }
+          Write-Host 'Read-only boundary PASS'
+
+      - name: Verify exported evidence scope
+        shell: pwsh
+        run: |
+          $s=Get-Content 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1' -Raw
+          foreach($needle in @(
+            'homelander_p1_runtime.log',
+            'state.json',
+            "Join-Path $stateDir 'receipts'",
+            "Join-Path $stateDir 'live_observer'",
+            'prototypeenginef.dll',
+            'binkw32.dll',
+            'binkw32Hooked.dll',
+            'Compress-Archive',
+            '.sha256.txt'
+          )) {
+            if(-not $s.Contains($needle)) { throw "Missing evidence scope item: $needle" }
+          }
+          if($s -match "(?i)Join-Path \$stateDir 'backups'") { throw 'Exporter must not copy rollback backups.' }
+          Write-Host 'Evidence scope PASS'
+
+      - name: Verify CMD launcher
+        shell: pwsh
+        run: |
+          $s=Get-Content 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.cmd' -Raw
+          if(-not $s.Contains('P1_EXPORT_LIVE_EVIDENCE.ps1')) { throw 'CMD launcher missing exporter call.' }
+          if(-not $s.Contains('-Action Export')) { throw 'CMD launcher missing Export action.' }
+          Write-Host 'CMD launcher PASS'
