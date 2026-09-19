@@ -113,6 +113,8 @@ function Homelander_LaserSightHeldToggleV009()
         return false
     end
 
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
+    HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
     S.enabled = true
     S.target = G.target
     S.frames = 0
@@ -197,7 +199,11 @@ function Homelander_LaserSightHeldTickV009()
     if max_frames < 60 then max_frames = 60 end
     if max_frames > 3600 then max_frames = 3600 end
 
-    if (S.frames % 120) == 0 then
+    if S.frames == 120 then
+        HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = true
+        HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = S.target
+        log("STABILITY PASS | 120 consecutive successful held render frames")
+    elseif (S.frames % 120) == 0 then
         log("HEARTBEAT | successful held render frames=" .. tostring(S.frames) ..
             " maxFrames=" .. tostring(max_frames))
     end
