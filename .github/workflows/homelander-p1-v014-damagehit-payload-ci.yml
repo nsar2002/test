@@ -1,0 +1,146 @@
+name: Homelander P1 v014 DamageHit Payload CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v014-damagehit-payload-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua'
+      - 'homelander_p1_build/P1_DAMAGEHIT_PAYLOAD_GATE_20260919.md'
+      - 'homelander_p1_build/V014_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-v014-damagehit-payload-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Build v014
+        run: |
+          mkdir -p homelander_p1_build/build_v014
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_v014/homelander_p1_v014.asi \
+            -luser32
+          test -s homelander_p1_build/build_v014/homelander_p1_v014.asi
+
+      - name: Verify PE32 imports and build identity
+        run: |
+          file homelander_p1_build/build_v014/homelander_p1_v014.asi | tee homelander_p1_build/build_v014/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_v014/homelander_p1_v014.asi | tee homelander_p1_build/build_v014/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_v014/homelander_p1_v014.asi | tee homelander_p1_build/build_v014/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_v014/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_v014/imports.txt; then exit 1; fi
+          grep -q 'P1_RuntimeProbe_014_DAMAGEHIT_PAYLOAD_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+
+      - name: Validate Lua 5.1
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua
+
+      - name: Lock upstream chain through F20
+        run: |
+          echo 'b23baf1a08c0358f7eab10f291566f6e26ec9a6cae7bd52fb8415edac6f99350  homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua' | sha256sum -c -
+          echo '1bf101a352722b809e2137437161ac44e527039f9a4720961d5d058fec7774f2  homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua' | sha256sum -c -
+          echo '44ea5cdf6f6b0241834f25ec4f66675efa48bfe42a6340cacd6498a9c1f33b01  homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua' | sha256sum -c -
+          echo '1061aeb0b066c14c06295c48818db3b8b078071c973a6ce6953e1f6d70916cdd  homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua' | sha256sum -c -
+          echo '5647a396b03046e537179f1c91a6a8b9373a799618b21c9d3e93cc4e19d3949e  homelander_p1_build/lua_p1/impact_vfx_gate_v012_STAGED.lua' | sha256sum -c -
+          echo 'f29934a16e20b88cbdfa82ce14b722700914e01fd7f5595dc551a144b6511ccc  homelander_p1_build/lua_p1/target_continuity_probe_v013_STAGED.lua' | sha256sum -c -
+          echo '07e996ce56d8a3440fe25fcd8038801337e8278b04b53c41b5834bf52bdce888  homelander_p1_build/lua_p1/dot_dryrun_scheduler_v014_STAGED.lua' | sha256sum -c -
+
+      - name: Verify F21 native staging bridge
+        run: |
+          C=homelander_p1_build/homelander_p1.cpp
+          grep -q 'g_f21Prev' "$C"
+          grep -q 'g_damageHitPayloadReady' "$C"
+          grep -q 'damagehit_payload_probe_v015_STAGED.lua' "$C"
+          grep -q 'RisingEdge(VK_F21, g_f21Prev, inputEnabled)' "$C"
+          grep -q 'Homelander_DamageHitPayloadProbeV015' "$C"
+          grep -q 'F21=READ-ONLY DamageAndHit payload probe' "$C"
+
+      - name: Verify upstream proof and exact target identity
+        run: |
+          P=homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua
+          grep -q 'HOMELANDER_DOT_DRYRUN_PASSED ~= true' "$P"
+          grep -q 'local target = HOMELANDER_DOT_DRYRUN_TARGET' "$P"
+          grep -q 'HOMELANDER_TARGET_CONTINUITY_TARGET ~= target' "$P"
+          grep -q 'HOMELANDER_DAMAGE_LAST_TARGET ~= target' "$P"
+          grep -q 'candidate ~= target' "$P"
+          grep -q 'HOMELANDER_EYE_ORIGIN_NAME ~= "EYEPOINT"' "$P"
+
+      - name: Verify fresh payload semantics
+        run: |
+          P=homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua
+          grep -q 'pcall(fre_LineOfSightTest, start, rayEnd, true, player)' "$P"
+          grep -q 'pcall(go_GetJointPosition, player, "EYEPOINT")' "$P"
+          grep -q 'local direction, distance = normalized(hitPos - eyePos)' "$P"
+          grep -q 'HOMELANDER_DAMAGEHIT_PAYLOAD_HIT_POS = hitPos' "$P"
+          grep -q 'HOMELANDER_DAMAGEHIT_PAYLOAD_DIRECTION = direction' "$P"
+          grep -q 'HOMELANDER_DAMAGEHIT_PAYLOAD_DISTANCE = distance' "$P"
+          grep -q 'HOMELANDER_DAMAGEHIT_PAYLOAD_PASSED = true' "$P"
+
+      - name: Verify strict read-only boundary
+        run: |
+          P=homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua
+          if grep -Eq 'go_ApplyDamage\(|go_ApplyDamageAndHit\(|em_AddWorldEffect|go_SetHealth|go_SetMaxHealth|phys_SetLinearVelocity|phys_SetAngularVelocity|go_Teleport|go_PlayerTeleport|pcall\(ai_Laser|HL_LaserSightSubmitDual' "$P"; then
+            echo "Forbidden gameplay mutation/render submit found in F21 payload probe"
+            exit 1
+          fi
+
+      - name: Verify semantic audit is carried forward
+        run: |
+          A=homelander_p1_build/P1_DAMAGE_AND_HIT_VECTOR_AUDIT_20260919.md
+          grep -q 'Vector #3 = world-space hit/target position' "$A"
+          grep -q 'Vector #4 = incoming hit/attack direction' "$A"
+          grep -q 'Vector #4 is NOT a surface normal' "$A"
+
+      - name: Hash build and sources
+        run: |
+          sha256sum homelander_p1_build/build_v014/homelander_p1_v014.asi | tee homelander_p1_build/build_v014/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua
+          sha256sum homelander_p1_build/P1_DAMAGEHIT_PAYLOAD_GATE_20260919.md
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant v014 bundle
+        run: |
+          mkdir -p stage_v014/lua_p1 stage_v014/CI_EVIDENCE
+          cp homelander_p1_build/build_v014/homelander_p1_v014.asi stage_v014/
+          cp homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/impact_vfx_gate_v012_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/target_continuity_probe_v013_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/dot_dryrun_scheduler_v014_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/lua_p1/damagehit_payload_probe_v015_STAGED.lua stage_v014/lua_p1/
+          cp homelander_p1_build/P1_DAMAGE_AND_HIT_VECTOR_AUDIT_20260919.md stage_v014/
+          cp homelander_p1_build/P1_DAMAGEHIT_PAYLOAD_GATE_20260919.md stage_v014/
+          cp homelander_p1_build/P1_HEALTH_TIME_ABI_20260919.md stage_v014/
+          cp homelander_p1_build/P1_TARGET_CONTINUITY_GATE_20260919.md stage_v014/
+          cp homelander_p1_build/P1_DOT_DRYRUN_GATE_20260919.md stage_v014/
+          cp homelander_p1_build/homelander_p1.cpp stage_v014/homelander_p1_v014_SOURCE.cpp
+          cp homelander_p1_build/build_v014/file.txt stage_v014/CI_EVIDENCE/
+          cp homelander_p1_build/build_v014/headers.txt stage_v014/CI_EVIDENCE/
+          cp homelander_p1_build/build_v014/imports.txt stage_v014/CI_EVIDENCE/
+          cp homelander_p1_build/build_v014/sha256.txt stage_v014/CI_EVIDENCE/
+          (cd stage_v014 && sha256sum homelander_p1_v014.asi lua_p1/*.lua P1_DAMAGE_AND_HIT_VECTOR_AUDIT_20260919.md P1_DAMAGEHIT_PAYLOAD_GATE_20260919.md P1_HEALTH_TIME_ABI_20260919.md P1_TARGET_CONTINUITY_GATE_20260919.md P1_DOT_DRYRUN_GATE_20260919.md homelander_p1_v014_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v014 && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v014_DamageHitPayloadGate_DORMANT
+          path: stage_v014/
+          if-no-files-found: error
