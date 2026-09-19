@@ -60,3 +60,5 @@ A later one-shot damage probe must require BOTH:
 and must still reacquire/validate a fresh non-player GOH before any damage call.
 
 Nothing in v009 is permitted to alter the active Prototype installation before the full earlier runtime chain passes.
+
+Reproducibility build requested with C++ and all LaserSight Lua sources intentionally unchanged.
