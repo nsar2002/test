@@ -21,8 +21,8 @@ lua_dest = destination / "lua_p1"
 overrides = {
     "freeaim_probe_v004_STAGED.lua": "freeaim_probe_v004_numeric_epoch_DORMANT.lua",
     "freeaim_local_offset_probe_v005_STAGED.lua": "freeaim_local_offset_probe_v005_epoch_DORMANT.lua",
-    "eye_origin_probe_v006_STAGED.lua": "eye_origin_probe_v006_failclosed_DORMANT.lua",
-    "dual_eye_freeaim_render_v007_STAGED.lua": "dual_eye_freeaim_render_v007_epoch_DORMANT.lua",
+    "eye_origin_probe_v006_STAGED.lua": "eye_origin_probe_v006_epoch_DORMANT.lua",
+    "dual_eye_freeaim_render_v007_STAGED.lua": "dual_eye_freeaim_render_v007_f11_epoch_DORMANT.lua",
 }
 baselines = {
     "runtime_probe.lua", "setter_echo_probe.lua",
