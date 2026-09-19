@@ -2,7 +2,7 @@
 # NEVER point this at a user's real game. All names, logs and files are synthetic.
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-$src = Join-Path $PSScriptRoot 'P1_PROMOTION_MANAGER.ps1'
+$src = Join-Path (Split-Path -Parent $PSScriptRoot) 'r005_windows_manager\P1_PROMOTION_MANAGER.ps1'
 $managerText = [System.IO.File]::ReadAllText($src, [System.Text.Encoding]::UTF8).Replace("`r`n", "`n")
 $normalizedSource = Join-Path $env:RUNNER_TEMP ('p1_r005_manager_normalized_' + [guid]::NewGuid().ToString('N') + '.ps1')
 [System.IO.File]::WriteAllText($normalizedSource, $managerText, ([System.Text.UTF8Encoding]::new($false)))
