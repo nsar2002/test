@@ -1,9 +1,9 @@
-name: Homelander R005 Windows Synthetic Promotion Manager (No Game)
+name: Homelander R006 Windows Synthetic Promotion Manager (No Game)
 
 on:
   push:
     branches:
-      - homelander-p1-r005-windows-wrapper-ci-20260919
+      - homelander-p1-r006-windows-manager-ci-20260919
     paths:
       - 'homelander_p1_build/tests/r005_windows_manager/**'
       - '.github/workflows/homelander-r005-windows-manager-fixture-ci.yml'
