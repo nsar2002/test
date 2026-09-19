@@ -1,0 +1,157 @@
+name: Homelander P1 v010 One-Shot Damage CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v010-damage-oneshot-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua'
+      - 'homelander_p1_build/P1_DAMAGE_STATIC_ABI_20260919.md'
+      - 'homelander_p1_build/P1_DAMAGE_ONESHOT_GATE_20260919.md'
+      - 'homelander_p1_build/V010_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-v010-damage-oneshot-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Build v010
+        run: |
+          mkdir -p homelander_p1_build/build_v010
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_v010/homelander_p1_v010.asi \
+            -luser32
+          test -s homelander_p1_build/build_v010/homelander_p1_v010.asi
+
+      - name: Verify PE32 imports and build identity
+        run: |
+          file homelander_p1_build/build_v010/homelander_p1_v010.asi | tee homelander_p1_build/build_v010/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_v010/homelander_p1_v010.asi | tee homelander_p1_build/build_v010/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_v010/homelander_p1_v010.asi | tee homelander_p1_build/build_v010/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_v010/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_v010/imports.txt; then exit 1; fi
+          grep -q 'P1_RuntimeProbe_010_DAMAGE_ONESHOT_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+
+      - name: Validate Lua 5.1
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua
+
+      - name: Lock v009 upstream renderer sources
+        run: |
+          echo 'b23baf1a08c0358f7eab10f291566f6e26ec9a6cae7bd52fb8415edac6f99350  homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua' | sha256sum -c -
+          echo '1bf101a352722b809e2137437161ac44e527039f9a4720961d5d058fec7774f2  homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua' | sha256sum -c -
+          echo '44ea5cdf6f6b0241834f25ec4f66675efa48bfe42a6340cacd6498a9c1f33b01  homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua' | sha256sum -c -
+
+      - name: Verify F17 native staging bridge
+        run: |
+          C=homelander_p1_build/homelander_p1.cpp
+          grep -q 'g_f17Prev' "$C"
+          grep -q 'g_damageOneShotReady' "$C"
+          grep -q 'heatvision_damage_gate_v011_STAGED.lua' "$C"
+          grep -q 'RisingEdge(VK_F17, g_f17Prev, inputEnabled)' "$C"
+          grep -q 'Homelander_HeatVisionDamageOneShotV011' "$C"
+          grep -q 'F17=one-shot heat-vision damage gate' "$C"
+
+      - name: Verify double stability and fresh target gates
+        run: |
+          D=homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua
+          grep -q 'HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED ~= true' "$D"
+          grep -q 'HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES' "$D"
+          grep -q 'HL_LaserSightDynamicStabilityProbe' "$D"
+          grep -q 'pcall(cm_GetCurrentRenderCameraPosition)' "$D"
+          grep -q 'pcall(HL_GetCameraFrame)' "$D"
+          grep -q 'pcall(fre_LineOfSightTest, start, rayEnd, true, player)' "$D"
+          grep -q 'pcall(HL_LastRayHitGOH)' "$D"
+          grep -q 'if target == player then' "$D"
+          grep -q 'not valid_goh(target)' "$D"
+
+      - name: Verify one-shot mutation envelope
+        run: |
+          D=homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua
+          test "$(grep -Fc 'pcall(go_ApplyDamage, target, damage)' "$D")" -eq 1
+          if grep -Eq 'go_ApplyDamageAndHit|em_AddWorldEffect|em_AddWorldEffectOriented|phys_SetLinearVelocity|phys_SetAngularVelocity|pcall\(ai_Laser' "$D"; then
+            echo "Forbidden mutation/legacy renderer found in F17 gate"
+            exit 1
+          fi
+          grep -q 'if damage < 0.01 then damage = 0.01 end' "$D"
+          grep -q 'if damage > 1.0 then damage = 1.0 end' "$D"
+          grep -q 'HOMELANDER_DAMAGE_ONESHOT_PASSED == true' "$D"
+          grep -q 'HOMELANDER_DAMAGE_ONESHOT_PASSED = true' "$D"
+
+      - name: Verify fail-closed post-success invalidation
+        run: |
+          D=homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua
+          grep -q 'Homelander_DynamicAimForceDisableV010' "$D"
+          grep -q 'HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED = false' "$D"
+          grep -q 'HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES = nil' "$D"
+          grep -q 'HL_LaserSightResetDynamicGate' "$D"
+
+      - name: Verify ABI documentation boundary
+        run: |
+          A=homelander_p1_build/P1_DAMAGE_STATIC_ABI_20260919.md
+          grep -q 'void go_ApplyDamage(engine::LuaGOH, float)' "$A"
+          grep -q 'void go_ApplyDamageAndHit(engine::LuaGOH, float, math::Vector, math::Vector)' "$A"
+          grep -q 'MUST NOT call go_ApplyDamageAndHit' "$A"
+          grep -q 'ed0870eb24ace5565a0245ade42114f0724b881d3d75b793f376e9bb184f8d51' "$A"
+
+      - name: Hash build and sources
+        run: |
+          sha256sum homelander_p1_build/build_v010/homelander_p1_v010.asi | tee homelander_p1_build/build_v010/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua
+          sha256sum homelander_p1_build/P1_DAMAGE_STATIC_ABI_20260919.md
+          sha256sum homelander_p1_build/P1_DAMAGE_ONESHOT_GATE_20260919.md
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant v010 bundle
+        run: |
+          mkdir -p stage_v010/lua_p1 stage_v010/CI_EVIDENCE
+          cp homelander_p1_build/build_v010/homelander_p1_v010.asi stage_v010/
+          cp homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua stage_v010/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua stage_v010/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua stage_v010/lua_p1/
+          cp homelander_p1_build/lua_p1/heatvision_damage_gate_v011_STAGED.lua stage_v010/lua_p1/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md stage_v010/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md stage_v010/
+          cp homelander_p1_build/P1_HELD_LASERSIGHT_GATE_20260919.md stage_v010/
+          cp homelander_p1_build/P1_DYNAMIC_FREEAIM_GATE_20260919.md stage_v010/
+          cp homelander_p1_build/P1_DYNAMIC_STABILITY_GATE_20260919.md stage_v010/
+          cp homelander_p1_build/P1_DAMAGE_STATIC_ABI_20260919.md stage_v010/
+          cp homelander_p1_build/P1_DAMAGE_ONESHOT_GATE_20260919.md stage_v010/
+          cp homelander_p1_build/homelander_p1.cpp stage_v010/homelander_p1_v010_SOURCE.cpp
+          cp homelander_p1_build/build_v010/file.txt stage_v010/CI_EVIDENCE/
+          cp homelander_p1_build/build_v010/headers.txt stage_v010/CI_EVIDENCE/
+          cp homelander_p1_build/build_v010/imports.txt stage_v010/CI_EVIDENCE/
+          cp homelander_p1_build/build_v010/sha256.txt stage_v010/CI_EVIDENCE/
+          (cd stage_v010 && sha256sum homelander_p1_v010.asi lua_p1/*.lua P1_NATIVE_LASERSIGHT_GATE_20260919.md P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md P1_HELD_LASERSIGHT_GATE_20260919.md P1_DYNAMIC_FREEAIM_GATE_20260919.md P1_DYNAMIC_STABILITY_GATE_20260919.md P1_DAMAGE_STATIC_ABI_20260919.md P1_DAMAGE_ONESHOT_GATE_20260919.md homelander_p1_v010_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v010 && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v010_DamageOneShotGate_DORMANT
+          path: stage_v010/
+          if-no-files-found: error
