@@ -24,6 +24,8 @@ overrides = {
     "eye_origin_probe_v006_STAGED.lua": "eye_origin_probe_v006_epoch_DORMANT.lua",
     "dual_eye_freeaim_render_v007_STAGED.lua": "dual_eye_freeaim_render_v007_f10_f11_epoch_DORMANT.lua",
     "lasersight_dynamic_aim_gate_v010_STAGED.lua": "lasersight_dynamic_aim_gate_v010_finite_DORMANT.lua",
+    "lasersight_native_gate_v008_STAGED.lua": "lasersight_native_gate_v008_provenance_DORMANT.lua",
+    "lasersight_held_gate_v009_STAGED.lua": "lasersight_held_gate_v009_provenance_finite_DORMANT.lua",
 }
 baselines = {
     "runtime_probe.lua", "setter_echo_probe.lua",
@@ -80,7 +82,7 @@ for name in names:
         "sha256": hashlib.sha256(payload).hexdigest(),
     })
 assert len(inventory) == 22
-assert len([v for v in inventory if v["role"] == "guarded-native-path-source-override"]) == 5
+assert len([v for v in inventory if v["role"] == "guarded-native-path-source-override"]) == 7
 
 report = {
     "schema": "homelander-p1-r008-staged-source-integration/1.0",
@@ -104,4 +106,4 @@ report = {
 (destination / "INTEGRATION_MANIFEST.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
-print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, five guarded override bytes, original v003 baselines intact")
+print("P1_R008_22_LUA_NATIVE_PATH_INTEGRATION_PASS: 22/22, seven guarded override bytes, original v003 baselines intact")
