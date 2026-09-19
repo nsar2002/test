@@ -120,7 +120,7 @@ if($stages.Count -ne 13 -or [string]$stages[0].stage -ne 'v003' -or
    [string]$stages[0].asiSha256 -ne $PIN_V003_ASI){throw 'BLOCKED: first stage/manifest incompatible with frozen R007'}
 foreach($s in $stages){
  $stageZip=Join-Path $ReleaseDirectory ([string]$s.package).Replace('/','\')
- Same $stageZip ([string]$s.packageSha256).ToLowerInvariant() ("stage "+[string]$s.stage)
+ Same $stageZip (([string]$s.packageSha256).ToLowerInvariant()) ("stage "+[string]$s.stage)
 }
 Write-Host 'R019 RELEASE AUTHENTICITY PASS: original ZIP, manager, manifest, all 13 stage packages'
 if(!(Test-Path -LiteralPath (Join-Path $PrototypeRoot 'prototypef.exe') -PathType Leaf)){
@@ -149,7 +149,7 @@ if($stage -eq 'v003'){
 Write-Host "R019 GAME FILE READINESS PASS: exact loader/ASI/baseline Lua hashes; active stage=$stage"
 $log=Join-Path $PrototypeRoot 'homelander_p1_runtime.log'
 if($Action -eq 'Preflight'){
- if($stage -eq 'v003' -and Test-Path -LiteralPath $log -PathType Leaf){
+ if($stage -eq 'v003' -and (Test-Path -LiteralPath $log -PathType Leaf)){
   if((Get-Item -LiteralPath $log).Length -gt 0){
    throw 'BLOCKED: nonempty v003 runtime log; preserve/export evidence; original R007 ResetLog only after review'
   }
