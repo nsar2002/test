@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - ".github/workflows/v6_m4a0_chensource_schema.yml"
+      - "fly_mnq/v6_m4a0_chensource_schema_probe.py"
+      - "research/v6_m4a0_active_apl_source_schema_protocol.md"
   workflow_dispatch:
 
 permissions:
