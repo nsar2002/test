@@ -34,8 +34,11 @@ HL_LastRayHitGOH=function()
  return candidate
 end
 go_GetDebugName=function(h) return tostring(h) end
+local transformFault=nil
 go_Local2World=function(h,v)
  eq(h,"NPC","target local offset must use original NPC")
+ if transformFault=="error" then error("mock target transform getter failed") end
+ if transformFault=="switch" then HOMELANDER_PLAYER="B" end
  return Vector(v)
 end
 fre_LineOfSightTest=function(start,finish,ignore,player)
@@ -97,5 +100,34 @@ assert(Homelander_FreeAimProbe(),"normal F9 miss is not an exception")
 eq(HOMELANDER_FREEAIM_HIT,nil,"miss clears old NPC")
 eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET,nil,"miss clears old local offset")
 assert(not Homelander_FreeAimLocalOffsetProbe(),"F10 refuses after F9 miss")
+-- ORIGINAL F10 itself retains a previously verified offset after a later transform error.
+hit=true
+frame=defaultFrame
+HOMELANDER_PLAYER="A"
+assert(Homelander_FreeAimProbe(),"fresh guarded F9 before F10 transform regression")
+assert(Homelander_FreeAimLocalOffsetProbe(),"original F10 positive before error")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,"NPC","original F10 prior GOH")
+transformFault="error"
+assert(not Homelander_FreeAimLocalOffsetProbe(),"original F10 returns false on transform exception")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,"NPC","original F10 FAIL retains stale local-offset GOH")
+print("P1_V004_ORIGINAL_F10_STALE_OFFSET_REPRODUCED: later failed F10 retains earlier NPC transform proof")
+
+-- Only the isolated staged F10 entrypoint clears its previous published offset.
+dofile("homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua")
+assert(not Homelander_FreeAimLocalOffsetProbe(),"guarded F10 returns false on transform exception")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET,nil,"guarded failed F10 must clear prior offset")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,nil,"guarded failed F10 must clear prior GOH")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_ERROR,nil,"guarded failed F10 must clear prior roundtrip proof")
+transformFault=nil
+assert(Homelander_FreeAimProbe(),"guarded F9 still works after failed F10")
+assert(Homelander_FreeAimLocalOffsetProbe(),"guarded F10 still accepts valid transform")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,"NPC","guarded F10 positive target")
+
+-- A native transform getter can switch current player while F10 is running.
+transformFault="switch"
+assert(not Homelander_FreeAimLocalOffsetProbe(),"guarded F10 rejects player switch in transform callbacks")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET,nil,"guarded F10 player switch cannot publish offset")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,nil,"guarded F10 player switch cannot publish GOH")
+HOMELANDER_PLAYER="A";transformFault=nil
 eq(mutators,0,"F9/F10 test must not call damage/physics/world setters")
-print("P1_V003_F9_F10_FAILCLOSED_PASS: stale repro confirmed; early abort/miss/player-switch invalidates F9/F10; positive hit works; no setters")
+print("P1_V003_F9_F10_FAILCLOSED_PASS: original F9/F10 stale states reproduced, both staged guards prevent reuse; positive hits work, no setters")
