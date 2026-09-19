@@ -217,6 +217,12 @@ function Homelander_FreeAimProbe()
         return false
     end
 
+    -- Even validity callbacks may recursively dispatch F9: never publish
+    -- the outer attempt's camera after a newer attempt is committed.
+    if HOMELANDER_FREEAIM_EPOCH ~= attempt then
+        log("ABORT: newer F9 observed after player-validity callback")
+        return false
+    end
     HOMELANDER_FREEAIM_CAMERA_START = start
     HOMELANDER_FREEAIM_CAMERA_FORWARD = forward
     HOMELANDER_FREEAIM_RAY_END = rayEnd
@@ -238,6 +244,10 @@ function Homelander_FreeAimProbe()
         return true
     end
 
+    if HOMELANDER_FREEAIM_EPOCH ~= attempt then
+        log("ABORT: newer F9 observed during camera logging")
+        return false
+    end
     HOMELANDER_FREEAIM_HIT_POS = hitPos
     HOMELANDER_FREEAIM_HIT_NORMAL = hitNormal
     HOMELANDER_FREEAIM_FRACTION = fraction
@@ -253,7 +263,12 @@ function Homelander_FreeAimProbe()
         log("ABORT: verified player changed during F9 hit callback")
         return false
     end
-    if okHitGOH and valid_goh(hitGOH) and hitGOH ~= player then
+    local hitIsValid = okHitGOH and valid_goh(hitGOH)
+    if HOMELANDER_FREEAIM_EPOCH ~= attempt then
+        log("ABORT: newer F9 observed during target-validity callback")
+        return false
+    end
+    if hitIsValid and hitGOH ~= player then
         HOMELANDER_FREEAIM_HIT = hitGOH
     end
 
@@ -273,6 +288,10 @@ function Homelander_FreeAimProbe()
        HOMELANDER_PLAYER ~= player then
         clear_f9_f10_results()
         log("ABORT: verified player changed during final F9 hit readback")
+        return false
+    end
+    if HOMELANDER_FREEAIM_EPOCH ~= attempt then
+        log("ABORT: newer F9 observed during final player-validity callback")
         return false
     end
     if HOMELANDER_FREEAIM_HIT ~= nil then
