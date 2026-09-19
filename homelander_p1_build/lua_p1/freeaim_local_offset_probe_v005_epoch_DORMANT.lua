@@ -51,6 +51,8 @@ local function clear_f10_results()
     HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH = nil
     HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_ERROR = nil
     HOMELANDER_FREEAIM_F10_EPOCH = nil
+    HOMELANDER_DUAL_EYE_RENDER_LAST_OK = false
+    HOMELANDER_DUAL_EYE_RENDER_LAST_TARGET = nil
 end
 
 function Homelander_FreeAimLocalOffsetProbe()
