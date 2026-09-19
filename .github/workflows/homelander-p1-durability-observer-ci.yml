@@ -1,0 +1,77 @@
+name: Homelander P1 Dormant Durability Observer CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-durability-observer-20260919
+    paths:
+      - 'homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua'
+      - 'homelander_p1_build/tests/durability_snapshot_v02_test.lua'
+      - 'homelander_p1_build/P1_DURABILITY_READONLY_V02_20260919.md'
+      - 'homelander_p1_build/DURABILITY_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-durability-observer-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  read-only-observer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify isolated branch scope
+        run: |
+          git diff --name-only 030e936dcef1196d51d9adb9c79ea71080a82b23...HEAD > /tmp/durability_changes.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          changed={x.strip() for x in Path('/tmp/durability_changes.txt').read_text().splitlines() if x.strip()}
+          allowed={
+              'homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua',
+              'homelander_p1_build/tests/durability_snapshot_v02_test.lua',
+              'homelander_p1_build/P1_DURABILITY_READONLY_V02_20260919.md',
+              'homelander_p1_build/DURABILITY_REPRO_TRIGGER.txt',
+              '.github/workflows/homelander-p1-durability-observer-ci.yml'
+          }
+          assert changed <= allowed, f'Unexpected gameplay/installer changes: {sorted(changed-allowed)}'
+          assert {'homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua',
+                  'homelander_p1_build/tests/durability_snapshot_v02_test.lua'}<=changed
+          PY
+      - name: Install Lua 5.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+      - name: Parse and test actual dormant observer
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua
+          "$LUAC" -p homelander_p1_build/tests/durability_snapshot_v02_test.lua
+          lua5.1 homelander_p1_build/tests/durability_snapshot_v02_test.lua
+      - name: Reject mutators and automatic gameplay wiring
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua').read_text()
+          forbidden=('go_SetHealth(', 'go_SetMaxHealth(', 'go_SetDamageScale(',
+                     'go_SetDamageable(', 'go_SetNoPushback(', 'go_ApplyDamage(',
+                     'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect(')
+          for name in forbidden:
+              assert name not in s, f'unexpected mutator: {name}'
+          assert 'function Homelander_DurabilitySnapshotV02()' in s
+          assert s.count('HOMELANDER_DURABILITY_SNAPSHOT_VALID=true')==1
+          print('P1_DURABILITY_SOURCE_AUDIT_PASS: definition only, no mutation or native wiring')
+          PY
+      - name: Package dormant observer and evidence
+        run: |
+          mkdir -p stage_durability/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua stage_durability/
+          cp homelander_p1_build/tests/durability_snapshot_v02_test.lua stage_durability/CI_EVIDENCE/
+          cp homelander_p1_build/P1_DURABILITY_READONLY_V02_20260919.md stage_durability/
+          (cd stage_durability && sha256sum durability_snapshot_v02_DORMANT.lua CI_EVIDENCE/durability_snapshot_v02_test.lua P1_DURABILITY_READONLY_V02_20260919.md > SHA256SUMS.txt)
+          (cd stage_durability && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_DurabilityObserver_DORMANT
+          path: stage_durability/
