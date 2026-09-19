@@ -1,0 +1,62 @@
+name: Homelander P1 Unified Guarded F9 F12 source CI
+on:
+  push:
+    branches: [homelander-p1-f10-finite-20260919]
+    paths: ['homelander_p1_build/P1_F9_F12_UNIFIED_GUARDED_MANIFEST_20260919.md', '.github/workflows/homelander-p1-unified-f9-f12-ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Immutable originals and no native activation
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          expected={
+            'homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua':'a017512c22f5c8ab82068a8764dcc3d24f315c46',
+            'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua':'a63aa1d433d97d8cbd425a4a4e099200f672f0f3',
+            'homelander_p1_build/lua_p1/eye_origin_probe_v006_STAGED.lua':'f71dd10dd0a94d7280bd589a97ad01dc0b515c91',
+            'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_STAGED.lua':'5a1190a48e471f0ea7b03dcfd3f7b3b8a1b66d7d',
+          }
+          for p,h in expected.items():
+            got=subprocess.check_output(['git','hash-object',p],text=True).strip()
+            assert got==h, (p,got,h)
+          native=Path('homelander_p1_build/homelander_p1.cpp').read_text()
+          for short in ('freeaim_probe_v004_failclosed_DORMANT.lua','freeaim_local_offset_probe_v005_finite_DORMANT.lua','eye_origin_probe_v006_failclosed_DORMANT.lua','dual_eye_freeaim_render_v007_failclosed_DORMANT.lua'):
+            assert short not in native, 'Dormant module native-wired: '+short
+          print('P1_F9_F12_UNIFIED_FROZEN_ORIGINALS_AND_NO_NATIVE_ACTIVATION_PASS')
+          PY
+      - name: Lua 5.1 source parse and complete mock regression
+        run: |
+          sudo apt-get update && sudo apt-get install -y lua5.1
+          for p in \
+            freeaim_probe_v004_failclosed_DORMANT.lua \
+            freeaim_local_offset_probe_v005_finite_DORMANT.lua \
+            eye_origin_probe_v006_failclosed_DORMANT.lua \
+            dual_eye_freeaim_render_v007_failclosed_DORMANT.lua; do
+            luac5.1 -p "homelander_p1_build/lua_p1/$p"
+          done
+          lua5.1 homelander_p1_build/tests/f10_finite_to_f12_integration.lua
+      - name: Package precisely four dormant Lua scripts and evidence
+        run: |
+          mkdir -p stage/lua_p1 stage/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_finite_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/tests/f10_finite_to_f12_integration.lua stage/CI_EVIDENCE/
+          cp homelander_p1_build/tests/f11_f12_provenance_integration.lua stage/CI_EVIDENCE/
+          cp homelander_p1_build/P1_F9_F12_UNIFIED_GUARDED_MANIFEST_20260919.md stage/
+          (cd stage && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          test "$(find stage/lua_p1 -type f | wc -l)" -eq 4
+          ! find stage -type f | grep -E '\.(asi|exe|dll|ps1|bat)$'
+          echo P1_F9_F12_UNIFIED_SOURCE_ONLY_BUNDLE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F9_F12_UnifiedGuarded_SOURCE_ONLY_DORMANT
+          path: stage/
