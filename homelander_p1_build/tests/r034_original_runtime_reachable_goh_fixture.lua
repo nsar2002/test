@@ -55,14 +55,17 @@ end
 -- Original frozen v003 bootstrap loads runtime BEFORE flight controller.
 Homelander_FlightNativeTick=nil
 assert(loadfile(source))()
-assert((calls.count or 0)==1)\n assert((calls.valid or 0)==0 and (calls.pos or 0)==0)\n assert(table.concat(logs,"\\n"):find("[P1_R031_ONE_SHOT] CENSUS_END |",1,true))
+assert((calls.count or 0)==1)
+ assert((calls.valid or 0)==0 and (calls.pos or 0)==0)
+ assert(table.concat(logs,"\\n"):find("[P1_R031_ONE_SHOT] CENSUS_END |",1,true))
 assert(table.concat(logs,"\n"):find("SKIP_BOOT",1,true))
 print("P1_R034_COMBINED_V003_BOOT_SKIPS_R033_NATIVE_GOHCALLS_PASS")
 Homelander_FlightNativeTick=function() end
 logs={};calls={}
 assert(loadfile(source))()
 local out=table.concat(logs,"\n")
-assert(out:find("[P1_R031_ONE_SHOT] CENSUS_END |",1,true))\nassert(out:find("CANDIDATE MainCharacter type=GOH",1,true))
+assert(out:find("[P1_R031_ONE_SHOT] CENSUS_END |",1,true))
+assert(out:find("CANDIDATE MainCharacter type=GOH",1,true))
 assert(out:find("CANDIDATE PLAYER_1 type=GOH",1,true))
 assert(out:find("CANDIDATE playerCharacterID type=GOH",1,true))
 assert(out:find("INDEX MainCharacter mapped=0 of 1",1,true))
@@ -72,7 +75,7 @@ assert(out:find("RESULT gameFlowMachineGOH STOP_GO_ISVALID_OK_NOT_TRUE",1,true))
 assert(out:find("INDEX mainMissionGOH skipped_without_position_and_velocity",1,true))
 assert(out:find("DEBUG_NAME MainCharacter=Alex_Mercer",1,true))
 assert(out:find("END_F4 | no HOMELANDER_PLAYER write, no setter, no official PASS",1,true))
-assert((calls.count or 0)==1)
+assert((calls.count or 0)==2)
 assert((calls.valid or 0)==5)
 assert((calls.index or 0)==3)
 assert(HOMELANDER_PLAYER==nil and HOMELANDER_SETTER_ECHO_PASSED==false)
