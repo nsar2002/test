@@ -171,6 +171,9 @@ namespace hl
     bool g_f21Prev = false;
     bool g_f22Prev = false;
     bool g_f23Prev = false;
+    bool g_f24Prev = false;
+    bool g_durabilityObserverReady = false;
+    bool g_grabObserverReady = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
@@ -1427,6 +1430,9 @@ namespace hl
         const bool math = ExecuteLuaFile(L, "lua_p1\\flight_math_probe.lua");
         const bool controller = ExecuteLuaFile(L, "lua_p1\\flight_controller_v2_STAGED.lua");
         g_flightGroundProbeReady = ExecuteLuaFile(L, "lua_p1\\flight_ground_probe_v018_STAGED.lua");
+        // Optional definition-only observers. Loading must never sample or mutate.
+        g_durabilityObserverReady = ExecuteLuaFile(L, "lua_p1\\durability_snapshot_v02_DORMANT.lua");
+        g_grabObserverReady = ExecuteLuaFile(L, "lua_p1\\grab_state_v01_DORMANT.lua");
         const bool heatProbe = ExecuteLuaFile(L, "lua_p1\\heatvision_probe.lua");
         g_freeAimReady = ExecuteLuaFile(L, "lua_p1\\freeaim_probe_v004_STAGED.lua");
         g_localOffsetReady = ExecuteLuaFile(L, "lua_p1\\freeaim_local_offset_probe_v005_STAGED.lua");
@@ -1454,7 +1460,7 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = false;
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = g_f24Prev = false;
         Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s flightGroundProbe=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
@@ -1740,6 +1746,19 @@ namespace hl
             {
                 Log("F23 ignored: VFX asset allowlist staged Lua did not load");
             }
+        }
+
+        if (RisingEdge(VK_F24, g_f24Prev, inputEnabled))
+        {
+            // This is a manual read-only diagnostic, never automatic per tick.
+            if (g_durabilityObserverReady)
+                CallLua0(L, "Homelander_DurabilitySnapshotV02");
+            else
+                Log("F24 durability snapshot skipped: optional observer failed to load");
+            if (g_grabObserverReady)
+                CallLua0(L, "Homelander_GrabStateProbeV01");
+            else
+                Log("F24 grab-state sample skipped: optional observer failed to load");
         }
 
         if (inputEnabled && g_laserSightHeldReady)
@@ -2254,7 +2273,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate, F19=read-only target continuity telemetry, F20=READ-ONLY DOT cadence dry-run, F21=READ-ONLY DamageAndHit payload probe, F22=READ-ONLY target classification/VFX route, F23=READ-ONLY VFX asset allowlist", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate, F19=read-only target continuity telemetry, F20=READ-ONLY DOT cadence dry-run, F21=READ-ONLY DamageAndHit payload probe, F22=READ-ONLY target classification/VFX route, F23=READ-ONLY VFX asset allowlist, F24=manual read-only durability/grab-state sample", kBuildId);
         return 0;
     }
 }
