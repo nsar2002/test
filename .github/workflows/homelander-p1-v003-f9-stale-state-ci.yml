@@ -1,0 +1,82 @@
+name: Homelander P1 Original F9 Stale Target and Isolated Failclosed F9/F10 CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v003-freeaim-stale-state-20260919
+    paths:
+      - 'homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua'
+      - 'homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua'
+      - 'homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md'
+      - 'homelander_p1_build/F9_STALE_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-v003-f9-stale-state-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-original-and-guarded-f9:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify frozen original v003 remains unmodified
+        run: |
+          git diff --name-only 4a694fd26fd936a9fedad783c8611312e1070d43...HEAD > /tmp/f9_changed.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          paths={x.strip() for x in Path('/tmp/f9_changed.txt').read_text().splitlines() if x.strip()}
+          allowed={
+            'homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua',
+            'homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua',
+            'homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md',
+            'homelander_p1_build/F9_STALE_REPRO_TRIGGER.txt',
+            '.github/workflows/homelander-p1-v003-f9-stale-state-ci.yml'
+          }
+          assert paths<=allowed, 'Unexpected game/native/stage/promotion change: '+repr(sorted(paths-allowed))
+          source=Path('homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua')
+          import subprocess
+          sha=subprocess.check_output(['git','hash-object',str(source)],text=True).strip()
+          assert sha=='a017512c22f5c8ab82068a8764dcc3d24f315c46',sha
+          print('P1_V003_CANONICAL_F9_IMMUTABLE_PASS')
+          PY
+      - name: Install Lua 5.1 for independent actual-Lua source execution
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+      - name: Parse and execute original versus safe dormant F9 through actual F10
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua
+          "$LUAC" -p homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua
+          lua5.1 homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua
+      - name: Audit only read-only functions in original and dormant variant
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path('homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua').read_text()
+          assert src.count('clear_f9_f10_results()')==3, 'one definition, one F9 entry, one hit callback'
+          assert src.count('HOMELANDER_FREEAIM_HIT = nil')>=2
+          for token in ('go_ApplyDamage(', 'go_ApplyDamageAndHit(', 'go_SetHealth(',
+                        'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect('):
+              assert token not in src, 'Unexpected game mutator in F9 source: '+token
+          native=Path('homelander_p1_build/homelander_p1.cpp').read_text()
+          assert 'freeaim_probe_v004_failclosed_DORMANT.lua' not in native,'Dormant F9 wired without live gate'
+          print('P1_V003_F9_GUARDED_SOURCE_AUDIT_PASS_NO_NATIVE_ACTIVATION')
+          PY
+      - name: Package source/test evidence WITHOUT executable game artifacts
+        run: |
+          mkdir -p staged_f9/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua staged_f9/
+          cp homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua staged_f9/CI_EVIDENCE/
+          cp homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md staged_f9/
+          (cd staged_f9 && sha256sum freeaim_probe_v004_failclosed_DORMANT.lua CI_EVIDENCE/v003_f9_stale_target_failclosed_test.lua P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md > SHA256SUMS.txt)
+          (cd staged_f9 && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F9_F10_Failclosed_SOURCE_ONLY_DORMANT
+          path: staged_f9/
