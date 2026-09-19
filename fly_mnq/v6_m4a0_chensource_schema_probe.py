@@ -118,7 +118,13 @@ def main():
     size = int(f.get("size", 0))
     url = (f.get("links") or {}).get("content")
     if not url or size <= 0:
-        return fail("BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA", "missing provider content URL or byte size", provider_size=size)
+        return fail(
+            "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
+            "missing provider content URL or byte size",
+            provider_size=size,
+            file_object_keys=sorted(f.keys()),
+            available_link_keys=sorted((f.get("links") or {}).keys()),
+        )
 
     tail_len = min(size, 1024 * 1024)
     tail_start = size - tail_len
