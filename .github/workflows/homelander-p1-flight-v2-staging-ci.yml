@@ -10,6 +10,7 @@ on:
       - homelander-p1-flight-v24-dynamics-20260919
       - homelander-p1-multisystem-staging-20260919
       - homelander-p1-flight-v25-callback-guard-20260919
+      - homelander-p1-observer-native-20260919
     paths:
       - 'homelander_p1_build/homelander_p1.cpp'
       - 'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua'
@@ -27,6 +28,7 @@ on:
       - 'homelander_p1_build/P1_FLIGHT_V24_DYNAMICS_20260919.md'
       - 'homelander_p1_build/P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md'
       - 'homelander_p1_build/P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md'
+      - 'homelander_p1_build/P1_NATIVE_OBSERVER_F24_20260919.md'
       - 'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md'
       - 'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt'
       - '.github/workflows/homelander-p1-flight-v2-staging-ci.yml'
@@ -65,6 +67,7 @@ jobs:
             'homelander_p1_build/P1_FLIGHT_V24_DYNAMICS_20260919.md',
             'homelander_p1_build/P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md',
+            'homelander_p1_build/P1_NATIVE_OBSERVER_F24_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V2_REPRO_AUDIT_20260919.md',
             'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt',
@@ -130,7 +133,7 @@ jobs:
             echo 'Unexpected dynamic MinGW runtime dependency'
             exit 1
           fi
-          grep -q 'P1_FlightV2_001_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+          grep -q 'P1_FlightV26_F24ReadOnly_DORMANT_20260919' homelander_p1_build/homelander_p1.cpp
 
       - name: Verify Flight V2 native wiring
         run: |
@@ -146,6 +149,40 @@ jobs:
             echo 'Old Flight v1 controller is still the active bootstrap controller'
             exit 1
           fi
+
+      - name: Verify optional native F24 observer dispatch remains read-only and manual
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          c=Path('homelander_p1_build/homelander_p1.cpp').read_text()
+          checks={
+            'lua_p1\\\\durability_snapshot_v02_DORMANT.lua': 1,
+            'lua_p1\\\\grab_state_v01_DORMANT.lua': 1,
+            'RisingEdge(VK_F24, g_f24Prev, inputEnabled)': 1,
+            'CallLua0(L, "Homelander_DurabilitySnapshotV02")': 1,
+            'CallLua0(L, "Homelander_GrabStateProbeV01")': 1,
+            'g_scriptsReady = setter && math && controller;': 1,
+            'g_f24Prev = false;': 1,
+          }
+          for token,wanted in checks.items():
+            got=c.count(token)
+            assert got==wanted, f'F24 source token {token!r}: wanted={wanted} got={got}'
+          start=c.index('if (RisingEdge(VK_F24, g_f24Prev, inputEnabled))')
+          end=c.index('if (inputEnabled && g_laserSightHeldReady)',start)
+          block=c[start:end]
+          for token in ('if (g_durabilityObserverReady)', 'if (g_grabObserverReady)',
+                        'CallLua0(L, "Homelander_DurabilitySnapshotV02")',
+                        'CallLua0(L, "Homelander_GrabStateProbeV01")'):
+            assert block.count(token)==1, f'optional observer not guarded in manual F24 block: {token}'
+          for path in ('homelander_p1_build/lua_p1/durability_snapshot_v02_DORMANT.lua',
+                       'homelander_p1_build/lua_p1/grab_state_v01_DORMANT.lua'):
+            source=Path(path).read_text()
+            for name in ('go_SetHealth(', 'go_SetMaxHealth(', 'go_SetDamageScale(',
+                         'go_ApplyDamage(', 'phys_SetLinearVelocity(', 'go_AttachObjectToGrabSlot(',
+                         'go_GrabbedDetach(', 'go_Teleport('):
+              assert name not in source, f'unexpected mutator in optional observer: {name}'
+          print('P1_F24_NATIVE_OBSERVER_WIRING_PASS: foreground edge, optional loads, gated one-shot read-only callbacks')
+          PY
 
       - name: Verify simulation-delta acceleration and braking design
         run: |
@@ -233,6 +270,7 @@ jobs:
           sha256sum homelander_p1_build/tests/p1_multisystem_integration.lua
           sha256sum homelander_p1_build/tests/flight_v25_callback_guard.lua
           sha256sum homelander_p1_build/P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md
+          sha256sum homelander_p1_build/P1_NATIVE_OBSERVER_F24_20260919.md
           sha256sum homelander_p1_build/P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md
           sha256sum homelander_p1_build/P1_FLIGHT_V24_DYNAMICS_20260919.md
           sha256sum homelander_p1_build/v003_transfer/lua_p1/setter_echo_probe.lua
@@ -251,6 +289,7 @@ jobs:
           cp homelander_p1_build/P1_FLIGHT_V24_DYNAMICS_20260919.md stage_flight_v2/
           cp homelander_p1_build/P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md stage_flight_v2/
           cp homelander_p1_build/P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md stage_flight_v2/
+          cp homelander_p1_build/P1_NATIVE_OBSERVER_F24_20260919.md stage_flight_v2/
           cp homelander_p1_build/tests/flight_v25_callback_guard.lua stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/tests/p1_multisystem_integration.lua stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/tests/flight_v24_dynamics.lua stage_flight_v2/CI_EVIDENCE/
@@ -261,11 +300,11 @@ jobs:
           cp homelander_p1_build/build_flight_v2/headers.txt stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/build_flight_v2/imports.txt stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/build_flight_v2/sha256.txt stage_flight_v2/CI_EVIDENCE/
-          (cd stage_flight_v2 && sha256sum homelander_p1_flight_v2_STAGED.asi lua_p1/*.lua P1_FLIGHT_V2_STAGING_20260919.md P1_FLIGHT_V21_SAFETY_20260919.md P1_FLIGHT_V22_F5_BINDING_20260919.md P1_FLIGHT_V23_REAL_F5_20260919.md P1_FLIGHT_V24_DYNAMICS_20260919.md P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md CI_EVIDENCE/flight_v25_callback_guard.lua CI_EVIDENCE/p1_multisystem_integration.lua CI_EVIDENCE/flight_v24_dynamics.lua CI_EVIDENCE/flight_v21_safety_test.lua CI_EVIDENCE/flight_v23_real_f5_integration.lua homelander_p1_flight_v2_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_flight_v2 && sha256sum homelander_p1_flight_v2_STAGED.asi lua_p1/*.lua P1_FLIGHT_V2_STAGING_20260919.md P1_FLIGHT_V21_SAFETY_20260919.md P1_FLIGHT_V22_F5_BINDING_20260919.md P1_FLIGHT_V23_REAL_F5_20260919.md P1_FLIGHT_V24_DYNAMICS_20260919.md P1_MULTISYSTEM_INTEGRATION_DORMANT_20260919.md P1_FLIGHT_V25_CALLBACK_GUARD_20260919.md P1_NATIVE_OBSERVER_F24_20260919.md CI_EVIDENCE/flight_v25_callback_guard.lua CI_EVIDENCE/p1_multisystem_integration.lua CI_EVIDENCE/flight_v24_dynamics.lua CI_EVIDENCE/flight_v21_safety_test.lua CI_EVIDENCE/flight_v23_real_f5_integration.lua homelander_p1_flight_v2_SOURCE.cpp > SHA256SUMS.txt)
           (cd stage_flight_v2 && sha256sum -c SHA256SUMS.txt)
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_FlightV25_CallbackGuard_DORMANT
+          name: Homelander_P1_NativeObserverF24_DORMANT
           path: stage_flight_v2/
           if-no-files-found: error
