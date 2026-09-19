@@ -1,0 +1,80 @@
+name: P1 R034 exact original v003 reachable GOH integration CI
+on:
+  push:
+    branches: [homelander-p1-r034-reachable-five-goh-integration-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-lua51:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prove original official R007 v003 manager native and old R031/R033 immutable
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base="9b729d9d2bb6f839a870ca9bc647909301ce0c2a"
+          changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
+          allowed={".github/workflows/homelander-p1-r034-reachable-ci.yml",
+                   "homelander_p1_build/tests/r034_original_runtime_reachable_goh_fixture.lua",
+                   "homelander_p1_build/tests/r034_integrity_notes.md"}
+          assert changed<=allowed, changed-allowed
+          print("P1_R034_ORIGINAL_R007_V003_NATIVE_R031_R033_UNCHANGED_PASS")
+          PY
+      - name: Install actual independent Lua 5.1 interpreter
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lua5.1
+      - name: Reassemble exact original R007 v003 and R031 + R033; relocate observer before early return
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          p=Path("homelander_p1_build")
+          original=(p/"v003_transfer/lua_p1/runtime_probe.lua").read_bytes()
+          r031=(p/"tests/r031_prioritized_clone_only_census_SOURCE_ONLY.lua").read_bytes()
+          r033=(p/"tests/r033_goh_global_provenance_clone_only.lua").read_bytes()
+          assert h(original)=="bd7a6ec2006466b0f7b46f966f384103d35d5d98020bcdce1112e9b4f363a650"
+          assert h(r031)=="609f2c92ae16f97cffe2b60fd14796a13913c7ec2b375bf70782d306bc52cdb1"
+          assert h(r033)=="f973511947d2034ef986a533a6737a294589bc8ebcfbaebb02fadbd9388ba539"
+          mark31=b"\n\n-- -- P1_R031_SEPARATE_CLONE_CENSUS_CANDIDATE_FIRST; NO ORIGINAL RELEASE/PROMOTION MODIFICATION\n"
+          old31=original+mark31+r031+b"\n"
+          assert h(old31)=="d387fceddb45741aef7974c6b66b323f11fec49aff3ebdfb7cb08025edbf4d79"
+          old33=old31+b"\n\n-- P1_R033_RESEARCH_CLONE_ONLY_OBSERVER_AFTER_R031\n"+r033+b"\n"
+          assert h(old33)=="19242ddb0f860efefe63dc36c416881acd9055d0d7b38e14a53aafbc015444d1"
+          anchor=b'    log("END | no game native GOH query, no player assignment, no gate PASS")\n    return\nend'
+          insertion=b'    -- P1_R034_CLONE_ONLY_R033_OBSERVER_BEFORE_DISABLED_CAMERA_RETURN\n'
+          assert old31.count(anchor)==1
+          replacement=anchor.replace(b"    return\nend", insertion+
+             b"".join(b"    "+line+b"\n" for line in r033.splitlines())+
+             b"    return\nend")
+          fixed=old31.replace(anchor,replacement,1)
+          assert h(fixed)=="40ca8cb1ce905543e6dc73b14ef2d57e9b1ac7f7ca55f88eb88232dead6bec72"
+          assert fixed.count(insertion)==1 and fixed.count(b"local ENABLE_CAMERA_OBSERVER = false")==1
+          assert b"local ENABLE_CAMERA_OBSERVER = true" not in fixed
+          Path("r034_exact_combined.lua").write_bytes(fixed)
+          print("P1_R034_ORIGINAL_V003_R031_R033_EXACT_BYTE_INTEGRATION_BEFORE_RETURN_PASS")
+          PY
+          luac5.1 -p r034_exact_combined.lua
+          luac5.1 -p homelander_p1_build/tests/r034_original_runtime_reachable_goh_fixture.lua
+          echo P1_R034_COMBINED_SOURCE_AND_FIXTURE_LUA51_COMPILE_PASS
+      - name: Execute actual original+R031+R033 combined source in Lua5.1 BOOT/F4/repeated F4 and negatives
+        run: |
+          lua5.1 homelander_p1_build/tests/r034_original_runtime_reachable_goh_fixture.lua r034_exact_combined.lua
+      - name: Publish source-only note, NEVER distribute a new ASI or alter original game
+        run: |
+          mkdir -p stage_r034_ci
+          cp homelander_p1_build/tests/r034_integrity_notes.md stage_r034_ci/
+          cp homelander_p1_build/tests/r034_original_runtime_reachable_goh_fixture.lua stage_r034_ci/
+          (cd stage_r034_ci && sha256sum *.lua *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r034_ci -type f | grep -Ei '\\.(asi|dll|exe|cmd|bat|ps1)$' || true)"
+          echo P1_R034_SOURCE_ONLY_NO_BINARY_NO_OFFICIAL_GATE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R034_OriginalV003_ReachableGOH_Lua51_OfflineTests_SOURCE_ONLY
+          path: stage_r034_ci/
+          if-no-files-found: error
