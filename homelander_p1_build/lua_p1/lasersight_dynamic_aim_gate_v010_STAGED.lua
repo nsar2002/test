@@ -16,6 +16,10 @@ local S = {
     last_heartbeat_frame = 0
 }
 
+-- Never inherit a dynamic stability proof across Lua-state bootstrap/reload.
+HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED = false
+HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES = nil
+
 local function log(msg)
     local line = PREFIX .. tostring(msg)
     if type(HL_Log) == "function" then HL_Log(line) else print(line) end
@@ -137,6 +141,17 @@ local function native_stability_ok()
     return true, nil
 end
 
+local function native_dynamic_stability_ok()
+    if type(HL_LaserSightDynamicStabilityProbe) ~= "function" then
+        return false, "native dynamic stability query bridge unavailable"
+    end
+    local ok, passed = pcall(HL_LaserSightDynamicStabilityProbe)
+    if not ok or passed ~= true then
+        return false, "native 120-submit F16 stability proof not present"
+    end
+    return true, nil
+end
+
 local function disable(reason)
     local was = S.enabled
     S.enabled = false
@@ -198,6 +213,19 @@ function Homelander_DynamicAimToggleV010()
     if type(Homelander_LaserSightHeldForceDisableV009) == "function" then
         pcall(Homelander_LaserSightHeldForceDisableV009)
     end
+
+    if type(HL_LaserSightResetDynamicGate) ~= "function" then
+        log("REFUSED: native dynamic-stability reset bridge unavailable")
+        return false
+    end
+    local okReset, resetResult = pcall(HL_LaserSightResetDynamicGate)
+    if not okReset or resetResult ~= true then
+        log("REFUSED: native dynamic-stability reset failed | " .. tostring(resetResult))
+        return false
+    end
+
+    HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED = false
+    HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES = nil
 
     S.enabled = true
     S.frames = 0
@@ -377,6 +405,17 @@ function Homelander_DynamicAimTickV010()
     local maxTicks = tonumber(HOMELANDER_DYNAMIC_MAX_TICKS) or 1800
     if maxTicks < 120 then maxTicks = 120 end
     if maxTicks > 7200 then maxTicks = 7200 end
+
+    if S.frames == 120 and HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED ~= true then
+        local dynOK, dynWhy = native_dynamic_stability_ok()
+        if not dynOK then
+            disable("Lua/native F16 stability mismatch | " .. tostring(dynWhy))
+            return false
+        end
+        HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED = true
+        HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES = S.frames
+        log("STABILITY PASS | 120 successful dynamic LaserSight submits (Lua + native)")
+    end
 
     if S.frames > 0 and (S.frames % 120) == 0 and S.frames ~= S.last_heartbeat_frame then
         S.last_heartbeat_frame = S.frames
