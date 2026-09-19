@@ -12,7 +12,8 @@ local S = {
     hits = 0,
     misses = 0,
     goh_hits = 0,
-    world_hits = 0
+    world_hits = 0,
+    last_heartbeat_frame = 0
 }
 
 local function log(msg)
@@ -205,6 +206,7 @@ function Homelander_DynamicAimToggleV010()
     S.misses = 0
     S.goh_hits = 0
     S.world_hits = 0
+    S.last_heartbeat_frame = 0
     log("ENABLED — fresh per-tick camera LOS -> native LaserSight; render only")
     return true
 end
@@ -376,7 +378,8 @@ function Homelander_DynamicAimTickV010()
     if maxTicks < 120 then maxTicks = 120 end
     if maxTicks > 7200 then maxTicks = 7200 end
 
-    if S.frames > 0 and (S.frames % 120) == 0 then
+    if S.frames > 0 and (S.frames % 120) == 0 and S.frames ~= S.last_heartbeat_frame then
+        S.last_heartbeat_frame = S.frames
         log("HEARTBEAT | rendered=" .. tostring(S.frames) ..
             " hits=" .. tostring(S.hits) ..
             " misses=" .. tostring(S.misses) ..
