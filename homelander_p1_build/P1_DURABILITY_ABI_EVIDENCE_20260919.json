@@ -1,0 +1,192 @@
+{
+  "schema": "homelander-p1-durability-abi-evidence/1.0",
+  "date": "2026-09-19",
+  "active_prototypeenginef": {
+    "size_bytes": 20210960,
+    "sha256": "ed0870eb24ace5565a0245ade42114f0724b881d3d75b793f376e9bb184f8d51",
+    "image_base": "0x10000000"
+  },
+  "rtti": {
+    "void": {
+      "va": "0x1106A7C8",
+      "msvc": ".X"
+    },
+    "bool": {
+      "va": "0x1106ADC8",
+      "msvc": "._N"
+    },
+    "LuaGOH": {
+      "va": "0x1106ADD8",
+      "msvc": ".?AVLuaGOH@engine@@"
+    },
+    "float": {
+      "va": "0x1106AE7C",
+      "msvc": ".M"
+    }
+  },
+  "typed_factories": {
+    "getter_float_goh": {
+      "thunk": "0x100485FE",
+      "factory": "0x10289900",
+      "lua_arg_count": 1,
+      "return": "float",
+      "args": [
+        "engine::LuaGOH"
+      ]
+    },
+    "setter_void_goh_float": {
+      "thunk": "0x1001BE1E",
+      "factory": "0x102816E0",
+      "lua_arg_count": 2,
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "float"
+      ]
+    },
+    "setter_void_goh_bool": {
+      "thunk": "0x10030742",
+      "factory": "0x10280270",
+      "lua_arg_count": 2,
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "bool"
+      ]
+    }
+  },
+  "functions": {
+    "go_GetHealth": {
+      "name_file_offset": "0xe70a20",
+      "name_va": "0x10e70a20",
+      "registration_xrefs": [
+        "0x10858a2a"
+      ],
+      "wrapper_va": "0x10856950",
+      "factory_thunk": "0x100485fe",
+      "typed_factory": "0x10289900",
+      "return": "float",
+      "args": [
+        "engine::LuaGOH"
+      ],
+      "reversible_pair": "go_SetHealth"
+    },
+    "go_SetHealth": {
+      "name_file_offset": "0xe708c8",
+      "name_va": "0x10e708c8",
+      "registration_xrefs": [
+        "0x10858cc0",
+        "0x10858cd1"
+      ],
+      "wrapper_va": "0x108568c0",
+      "factory_thunk": "0x1001be1e",
+      "typed_factory": "0x102816e0",
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "float"
+      ],
+      "reversible_pair": "go_GetHealth"
+    },
+    "go_GetMaxHealth": {
+      "name_file_offset": "0xe709e0",
+      "name_va": "0x10e709e0",
+      "registration_xrefs": [
+        "0x10858acc"
+      ],
+      "wrapper_va": "0x10856a90",
+      "factory_thunk": "0x100485fe",
+      "typed_factory": "0x10289900",
+      "return": "float",
+      "args": [
+        "engine::LuaGOH"
+      ],
+      "reversible_pair": "go_SetMaxHealth"
+    },
+    "go_SetMaxHealth": {
+      "name_file_offset": "0xe70898",
+      "name_va": "0x10e70898",
+      "registration_xrefs": [
+        "0x10858d50",
+        "0x10858d61"
+      ],
+      "wrapper_va": "0x10856a00",
+      "factory_thunk": "0x1001be1e",
+      "typed_factory": "0x102816e0",
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "float"
+      ],
+      "reversible_pair": "go_GetMaxHealth"
+    },
+    "go_GetDamageScale": {
+      "name_file_offset": "0xe70a30",
+      "name_va": "0x10e70a30",
+      "registration_xrefs": [
+        "0x10858a19"
+      ],
+      "wrapper_va": "0x10856c60",
+      "factory_thunk": "0x100485fe",
+      "typed_factory": "0x10289900",
+      "return": "float",
+      "args": [
+        "engine::LuaGOH"
+      ],
+      "reversible_pair": "go_SetDamageScale"
+    },
+    "go_SetDamageScale": {
+      "name_file_offset": "0xe708d8",
+      "name_va": "0x10e708d8",
+      "registration_xrefs": [
+        "0x10858c90",
+        "0x10858ca1"
+      ],
+      "wrapper_va": "0x10856bd0",
+      "factory_thunk": "0x1001be1e",
+      "typed_factory": "0x102816e0",
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "float"
+      ],
+      "reversible_pair": "go_GetDamageScale"
+    },
+    "go_SetDamageable": {
+      "name_file_offset": "0xe708ec",
+      "name_va": "0x10e708ec",
+      "registration_xrefs": [
+        "0x10858c60",
+        "0x10858c71"
+      ],
+      "wrapper_va": "0x10856d10",
+      "factory_thunk": "0x10030742",
+      "typed_factory": "0x10280270",
+      "return": "void",
+      "args": [
+        "engine::LuaGOH",
+        "bool"
+      ],
+      "reversible_pair": null
+    }
+  },
+  "reversible_first_preset_fields": [
+    "health",
+    "maxHealth",
+    "damageScale"
+  ],
+  "excluded_one_way_setters": [
+    "go_SetDamageable",
+    "go_SetNoPushback",
+    "go_SetMinHealth",
+    "go_SetProportionalDamageScale",
+    "go_SetDamageScaleByAttackType"
+  ],
+  "exact_absent_getters": [
+    "go_GetDamageable",
+    "go_IsDamageable",
+    "go_GetNoPushback"
+  ],
+  "runtime_mutation_proven": false,
+  "note": "Static active-DLL ABI evidence only. F24 snapshot is read-only; setter echoes and real durability tuning require later explicit runtime gates."
+}
