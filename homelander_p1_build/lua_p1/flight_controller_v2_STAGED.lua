@@ -275,7 +275,17 @@ function Homelander_FlightEnableVerifiedV2()
 
     refresh_config()
     S.handle=h
-    S.pre_velocity=Vector(v)
+    local okMag, preMag=pcall(function() return v:magnitude() end)
+    if not okMag or not finite(preMag) then
+        log("ABORT: non-finite pre-flight velocity")
+        return false
+    end
+    local okCopy, preCopy=pcall(Vector,v)
+    if not okCopy or preCopy==nil then
+        log("ABORT: pre-flight velocity copy failed")
+        return false
+    end
+    S.pre_velocity=preCopy
     S.enabled=true
     S.camera_fallback_logged=false
     S.tick_count=0
@@ -303,9 +313,14 @@ function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
         return false
     end
 
-    inputFwd=clamp(tonumber(inputFwd) or 0,-1,1)
-    inputRight=clamp(tonumber(inputRight) or 0,-1,1)
-    inputUp=clamp(tonumber(inputUp) or 0,-1,1)
+    local function safe_axis(v)
+        local n=tonumber(v)
+        if not finite(n) then return 0 end
+        return clamp(n,-1,1)
+    end
+    inputFwd=safe_axis(inputFwd)
+    inputRight=safe_axis(inputRight)
+    inputUp=safe_axis(inputUp)
 
     local ok,err=pcall(function()
         local dt=time_GetSimulationDelta()
@@ -315,6 +330,8 @@ function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
 
         local current=ai_GetPhysicsVelocity(S.handle)
         if current==nil then error("current velocity nil") end
+        local currentMagnitude=current:magnitude()
+        if not finite(currentMagnitude) then error("current velocity non-finite") end
 
         local up=Vector(0,1,0)
         local currentUp=current:dot(up)
@@ -344,6 +361,8 @@ function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
         local newUp=move_towards_scalar(currentUp,targetUp,verticalRate*stepDt)
 
         local desired=newPlanar + up*newUp
+        local desiredMagnitude=desired:magnitude()
+        if not finite(desiredMagnitude) then error("desired velocity non-finite") end
         phys_SetLinearVelocity(S.handle,desired,S.selector)
 
         S.tick_count=S.tick_count+1
@@ -393,9 +412,24 @@ function Homelander_FlightDisableV2(restorePreflightVelocity)
     S.pre_velocity=nil
     HOMELANDER_FLIGHT_V2_ENABLED=false
 
-    if wasEnabled and restorePreflightVelocity and h~=nil and v~=nil and hasfn("phys_SetLinearVelocity") then
-        local ok,err=pcall(phys_SetLinearVelocity,h,v,S.selector)
-        if not ok then log("WARN: pre-flight velocity restore failed | "..tostring(err)) end
+    -- F7 must never write pre-flight velocity to a stale/replaced player handle.
+    local restoreAllowed=wasEnabled and restorePreflightVelocity and h~=nil and v~=nil and
+        hasfn("phys_SetLinearVelocity")
+    if restoreAllowed and (HOMELANDER_SETTER_ECHO_PASSED ~= true or
+        HOMELANDER_PLAYER ~= h or
+        not (hasfn("go_IsValid") or hasfn("online_DeterminePlayerIndex")) or
+        not valid_player(h)) then
+        restoreAllowed=false
+        log("RESTORE SKIPPED: player identity/validity or setter proof changed")
+    end
+    if restoreAllowed then
+        local okMag, restoreMag=pcall(function() return v:magnitude() end)
+        if not okMag or not finite(restoreMag) then
+            log("RESTORE SKIPPED: saved velocity is non-finite")
+        else
+            local ok,err=pcall(phys_SetLinearVelocity,h,v,S.selector)
+            if not ok then log("WARN: pre-flight velocity restore failed | "..tostring(err)) end
+        end
     end
     if wasEnabled then log("DISABLED | restore="..tostring(restorePreflightVelocity)) end
     return true
