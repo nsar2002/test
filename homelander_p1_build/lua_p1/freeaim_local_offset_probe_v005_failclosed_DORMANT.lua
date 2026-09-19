@@ -50,6 +50,10 @@ function Homelander_FreeAimLocalOffsetProbe()
     clear_f10_results()
     log("BEGIN — READ ONLY")
     local original_player = HOMELANDER_PLAYER
+    if original_player == nil or HOMELANDER_FREEAIM_VERIFIED_PLAYER ~= original_player then
+        log("ABORT: no current F9 target bound to this exact player")
+        return false
+    end
 
     local target = HOMELANDER_FREEAIM_HIT
     local hit_pos = HOMELANDER_FREEAIM_HIT_POS
@@ -148,7 +152,10 @@ function Homelander_FreeAimLocalOffsetProbe()
     -- active player or previous verified F9 target before publishing F10 proof.
     if HOMELANDER_PLAYER ~= original_player or not valid_goh(original_player) or
        HOMELANDER_PLAYER ~= original_player or
-       HOMELANDER_FREEAIM_HIT ~= target or not valid_goh(target) then
+       HOMELANDER_FREEAIM_HIT ~= target or not valid_goh(target) or
+       HOMELANDER_PLAYER ~= original_player or
+       HOMELANDER_FREEAIM_VERIFIED_PLAYER ~= original_player or
+       HOMELANDER_FREEAIM_HIT ~= target then
         log("ABORT: player/F9 target changed during F10 callbacks")
         return false
     end
