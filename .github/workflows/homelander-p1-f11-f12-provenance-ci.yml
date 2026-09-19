@@ -1,0 +1,98 @@
+name: Homelander P1 Dormant F11 F12 Provenance CI
+on:
+  push:
+    branches:
+      - homelander-p1-f11-f12-provenance-20260919
+    paths:
+      - 'homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua'
+      - 'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua'
+      - 'homelander_p1_build/tests/f11_f12_provenance_integration.lua'
+      - 'homelander_p1_build/P1_F11_F12_PROVENANCE_DORMANT_20260919.md'
+      - 'homelander_p1_build/F11_F12_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-f11-f12-provenance-ci.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-lua-readonly-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ensure only isolated Lua and offline tests changed
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          base='6bce71da0e3196776d8edfbfd3814dc8bf1ef36e'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={
+            'homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua',
+            'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua',
+            'homelander_p1_build/tests/f11_f12_provenance_integration.lua',
+            'homelander_p1_build/P1_F11_F12_PROVENANCE_DORMANT_20260919.md',
+            'homelander_p1_build/F11_F12_REPRO_TRIGGER.txt',
+            '.github/workflows/homelander-p1-f11-f12-provenance-ci.yml'
+          }
+          assert changed<=allowed, 'Unexpected runtime/native/stage change: '+repr(sorted(changed-allowed))
+          for p in (
+            'homelander_p1_build/lua_p1/eye_origin_probe_v006_STAGED.lua',
+            'homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_STAGED.lua',
+            'homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua',
+            'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua',
+          ):
+            assert subprocess.check_output(['git','show',base+':'+p])==Path(p).read_bytes(), p
+          native=Path('homelander_p1_build/homelander_p1.cpp').read_text()
+          for f in ('eye_origin_probe_v006_failclosed_DORMANT.lua','dual_eye_freeaim_render_v007_failclosed_DORMANT.lua'):
+            assert f not in native, 'Dormant overlay already wired into native C++: '+f
+          print('P1_F11_F12_CANONICAL_SOURCE_AND_NATIVE_IMMUTABLE_PASS')
+          PY
+      - name: Install Lua 5.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1
+      - name: Parse and execute actual original and guarded Lua in deterministic mocks
+        run: |
+          for f in \
+            homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua \
+            homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua \
+            homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua \
+            homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua \
+            homelander_p1_build/lua_p1/eye_origin_probe_v006_STAGED.lua \
+            homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua \
+            homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_STAGED.lua \
+            homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua \
+            homelander_p1_build/tests/f11_f12_provenance_integration.lua; do
+              luac5.1 -p "$f"
+          done
+          lua5.1 homelander_p1_build/tests/f11_f12_provenance_integration.lua
+      - name: Source-level mutator boundary
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          f11=Path('homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua').read_text()
+          f12=Path('homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua').read_text()
+          for src in (f11,f12):
+            for tok in ('go_ApplyDamage(', 'go_SetHealth(', 'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect('):
+              assert tok not in src, 'forbidden gameplay mutator: '+tok
+          assert 'HOMELANDER_FREEAIM_VERIFIED_PLAYER ~= player' in f12
+          assert 'HOMELANDER_EYE_ORIGIN_VERIFIED_PLAYER ~= player' in f12
+          assert 'HOMELANDER_DUAL_EYE_RENDER_LAST_OK = false' in f12
+          assert 'clear_eye_proof()' in f11
+          assert f12.count('pcall(ai_Laser,')==2
+          print('P1_F11_F12_SOURCE_ONLY_NO_DAMAGE_NATIVE_OR_STAGE_WRITE_PASS')
+          PY
+      - name: Create SHA-checked dormant source evidence
+        run: |
+          mkdir -p staged_f11_f12/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua staged_f11_f12/
+          cp homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_failclosed_DORMANT.lua staged_f11_f12/
+          cp homelander_p1_build/tests/f11_f12_provenance_integration.lua staged_f11_f12/CI_EVIDENCE/
+          cp homelander_p1_build/P1_F11_F12_PROVENANCE_DORMANT_20260919.md staged_f11_f12/
+          (cd staged_f11_f12 && sha256sum eye_origin_probe_v006_failclosed_DORMANT.lua dual_eye_freeaim_render_v007_failclosed_DORMANT.lua CI_EVIDENCE/f11_f12_provenance_integration.lua P1_F11_F12_PROVENANCE_DORMANT_20260919.md > SHA256SUMS.txt)
+          (cd staged_f11_f12 && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F11_F12_Provenance_SOURCE_ONLY_DORMANT
+          path: staged_f11_f12/
