@@ -43,10 +43,15 @@ phys_SetLinearVelocity=function(h,v)
     writes=writes+1
 end
 time_GetSimulationDelta=function() return 0.016 end
--- Canonical verified F5 function sets only a boolean; V2.2 wraps and binds it.
-Homelander_SetterEchoProbe_Verified=function()
+-- Synthetic F5 mirrors the canonical two-level public/core call graph.
+-- The independent V2.3 suite executes the REAL canonical v003 F5 source.
+Homelander_SetterEchoProbe=function(handle)
+    if handle==nil then HOMELANDER_SETTER_ECHO_PASSED=false;return false end
     HOMELANDER_SETTER_ECHO_PASSED=true
     return true
+end
+Homelander_SetterEchoProbe_Verified=function()
+    return Homelander_SetterEchoProbe(HOMELANDER_PLAYER)
 end
 
 dofile("homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua")
