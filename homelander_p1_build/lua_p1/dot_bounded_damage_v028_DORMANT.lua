@@ -7,7 +7,7 @@ local INTERVAL=0.10
 local MAX_EVENTS=3
 local MAX_PER_EVENT=0.10
 local MAX_ELAPSED=2.0
-local S={enabled=false,player=nil,target=nil,elapsed=0.0,acc=0.0,events=0}
+local S={enabled=false,player=nil,target=nil,elapsed=0.0,acc=0.0,events=0,lifetime_events=0}
 HOMELANDER_DOT_BOUNDED_LAST_EVENTS=0
 HOMELANDER_DOT_BOUNDED_ACTIVE=false
 local function log(x)
@@ -97,7 +97,12 @@ local function proof_ok(target)
   finite(HOMELANDER_DOT_DRYRUN_MIN_GAP) and HOMELANDER_DOT_DRYRUN_MIN_GAP+0.000001>=INTERVAL
 end
 local function disable(why)
- if S.enabled then log("DISABLED | "..tostring(why)) end
+ if S.enabled then
+  log("DISABLED | "..tostring(why))
+  -- End of the manual trial consumes the old F20 cadence token; it cannot
+  -- authorize another trial following LOS loss or a native setter failure.
+  HOMELANDER_DOT_DRYRUN_PASSED=false
+ end
  S.enabled=false;S.player=nil;S.target=nil;S.acc=0.0
  HOMELANDER_DOT_BOUNDED_ACTIVE=false
  return true
@@ -106,7 +111,7 @@ end
 function Homelander_DOTBoundedToggleV028()
  if S.enabled then return disable("manual stop") end
  -- A completed bounded trial cannot be restarted with the same old Lua token.
- if HOMELANDER_DOT_BOUNDED_LAST_EVENTS>0 then
+ if S.lifetime_events>0 then
   log("REFUSED: this Lua state already submitted bounded DOT damage")
   return false
  end
@@ -175,13 +180,14 @@ function Homelander_DOTBoundedTickV028()
  S.acc=S.acc+dt
  if S.acc<INTERVAL then return true end
  S.acc=0.0 -- no burst catch-up even when dt > interval
- if S.events>=MAX_EVENTS or HOMELANDER_DOT_BOUNDED_LAST_EVENTS>=MAX_EVENTS then
+ if S.events>=MAX_EVENTS or S.lifetime_events>=MAX_EVENTS then
   disable("maximum bounded events already reached");return false
  end
  -- Only one bounded damage call in one tick; published count is consumed BEFORE
  -- native submission so a setter error cannot be retried into an extra event.
  S.events=S.events+1
- HOMELANDER_DOT_BOUNDED_LAST_EVENTS=HOMELANDER_DOT_BOUNDED_LAST_EVENTS+1
+ S.lifetime_events=S.lifetime_events+1
+ HOMELANDER_DOT_BOUNDED_LAST_EVENTS=S.lifetime_events
  local okDamage,err=pcall(go_ApplyDamage,target,MAX_PER_EVENT)
  if not okDamage then
   disable("damage setter failed; event budget remains consumed | "..tostring(err))
