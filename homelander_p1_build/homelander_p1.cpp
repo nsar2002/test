@@ -1375,6 +1375,7 @@ namespace hl
         g_dualEyeRenderReady = ExecuteLuaFile(L, "lua_p1\\dual_eye_freeaim_render_v007_STAGED.lua");
         g_laserSightNativeReady = ExecuteLuaFile(L, "lua_p1\\lasersight_native_gate_v008_STAGED.lua");
         g_laserSightHeldReady = ExecuteLuaFile(L, "lua_p1\\lasersight_held_gate_v009_STAGED.lua");
+        g_laserSightDynamicReady = ExecuteLuaFile(L, "lua_p1\\lasersight_dynamic_aim_gate_v010_STAGED.lua");
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
@@ -1385,8 +1386,8 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s",
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1394,7 +1395,8 @@ namespace hl
             g_eyeOriginReady ? "true" : "false",
             g_dualEyeRenderReady ? "true" : "false",
             g_laserSightNativeReady ? "true" : "false",
-            g_laserSightHeldReady ? "true" : "false");
+            g_laserSightHeldReady ? "true" : "false",
+            g_laserSightDynamicReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1415,8 +1417,13 @@ namespace hl
         const bool inputEnabled = g_window && GetForegroundWindow() == g_window;
         PublishHeldInput(L, inputEnabled);
 
-        if (!inputEnabled && g_laserSightHeldReady)
-            CallLua0(L, "Homelander_LaserSightHeldForceDisableV009", false);
+        if (!inputEnabled)
+        {
+            if (g_laserSightHeldReady)
+                CallLua0(L, "Homelander_LaserSightHeldForceDisableV009", false);
+            if (g_laserSightDynamicReady)
+                CallLua0(L, "Homelander_DynamicAimForceDisableV010", false);
+        }
 
         if (!g_scriptsReady)
             return;
@@ -1533,6 +1540,9 @@ namespace hl
 
         if (RisingEdge(VK_F15, g_f15Prev, inputEnabled))
         {
+            if (g_laserSightDynamicReady)
+                CallLua0(L, "Homelander_DynamicAimForceDisableV010", false);
+
             if (g_laserSightHeldReady)
             {
                 Log("F15: toggle held native LaserSight at F10-proven impact point");
@@ -1544,8 +1554,23 @@ namespace hl
             }
         }
 
+        if (RisingEdge(VK_F16, g_f16Prev, inputEnabled))
+        {
+            if (g_laserSightDynamicReady)
+            {
+                Log("F16: toggle dynamic per-tick free-aim native LaserSight");
+                CallLua0(L, "Homelander_DynamicAimToggleV010");
+            }
+            else
+            {
+                Log("F16 ignored: dynamic free-aim staged Lua did not load");
+            }
+        }
+
         if (inputEnabled && g_laserSightHeldReady)
             CallLua0(L, "Homelander_LaserSightHeldTickV009", false);
+        if (inputEnabled && g_laserSightDynamicReady)
+            CallLua0(L, "Homelander_DynamicAimTickV010", false);
 
         // Silent while disabled. The Lua controller returns immediately.
         CallLua0(L, "Homelander_FlightNativeTick", false);
@@ -2050,7 +2075,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle", kBuildId);
         return 0;
     }
 }
