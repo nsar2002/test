@@ -83,7 +83,7 @@ function SelfTest {
  $a="READY build=$b`n"
  $f4="F4: read-only discovery + flight math probe`n"
  $f9="F9: read-only free-aim camera/LOS probe`n"
- $start="[HOMELANDER_P1_FREEAIM_V004] BEGIN — READ ONLY`n"
+ $start="[HOMELANDER_P1_FREEAIM_V004] BEGIN - READ ONLY`n"
  $cam="[HOMELANDER_P1_FREEAIM_V004] CAMERA | axis=3`n"
  $hit="[HOMELANDER_P1_FREEAIM_V004] HIT | fraction=0.5 hitGOH=NPC`n"
  $end="[HOMELANDER_P1_FREEAIM_V004] END — READ ONLY`n"
