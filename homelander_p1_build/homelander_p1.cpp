@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_009_DYNAMIC_STABILITY_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_010_DAMAGE_ONESHOT_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -164,6 +164,7 @@ namespace hl
     bool g_f14Prev = false;
     bool g_f15Prev = false;
     bool g_f16Prev = false;
+    bool g_f17Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
@@ -171,6 +172,7 @@ namespace hl
     bool g_laserSightNativeReady = false;
     bool g_laserSightHeldReady = false;
     bool g_laserSightDynamicReady = false;
+    bool g_damageOneShotReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -1419,6 +1421,7 @@ namespace hl
         g_laserSightNativeReady = ExecuteLuaFile(L, "lua_p1\\lasersight_native_gate_v008_STAGED.lua");
         g_laserSightHeldReady = ExecuteLuaFile(L, "lua_p1\\lasersight_held_gate_v009_STAGED.lua");
         g_laserSightDynamicReady = ExecuteLuaFile(L, "lua_p1\\lasersight_dynamic_aim_gate_v010_STAGED.lua");
+        g_damageOneShotReady = ExecuteLuaFile(L, "lua_p1\\heatvision_damage_gate_v011_STAGED.lua");
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
@@ -1431,8 +1434,8 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s",
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1441,7 +1444,8 @@ namespace hl
             g_dualEyeRenderReady ? "true" : "false",
             g_laserSightNativeReady ? "true" : "false",
             g_laserSightHeldReady ? "true" : "false",
-            g_laserSightDynamicReady ? "true" : "false");
+            g_laserSightDynamicReady ? "true" : "false",
+            g_damageOneShotReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1609,6 +1613,19 @@ namespace hl
             else
             {
                 Log("F16 ignored: dynamic free-aim staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F17, g_f17Prev, inputEnabled))
+        {
+            if (g_damageOneShotReady)
+            {
+                Log("F17: one-shot heat-vision damage gate; fresh LOS + dual F16 stability required");
+                CallLua0(L, "Homelander_HeatVisionDamageOneShotV011");
+            }
+            else
+            {
+                Log("F17 ignored: one-shot damage staged Lua did not load");
             }
         }
 
@@ -2120,7 +2137,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate", kBuildId);
         return 0;
     }
 }
