@@ -1,5 +1,15 @@
 {
+  "available_link_keys": [
+    "self"
+  ],
   "classification": "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
+  "file_object_keys": [
+    "checksum",
+    "id",
+    "key",
+    "links",
+    "size"
+  ],
   "guardrails": {
     "amin_loaded": false,
     "archive_member_decompressed": false,
