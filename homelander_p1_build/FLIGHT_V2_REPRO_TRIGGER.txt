@@ -1,2 +1,3 @@
 Flight V2 reproducibility run 2 trigger — controller/C++ unchanged
 Flight V2.1 safety reproducibility run 2 — no functional source changes
+Flight V2.2 exact-player F5 binding reproducibility run 2 — no functional source changes
