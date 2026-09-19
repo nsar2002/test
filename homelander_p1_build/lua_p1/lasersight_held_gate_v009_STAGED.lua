@@ -129,6 +129,8 @@ function Homelander_LaserSightHeldToggleV009()
 
     HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
     HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
+    HOMELANDER_DYNAMIC_AIM_STABILITY_PASSED = false
+    HOMELANDER_DYNAMIC_AIM_STABILITY_RENDER_FRAMES = nil
     S.enabled = true
     S.target = G.target
     S.frames = 0
