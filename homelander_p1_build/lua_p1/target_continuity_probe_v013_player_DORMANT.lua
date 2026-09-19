@@ -211,10 +211,6 @@ function Homelander_TargetContinuityToggleV013()
     S.other_hits = 0
     S.breaks = 0
     S.baseline_health = h
-    if not current_player() then
-        disable("player/source changed during F19 health callbacks")
-        return false
-    end
     S.last_health = h
     S.max_health = m
 
@@ -258,6 +254,10 @@ function Homelander_TargetContinuityTickV013()
     local h, m = read_health(S.target)
     if h == nil then
         disable("target health telemetry failed")
+        return false
+    end
+    if not current_player() then
+        disable("player/source changed during F19 tick health callbacks")
         return false
     end
     S.last_health = h
