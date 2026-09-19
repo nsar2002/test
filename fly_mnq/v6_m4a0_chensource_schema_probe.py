@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, re, struct, sys
+import json, re, struct, sys, time
 from pathlib import PurePosixPath
 import requests
 
@@ -74,7 +74,39 @@ def safe_path(name):
 
 def main():
     s = requests.Session()
-    meta = s.get(API, timeout=(30, 60)).json()
+    s.headers.update({
+        "Accept": "application/json",
+        "User-Agent": "fly-mnq-v6-m4a0-source-audit/1.0"
+    })
+    meta = None
+    meta_diag = []
+    for attempt in range(1, 5):
+        try:
+            resp = s.get(API, timeout=(30, 60))
+            diag = {
+                "attempt": attempt,
+                "status": resp.status_code,
+                "content_type": resp.headers.get("Content-Type"),
+                "content_length_header": resp.headers.get("Content-Length"),
+                "received_bytes": len(resp.content),
+            }
+            meta_diag.append(diag)
+            if resp.status_code == 200 and resp.content:
+                try:
+                    meta = resp.json()
+                    break
+                except ValueError:
+                    pass
+        except requests.RequestException as exc:
+            meta_diag.append({"attempt": attempt, "transport_exception": type(exc).__name__})
+        if attempt < 4:
+            time.sleep(2 ** (attempt - 1))
+    if meta is None:
+        return fail(
+            "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
+            "Zenodo record API did not yield valid JSON after frozen bounded retries",
+            metadata_transport=meta_diag,
+        )
     files = meta.get("files", [])
     matches = [f for f in files if f.get("key") == EXPECTED_KEY]
     if len(matches) != 1:
