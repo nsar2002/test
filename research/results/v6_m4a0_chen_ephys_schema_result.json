@@ -8,5 +8,6 @@
     "mnq_loaded": false,
     "model_fit": false
   },
-  "reason": "exception: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+  "provider_size": 2287477173,
+  "reason": "missing provider content URL or byte size"
 }
