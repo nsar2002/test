@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   qualify:
@@ -68,3 +68,19 @@ jobs:
           name: fly-mnq-v6-m4a0-chen-ephys-schema
           path: v6_m4a0_out/
           retention-days: 14
+
+      - name: Persist formal result in public source-only repo
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m4a0_out/v6_m4a0_result.json research/results/v6_m4a0_chen_ephys_schema_result.json
+          cp v6_m4a0_out/output_sha256.txt research/results/v6_m4a0_chen_ephys_schema_output_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m4a0_chen_ephys_schema_result.json research/results/v6_m4a0_chen_ephys_schema_output_sha256.txt
+          if git diff --cached --quiet; then
+            echo "No result change to commit"
+          else
+            git commit -m "V6-M4A0: record value-opaque Chen schema result [skip ci]"
+            git push
+          fi
