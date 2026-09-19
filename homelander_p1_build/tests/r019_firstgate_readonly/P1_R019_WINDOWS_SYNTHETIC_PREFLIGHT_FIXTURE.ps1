@@ -81,9 +81,15 @@ try {
  [IO.File]::WriteAllText($tool,$source,[Text.Encoding]::UTF8)
  function Run([string]$action,[bool]$shouldPass,[string]$marker){
   $before=Snapshot $game
-  $output=(& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $tool `
-    -Action $action -ReleaseDirectory $release -R007ZipPath $fakezip -PrototypeRoot $game 2>&1 | Out-String)
-  $code=$LASTEXITCODE
+  # Expected failed child preflights emit stderr; Windows PowerShell 5.1 may
+  # otherwise raise NativeCommandError before the fixture inspects exit code.
+  $priorPreference=$ErrorActionPreference
+  $ErrorActionPreference='Continue'
+  try {
+   $output=(& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $tool `
+     -Action $action -ReleaseDirectory $release -R007ZipPath $fakezip -PrototypeRoot $game 2>&1 | Out-String)
+   $code=$LASTEXITCODE
+  } finally { $ErrorActionPreference=$priorPreference }
   $after=Snapshot $game
   if($after -cne $before){throw 'Sidecar mutated disposable game root!'}
   if($shouldPass -and ($code -ne 0 -or !$output.Contains($marker))){
