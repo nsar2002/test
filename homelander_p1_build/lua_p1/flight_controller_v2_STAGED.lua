@@ -65,7 +65,7 @@ local function valid_player(h)
     end
     if hasfn("online_DeterminePlayerIndex") then
         local ok, idx = pcall(online_DeterminePlayerIndex, h)
-        if not ok or type(idx) ~= "number" or idx < 0 then return false end
+        if not ok or not finite(idx) or idx < 0 or idx ~= math.floor(idx) then return false end
     end
     return true
 end
@@ -121,6 +121,15 @@ local function exact_echo_binding(h)
         WrappedSetterEcho ~= nil and WrappedSetterEchoVerified ~= nil and
         Homelander_SetterEchoProbe == WrappedSetterEcho and
         Homelander_SetterEchoProbe_Verified == WrappedSetterEchoVerified
+end
+
+-- Revalidate immediately before all velocity writes: an engine callback can
+-- change the player handle or F5 proof after the entrypoint guard ran.
+local function flight_provenance_ok(h)
+    return h ~= nil and HOMELANDER_SETTER_ECHO_PASSED == true and
+        HOMELANDER_PLAYER == h and exact_echo_binding(h) and valid_player(h) and
+        HOMELANDER_PLAYER == h and HOMELANDER_SETTER_ECHO_PASSED == true and
+        exact_echo_binding(h)
 end
 
 local function normalized_copy(v)
@@ -333,7 +342,6 @@ function Homelander_FlightEnableVerifiedV2()
     end
 
     refresh_config()
-    S.handle=h
     local okMag, preMag=pcall(function() return v:magnitude() end)
     if not okMag or not finite(preMag) then
         log("ABORT: non-finite pre-flight velocity")
@@ -344,6 +352,12 @@ function Homelander_FlightEnableVerifiedV2()
         log("ABORT: pre-flight velocity copy failed")
         return false
     end
+    -- A getter/camera callback may have replaced the originating player.
+    if not flight_provenance_ok(h) then
+        log("ABORT: player/F5 proof changed during flight enable callbacks")
+        return false
+    end
+    S.handle=h
     S.pre_velocity=preCopy
     S.enabled=true
     S.camera_fallback_logged=false
@@ -365,9 +379,7 @@ end
 
 function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
     if not S.enabled or S.handle==nil then return false end
-    if HOMELANDER_SETTER_ECHO_PASSED ~= true or
-       not exact_echo_binding(S.handle) or
-       HOMELANDER_PLAYER ~= S.handle or not valid_player(S.handle) then
+    if not flight_provenance_ok(S.handle) then
         log("FAIL-CLOSED: player/setter proof changed while flight active")
         S.enabled=false
         HOMELANDER_FLIGHT_V2_ENABLED=false
@@ -424,6 +436,9 @@ function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
         local desired=newPlanar + up*newUp
         local desiredMagnitude=desired:magnitude()
         if not finite(desiredMagnitude) then error("desired velocity non-finite") end
+        if not flight_provenance_ok(S.handle) then
+            error("player/F5 proof changed during flight tick callbacks")
+        end
         phys_SetLinearVelocity(S.handle,desired,S.selector)
 
         S.tick_count=S.tick_count+1
@@ -476,11 +491,7 @@ function Homelander_FlightDisableV2(restorePreflightVelocity)
     -- F7 must never write pre-flight velocity to a stale/replaced player handle.
     local restoreAllowed=wasEnabled and restorePreflightVelocity and h~=nil and v~=nil and
         hasfn("phys_SetLinearVelocity")
-    if restoreAllowed and (HOMELANDER_SETTER_ECHO_PASSED ~= true or
-        not exact_echo_binding(h) or
-        HOMELANDER_PLAYER ~= h or
-        not (hasfn("go_IsValid") or hasfn("online_DeterminePlayerIndex")) or
-        not valid_player(h)) then
+    if restoreAllowed and not flight_provenance_ok(h) then
         restoreAllowed=false
         log("RESTORE SKIPPED: player identity/validity or setter proof changed")
     end
