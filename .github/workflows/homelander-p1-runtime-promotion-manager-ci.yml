@@ -59,7 +59,7 @@ jobs:
           $expected=@('v003','v004','v005','v006','v007','v009','v010','v011','v012','v013','v014','v015','v016')
           if($actual.Count -ne $expected.Count) { throw "Stage-count mismatch" }
           for($i=0;$i -lt $expected.Count;$i++) {
-            if($actual[$i] -ne $expected[$i]) { throw "Order mismatch at $i: expected $($expected[$i]), got $($actual[$i])" }
+            if($actual[$i] -ne $expected[$i]) { throw "Order mismatch at ${i}: expected $($expected[$i]), got $($actual[$i])" }
           }
           if($actual -contains 'v008') { throw 'v008 must remain excluded; v009 supersedes it.' }
           Write-Host "Promotion order PASS"
