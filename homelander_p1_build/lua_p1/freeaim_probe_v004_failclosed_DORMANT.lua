@@ -115,6 +115,7 @@ local function clear_f9_f10_results()
     HOMELANDER_FREEAIM_HIT_POS = nil
     HOMELANDER_FREEAIM_HIT_NORMAL = nil
     HOMELANDER_FREEAIM_FRACTION = nil
+    HOMELANDER_FREEAIM_VERIFIED_PLAYER = nil
     HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET = nil
     HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH = nil
     HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_ERROR = nil
@@ -235,6 +236,18 @@ function Homelander_FreeAimProbe()
     if HOMELANDER_FREEAIM_HIT ~= nil and type(go_GetDebugName) == "function" then
         local okName, name = pcall(go_GetDebugName, HOMELANDER_FREEAIM_HIT)
         if okName then hitName = name end
+    end
+
+    -- Debug name and target validity callbacks can also change the player.
+    -- Publish a provenance token only after those callbacks have completed.
+    if HOMELANDER_PLAYER ~= player or not valid_goh(player) or
+       HOMELANDER_PLAYER ~= player then
+        clear_f9_f10_results()
+        log("ABORT: verified player changed during final F9 hit readback")
+        return false
+    end
+    if HOMELANDER_FREEAIM_HIT ~= nil then
+        HOMELANDER_FREEAIM_VERIFIED_PLAYER = player
     end
 
     log("HIT | fraction=" .. tostring(fraction) ..
