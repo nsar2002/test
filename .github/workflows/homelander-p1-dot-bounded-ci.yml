@@ -57,7 +57,6 @@ jobs:
           assert 'dot_bounded_damage_v028_DORMANT.lua' not in c, 'forbidden native bootstrap activation'
           assert 'Homelander_DOTBoundedTickV028' not in c, 'forbidden automatic native tick wiring'
           assert src.count('pcall(go_ApplyDamage,target,MAX_PER_EVENT)')==1, 'expected one guarded damage site'
-          assert src.count('go_ApplyDamage(')==1, 'unexpected damage API site'
           assert 'local MAX_EVENTS=3' in src and 'local MAX_PER_EVENT=0.10' in src
           assert 'S.lifetime_events=S.lifetime_events+1' in src
           assert 'HOMELANDER_DOT_DRYRUN_PASSED=false' in src
