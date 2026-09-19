@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_011_IMPACT_VFX_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_012_TARGET_CONTINUITY_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -166,6 +166,7 @@ namespace hl
     bool g_f16Prev = false;
     bool g_f17Prev = false;
     bool g_f18Prev = false;
+    bool g_f19Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
@@ -175,6 +176,7 @@ namespace hl
     bool g_laserSightDynamicReady = false;
     bool g_damageOneShotReady = false;
     bool g_impactVfxReady = false;
+    bool g_targetContinuityReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -1425,6 +1427,7 @@ namespace hl
         g_laserSightDynamicReady = ExecuteLuaFile(L, "lua_p1\\lasersight_dynamic_aim_gate_v010_STAGED.lua");
         g_damageOneShotReady = ExecuteLuaFile(L, "lua_p1\\heatvision_damage_gate_v011_STAGED.lua");
         g_impactVfxReady = ExecuteLuaFile(L, "lua_p1\\impact_vfx_gate_v012_STAGED.lua");
+        g_targetContinuityReady = ExecuteLuaFile(L, "lua_p1\\target_continuity_probe_v013_STAGED.lua");
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
@@ -1437,8 +1440,8 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s",
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1449,7 +1452,8 @@ namespace hl
             g_laserSightHeldReady ? "true" : "false",
             g_laserSightDynamicReady ? "true" : "false",
             g_damageOneShotReady ? "true" : "false",
-            g_impactVfxReady ? "true" : "false");
+            g_impactVfxReady ? "true" : "false",
+            g_targetContinuityReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1476,6 +1480,8 @@ namespace hl
                 CallLua0(L, "Homelander_LaserSightHeldForceDisableV009", false);
             if (g_laserSightDynamicReady)
                 CallLua0(L, "Homelander_DynamicAimForceDisableV010", false);
+            if (g_targetContinuityReady)
+                CallLua0(L, "Homelander_TargetContinuityForceDisableV013", false);
         }
 
         if (!g_scriptsReady)
@@ -1646,10 +1652,25 @@ namespace hl
             }
         }
 
+        if (RisingEdge(VK_F19, g_f19Prev, inputEnabled))
+        {
+            if (g_targetContinuityReady)
+            {
+                Log("F19: toggle read-only target continuity/health telemetry");
+                CallLua0(L, "Homelander_TargetContinuityToggleV013");
+            }
+            else
+            {
+                Log("F19 ignored: target continuity staged Lua did not load");
+            }
+        }
+
         if (inputEnabled && g_laserSightHeldReady)
             CallLua0(L, "Homelander_LaserSightHeldTickV009", false);
         if (inputEnabled && g_laserSightDynamicReady)
             CallLua0(L, "Homelander_DynamicAimTickV010", false);
+        if (inputEnabled && g_targetContinuityReady)
+            CallLua0(L, "Homelander_TargetContinuityTickV013", false);
 
         // Silent while disabled. The Lua controller returns immediately.
         CallLua0(L, "Homelander_FlightNativeTick", false);
@@ -2154,7 +2175,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate, F19=read-only target continuity telemetry", kBuildId);
         return 0;
     }
 }
