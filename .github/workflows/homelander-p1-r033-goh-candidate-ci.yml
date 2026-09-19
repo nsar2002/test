@@ -1,0 +1,56 @@
+name: P1 R033 genuine GOH custom-type provenance source-only CI
+on:
+  push:
+    branches: [homelander-p1-r033-real-goh-global-provenance-observer-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  readonly-goh-observer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Ensure original game, original v003 firstgate and R018-R031 remain unchanged
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='4016d21614104f5d3a94d46ef4986c91c6127715'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={
+           '.github/workflows/homelander-p1-r033-goh-candidate-ci.yml',
+           'homelander_p1_build/tests/r033_goh_global_provenance_clone_only.lua',
+           'homelander_p1_build/tests/r033_goh_custom_type_fixture.lua',
+           'homelander_p1_build/tests/r033_readme.md',
+          }
+          assert changed<=allowed, changed-allowed
+          print('P1_R033_ORIGINAL_R007_GAME_NATIVE_V003_R018_R031_FROZEN_PASS')
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - name: Compile and test actual Lua5.1 custom GOH type with negative controls
+        run: |
+          luac5.1 -p homelander_p1_build/tests/r033_goh_global_provenance_clone_only.lua
+          luac5.1 -p homelander_p1_build/tests/r033_goh_custom_type_fixture.lua
+          lua5.1 homelander_p1_build/tests/r033_goh_custom_type_fixture.lua homelander_p1_build/tests/r033_goh_global_provenance_clone_only.lua
+      - name: Scope and noninstallation safety guards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('homelander_p1_build/tests/r033_goh_global_provenance_clone_only.lua').read_text()
+          for token in ('HOMELANDER_PLAYER =','HOMELANDER_SETTER_ECHO_PASSED =','cm_SetCameraAvatar(','go_ApplyDamage(','phys_SetLinearVelocity('):
+              assert token not in p, token
+          assert 'kind~="GOH"' in p and 'Homelander_FlightNativeTick' in p
+          assert 'gameFlowMachineGOH' in p and 'mainMissionGOH' in p
+          print('P1_R033_NO_GAMEPLAY_WRITES_BOOT_SKIP_CUSTOM_GOHTYPE_CONTROLS_PASS')
+          PY
+          mkdir -p stage_r033
+          cp homelander_p1_build/tests/r033_goh_global_provenance_clone_only.lua stage_r033/
+          cp homelander_p1_build/tests/r033_readme.md stage_r033/
+          (cd stage_r033 && sha256sum *.lua *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r033 -type f | grep -Ei '\\.(asi|dll|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R033_SOURCE_ONLY_NOT_INSTALLABLE_NO_OFFICIAL_GATE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R033_ActualGOHGlobals_NegativeControls_SourceOnly
+          path: stage_r033/
+          if-no-files-found: error
