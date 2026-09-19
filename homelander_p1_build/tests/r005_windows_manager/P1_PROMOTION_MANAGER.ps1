@@ -334,6 +334,7 @@ if ($Action -eq 'Install') {
 }
 
 if ($Action -eq 'Check') {
+    Assert-GameClosed
     if (!$Stage) { $Stage = $ActiveStage }
     $cfg = Get-Stage $Stage
     if ($Stage -ne $ActiveStage) { throw "Check requested for $Stage but active stage is $ActiveStage." }
