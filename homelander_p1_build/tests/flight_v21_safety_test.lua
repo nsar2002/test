@@ -32,8 +32,8 @@ local writes,valid,velocity=0,true,Vector(0,0,0)
 HL_Log=function() end
 HOMELANDER_PLAYER="player-1"
 HOMELANDER_SETTER_ECHO_PASSED=true
-go_IsValid=function(h) return valid and h=="player-1" end
-online_DeterminePlayerIndex=function(h) return h=="player-1" and 0 or -1 end
+go_IsValid=function(h) return valid and (h=="player-1" or h=="player-2") end
+online_DeterminePlayerIndex=function(h) return h=="player-1" and 0 or (h=="player-2" and 1 or -1) end
 go_GetPosition=function() return Vector(0,0,0) end
 go_Local2World=function(_,v) return v end
 ai_GetPhysicsVelocity=function() return velocity end
@@ -43,8 +43,16 @@ phys_SetLinearVelocity=function(h,v)
     writes=writes+1
 end
 time_GetSimulationDelta=function() return 0.016 end
+-- Canonical verified F5 function sets only a boolean; V2.2 wraps and binds it.
+Homelander_SetterEchoProbe_Verified=function()
+    HOMELANDER_SETTER_ECHO_PASSED=true
+    return true
+end
 
 dofile("homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua")
+assert(not Homelander_FlightEnableVerifiedV2(),"unbound preexisting F5 boolean rejected")
+assert(Homelander_SetterEchoProbe_Verified(),"initial F5 echo bound to player-1")
+assert_equal(HOMELANDER_FLIGHT_V22_ECHO_PLAYER,"player-1","F5 bound identity")
 
 -- Normal F6/F7 sequence: one active-tick submit plus one authorized restore.
 assert(Homelander_FlightEnableVerifiedV2(),"valid flight enable")
@@ -59,6 +67,17 @@ HOMELANDER_PLAYER="player-2"
 Homelander_FlightDisableV2(true)
 assert_equal(writes,2,"stale-player restore suppression")
 HOMELANDER_PLAYER="player-1"
+
+-- A second valid player must not inherit F5 proof from the first player.
+HOMELANDER_PLAYER="player-2"
+assert(not Homelander_FlightEnableVerifiedV2(),"new valid player cannot reuse stale F5 boolean")
+assert(Homelander_SetterEchoProbe_Verified(),"fresh F5 echo on player-2")
+assert_equal(HOMELANDER_FLIGHT_V22_ECHO_PLAYER,"player-2","new F5 bound identity")
+assert(Homelander_FlightEnableVerifiedV2(),"new player allowed only after own verified F5")
+Homelander_FlightDisableV2(false)
+HOMELANDER_PLAYER="player-1"
+assert(not Homelander_FlightEnableVerifiedV2(),"old player cannot reuse another player F5")
+assert(Homelander_SetterEchoProbe_Verified(),"fresh F5 rebind to original player")
 
 -- Invalid player: F7 restore must not call a physics setter.
 assert(Homelander_FlightEnableVerifiedV2(),"enable before invalidation")
@@ -113,4 +132,4 @@ assert_equal(HOMELANDER_FLIGHT_GROUND_PROBE_VALID,true,"ground miss is valid tel
 fre_LineOfSightTest=function() return true,0.5,nil,Vector(0,1,0) end
 assert(not Homelander_FlightGroundProbeV018(),"malformed hit fails closed")
 assert_equal(HOMELANDER_FLIGHT_GROUND_PROBE_VALID,false,"malformed ground telemetry invalidated")
-print("FLIGHT_V21_SAFETY_TEST_PASS: authorized restore, stale/invalid/revoked suppression, focus loss, non-finite inputs/velocity/config, malformed hit")
+print("FLIGHT_V22_F5_BINDING_TEST_PASS: exact-player F5 proof, authorized restore, stale/invalid/revoked suppression, focus loss, non-finite inputs/velocity/config, malformed hit")
