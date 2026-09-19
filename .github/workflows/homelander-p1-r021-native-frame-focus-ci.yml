@@ -1,0 +1,41 @@
+name: P1 R021 frame parity
+on:
+  push:
+    branches: [homelander-p1-r021-native-frame-focus-replay-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          python3 - <<'PY'
+          import subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only','09e5a439376018799ab5b85803b84883e860512b...HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/homelander-p1-r021-native-frame-focus-ci.yml','homelander_p1_build/tests/r021_native_frame_focus_replay.lua','homelander_p1_build/tests/r021_readme.md'}
+          assert changed<=allowed, changed-allowed
+          print('P1_R021_FROZEN_ORIGINAL_R007_NATIVE_AND_R018_R020_PASS')
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - run: |
+          python3 homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py stage_r021
+          python3 homelander_p1_build/tests/bootstrap_lua_dependency_audit.py stage_r021
+          for f in stage_r021/lua_p1/*.lua; do luac5.1 -p "$f"; done
+      - run: |
+          lua5.1 homelander_p1_build/tests/r020_f4_real_source_discovery.lua homelander_p1_build/v003_transfer/lua_p1/runtime_probe.lua stage_r021
+          python3 homelander_p1_build/tests/r020_native_dispatch_parity.py stage_r021
+          lua5.1 homelander_p1_build/tests/r018_assembled_f9_f21_native_order.lua stage_r021 stage_r021/CI_EVIDENCE/native_bootstrap_load_order.txt
+          lua5.1 homelander_p1_build/tests/r021_native_frame_focus_replay.lua stage_r021 stage_r021/CI_EVIDENCE/native_bootstrap_load_order.txt
+      - run: |
+          mkdir -p artifact
+          cp homelander_p1_build/tests/r021_native_frame_focus_replay.lua artifact/
+          cp homelander_p1_build/tests/r021_readme.md artifact/
+          (cd artifact && sha256sum * > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_R021_OriginalF4_NativeFrameFocus_SOURCE_ONLY
+          path: artifact/
