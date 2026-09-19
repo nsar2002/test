@@ -1,0 +1,112 @@
+{
+  "schema": "homelander-p1-vfx-asset-evidence/1.0",
+  "source_art_rcf": {
+    "drive_file_id": "1PjLfd4jfdGcE_3sjOhMRHM14MEWpsz4_",
+    "size_bytes": 496846408
+  },
+  "startup_effects": {
+    "archive_path": "\\art\\startup_effects.p3d.rz",
+    "rcf_offset": 480409600,
+    "compressed_size_bytes": 3120855,
+    "rz_header_bytes": 16,
+    "rz_sha256": "1388eae833f58c5a03a6263c8f2c6668b0f04171273e59efac27c8b83bf48568",
+    "decompressed_size_bytes": 10467955,
+    "decompressed_sha256": "7359617402d7f9da2475f69d841e8b341e3b9cf45e9eea88fcd76e559ab37230",
+    "parsed_chunk_count": 29455
+  },
+  "candidates": [
+    {
+      "name": "missileImpact001",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7914922,
+      "data_size": 45,
+      "total_size": 518,
+      "name_relative_offset": 13,
+      "children": [
+        "missileImpact001",
+        "missileImpact001_flare_glows",
+        "missileImpact001_ptcsys"
+      ]
+    },
+    {
+      "name": "debrisSparks001",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7895777,
+      "data_size": 45,
+      "total_size": 355,
+      "name_relative_offset": 13,
+      "children": [
+        "debrisSparks001",
+        "debrisSparks001_ptcsys"
+      ]
+    },
+    {
+      "name": "squibBlood001",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7922416,
+      "data_size": 45,
+      "total_size": 351,
+      "name_relative_offset": 13,
+      "children": [
+        "squibBlood001",
+        "squibBlood001_ptcsys"
+      ]
+    },
+    {
+      "name": "goreBloodGush001",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7907177,
+      "data_size": 45,
+      "total_size": 355,
+      "name_relative_offset": 13,
+      "children": [
+        "goreBloodGush001",
+        "goreBloodGush001_ptcsys"
+      ]
+    },
+    {
+      "name": "goreBloodGush002",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7907532,
+      "data_size": 45,
+      "total_size": 355,
+      "name_relative_offset": 13,
+      "children": [
+        "goreBloodGush002",
+        "goreBloodGush002_ptcsys"
+      ]
+    },
+    {
+      "name": "goreBloodGush003",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7907887,
+      "data_size": 45,
+      "total_size": 355,
+      "name_relative_offset": 13,
+      "children": [
+        "goreBloodGush003",
+        "goreBloodGush003_ptcsys"
+      ]
+    },
+    {
+      "name": "goreBloodMistFanOut001",
+      "chunk_id": "0x23000",
+      "chunk_offset": 7908242,
+      "data_size": 53,
+      "total_size": 379,
+      "name_relative_offset": 13,
+      "children": [
+        "goreBloodMistFanOut001",
+        "goreBloodMistFanOut001_ptcsys"
+      ]
+    }
+  ],
+  "interpretation": {
+    "organic_primary": "squibBlood001",
+    "organic_alternates": [
+      "goreBloodMistFanOut001",
+      "goreBloodGush001"
+    ],
+    "runtime_spawnability_proven": false
+  }
+}
