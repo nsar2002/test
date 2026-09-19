@@ -1,0 +1,72 @@
+name: Homelander P1 R008 ordered first-gate candidate synthetic Windows CI
+on:
+  push:
+    branches: [homelander-p1-r008-ordered-firstgate-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-firstgate-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert original R007 manager and original release inputs immutable
+        shell: pwsh
+        run: |
+          $base='a2b0834c75d0ae8731e7c61e0a2a5401aa9b7393'
+          $changed=@(git diff --name-only "$base...HEAD")
+          $allow=@(
+            'homelander_p1_build/tests/r008_ordered_firstgate/P1_PROMOTION_MANAGER_ORDERED_CANDIDATE.ps1',
+            'homelander_p1_build/tests/r008_ordered_firstgate/P1_R008_ORDERED_GATE_SYNTHETIC_FIXTURE.ps1',
+            'homelander_p1_build/tests/r008_ordered_firstgate/P1_R008_ORDERED_README.md',
+            '.github/workflows/homelander-p1-r008-ordered-firstgate-ci.yml'
+          )
+          foreach($f in $changed){if($allow -cnotcontains $f){throw "Unexpected live-source mutation: $f"}}
+          $frozen=@(
+            'homelander_p1_build/tests/r005_windows_manager/P1_PROMOTION_MANAGER.ps1',
+            'homelander_p1_build/tests/r006_windows_companions/promotion_manifest.json',
+            'homelander_p1_build/homelander_p1.cpp'
+          )
+          foreach($f in $frozen){
+            $baseline=(git show "$base"\:$f | Out-String)
+            $current=(Get-Content -LiteralPath $f -Raw)
+            if ($baseline.Replace("`r`n","`n").TrimEnd() -cne $current.Replace("`r`n","`n").TrimEnd()) { throw "Original source changed: $f" }
+          }
+          Write-Host 'P1_R008_ORIGINAL_MANAGER_MANIFEST_AND_NATIVE_UNCHANGED_PASS'
+      - name: Parse both manager variants
+        shell: powershell
+        run: |
+          $paths=@(
+            'homelander_p1_build/tests/r008_ordered_firstgate/P1_PROMOTION_MANAGER_ORDERED_CANDIDATE.ps1',
+            'homelander_p1_build/tests/r008_ordered_firstgate/P1_R008_ORDERED_GATE_SYNTHETIC_FIXTURE.ps1'
+          )
+          foreach($p in $paths){
+            $tokens=$null;$errors=$null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p).Path,[ref]$tokens,[ref]$errors)
+            if (@($errors).Count -gt 0) { throw "PowerShell syntax failure $p : $errors" }
+          }
+          Write-Host 'P1_R008_POWERSHELL_PARSE_PASS'
+      - name: Reproduce unordered R007 pass and test R008 candidate with disposable game
+        shell: powershell
+        run: |
+          & .\homelander_p1_build\tests\r008_ordered_firstgate\P1_R008_ORDERED_GATE_SYNTHETIC_FIXTURE.ps1
+          if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Package source candidate and offline fixture only
+        shell: pwsh
+        run: |
+          $s='stage'
+          New-Item -ItemType Directory -Force -Path $s | Out-Null
+          Copy-Item 'homelander_p1_build/tests/r008_ordered_firstgate/*' -Destination $s
+          $files=@(Get-ChildItem -LiteralPath $s -File)
+          if($files.Count -ne 3){throw "Unexpected package inventory: $($files.Count)"}
+          foreach($f in $files){
+            if($f.Extension -notin @('.ps1','.md')){throw "Executable or unexpected source file: $($f.Name)"}
+            "$( (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($f.Name)" | Add-Content -LiteralPath (Join-Path $s 'SHA256SUMS.txt')
+          }
+          Write-Host 'P1_R008_SOURCE_ONLY_CANDIDATE_PACKAGE_PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_R008_OrderedFirstGate_SOURCE_ONLY_CANDIDATE
+          path: stage/
