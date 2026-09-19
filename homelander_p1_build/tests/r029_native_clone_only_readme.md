@@ -1,0 +1,12 @@
+# R029 — original v003 ASI in separate clone, default read-only Lua census
+
+Real v003 user evidence: PLAYER=nil, original name lookups nil, F9 aborts without verified player. No official gate PASS.
+Frozen original R007 ZIP SHA256 d2b815620c915ff819b5b62f571d5502c53c8a7e1ad91ea88843ad74bf384a3c; v003 package SHA256 23e125109da26f268534a7db429a8c8d51af6cc63d06d2a374f874fb68f3a7f2; original ASI SHA256 1845aff900e77f7c98e1ef0b37a2ea83c1c293ad74d01dc8fb136a198c9027c2; original runtime_probe.lua SHA256 bd7a6ec2006466b0f7b46f966f384103d35d5d98020bcdce1112e9b4f363a650.
+
+Original native F4 re-executes lua_p1/runtime_probe.lua; no separate third-party Lua executor needed. Clone full real game independently, preserve original loader and exe but omit original promotion state, old lua_p1, p1_lua, external plugins. Add only the original v003 ASI + six exact Lua files from pinned R007 to CLONE and append exact default-camera-OFF R027 source SHA256 488fae89f29fa9c0542be03ab764d8fb2466e9ae74a6bfdd938ec3fe588d145f at END of the CLONE runtime_probe.lua. A read-only _G key/type census will run at original bootstrap and F4 via the existing native logger. This is NOT a player-discovery fix or authorized official original manager gate. Do not press F5 through F21 in diagnostic clone.
+
+Original live game root, official manager, v003 package, promotion receipts, prior logs and backup files remain unchanged. Research clone has exactly the original Homelander ASI and separately labeled R029 clone-only marker instead of any .homelander_promotion state. DO NOT install the external executor alongside it; both plugins hook the same native update routine. Do NOT use original R007 manager Check on diagnostic clone.
+
+At future real game test, launch ONLY the executable from clone, reach controllable Alex, press F4 ONCE and quit. Send clone runtime log containing [P1_R027_ONE_SHOT] bounded global key+type lines. Candidate global name with userdata type is NOT a proven local player GOH. The optional native camera branch remains disabled; never change without separate authorization/review. The original player handle is still UNKNOWN.
+
+CI checks exact original source SHA and unchanged R027 source SHA, parses actual combined source using Lua 5.1 compiler, executes combined source twice under engine mocks with missing PLAYER, checks census runs each time and zero native candidate calls. Those are OFFLINE SOURCE tests only and do not prove cloned game launches or v003 PASS.
