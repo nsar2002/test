@@ -1,0 +1,56 @@
+name: Homelander P1 F9 Numeric Epoch Source-Only CI
+on:
+  push:
+    branches: [homelander-p1-f9-numeric-epoch-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-lua-mocks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Audit source-only scope and immutable game files
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          base='c3d6ab9678afc591460e12b5719895ac0a0c6143'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allow={
+           'homelander_p1_build/lua_p1/freeaim_probe_v004_numeric_epoch_DORMANT.lua',
+           'homelander_p1_build/tests/f9_numeric_epoch_integration.lua',
+           'homelander_p1_build/P1_F9_NUMERIC_EPOCH_DORMANT_20260919.md',
+           '.github/workflows/homelander-p1-f9-numeric-epoch-ci.yml'
+          }
+          assert changed<=allow,sorted(changed-allow)
+          native=Path('homelander_p1_build/homelander_p1.cpp')
+          assert native.read_bytes()==subprocess.check_output(['git','show',base+':'+str(native)])
+          assert 'freeaim_probe_v004_numeric_epoch_DORMANT.lua' not in native.read_text()
+          print('P1_F9_NUMERIC_GAME_SOURCE_IMMUTABLE_PASS')
+          PY
+      - name: Install Lua 5.1
+        run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - name: Execute previous vs finite F9 actual Lua sources
+        run: |
+          luac5.1 -p homelander_p1_build/lua_p1/freeaim_probe_v004_numeric_epoch_DORMANT.lua
+          luac5.1 -p homelander_p1_build/tests/f9_numeric_epoch_integration.lua
+          lua5.1 homelander_p1_build/tests/f9_numeric_epoch_integration.lua
+      - name: Package all four mutually dependent guarded Lua modules
+        run: |
+          mkdir -p stage/lua_p1 stage/CI_EVIDENCE
+          cp homelander_p1_build/lua_p1/freeaim_probe_v004_numeric_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/eye_origin_probe_v006_failclosed_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_epoch_DORMANT.lua stage/lua_p1/
+          cp homelander_p1_build/tests/f9_numeric_epoch_integration.lua stage/CI_EVIDENCE/
+          cp homelander_p1_build/P1_F9_NUMERIC_EPOCH_DORMANT_20260919.md stage/
+          (cd stage && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+          test "$(find stage/lua_p1 -type f | wc -l)" -eq 4
+          ! find stage -type f | grep -Ei '\.(asi|exe|dll|ps1|bat)$'
+          echo P1_F9_NUMERIC_EPOCH_SOURCE_ONLY_BUNDLE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_F9_F12_NumericEpoch_SOURCE_ONLY_DORMANT
+          path: stage/
