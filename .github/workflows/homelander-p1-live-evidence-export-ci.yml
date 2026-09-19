@@ -97,3 +97,30 @@ jobs:
           if(-not $s.Contains('P1_EXPORT_LIVE_EVIDENCE.ps1')) { throw 'CMD launcher missing exporter call.' }
           if(-not $s.Contains('-Action Export')) { throw 'CMD launcher missing Export action.' }
           Write-Host 'CMD launcher PASS'
+
+      - name: Assemble validated exporter artifact
+        shell: pwsh
+        run: |
+          $d='live_evidence_exporter_artifact'
+          New-Item -ItemType Directory -Force -Path $d | Out-Null
+          Copy-Item 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.ps1' $d
+          Copy-Item 'homelander_p1_build/runtime_promotion/P1_EXPORT_LIVE_EVIDENCE.cmd' $d
+          Copy-Item 'homelander_p1_build/runtime_promotion/LIVE_EVIDENCE_EXPORT.md' $d
+          Copy-Item 'homelander_p1_build/runtime_promotion/promotion_manifest.json' $d
+          @(
+            'branch=homelander-p1-live-gate-assistant-20260919',
+            ('commit=' + $env:GITHUB_SHA),
+            ('ci_run=' + $env:GITHUB_RUN_ID),
+            'status=WINDOWS_CI_VALIDATED',
+            'read_only_export=true'
+          ) | Set-Content -LiteralPath (Join-Path $d 'VALIDATION.txt') -Encoding UTF8
+          Get-ChildItem -LiteralPath $d -File | Sort-Object Name | ForEach-Object {
+            $h=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$h  $($_.Name)"
+          } | Set-Content -LiteralPath (Join-Path $d 'SHA256SUMS.txt') -Encoding ASCII
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_LiveEvidenceExporter_v001_VALIDATED
+          path: live_evidence_exporter_artifact/
+          if-no-files-found: error
