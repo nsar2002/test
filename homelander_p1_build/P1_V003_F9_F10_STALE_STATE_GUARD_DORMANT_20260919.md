@@ -1,0 +1,13 @@
+# Prototype 1 Homelander — isolated F9 -> F10 stale-target fail-closed proof
+
+Date: 2026-09-19. Branch homelander-p1-v003-freeaim-stale-state-20260919. Base R007 source head 4a694fd26fd936a9fedad783c8611312e1070d43.
+
+STATUS: DORMANT Lua source and offline tests ONLY. No native ASI load, game-root changes, canonical stage archive changes or real game evidence.
+
+ORIGINAL SOURCE FINDING: Immutable original v003/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua (Git blob a017512c22f5c8ab82068a8764dcc3d24f315c46) clears previously published F9 target/HIT_POS and camera results only AFTER its camera/position/LOS callbacks. An early abort after a previous successful NPC hit leaves the old target published. Original subsequent v004/F10 local-offset probe reads those public GOH/world-hitpoint globals directly; if the old GOH remains valid, it can compute and publish an offset from the previous hit even after the latest F9 attempt failed. The original v003 first-live manager Check rejects an ABORT in its session, but after v004 is active a new F9 failure can leave these in-memory results stale. This is source-grounded and independently tested against deterministic engine mocks, not observed in real Prototype.
+
+ISOLATED SOURCE PROTOTYPE: lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua derives from the exact original v003 F9 script. At EVERY F9 entry it clears all published F9 camera/hit/ray results and downstream F10 local-offset globals before engine callbacks. It rechecks exact current player after LOS and again after last-hit GOH callback, clearing evidence and aborting if a player switch occurred. Original v003 file remains immutable. Positive F9 hit/miss remain read-only, no damage, physics, world-effect or teleport setter calls added.
+
+TEST: tests/v003_f9_stale_target_failclosed_test.lua executes ACTUAL immutable original v003 F9 and ACTUAL staged v004 F10 against engine/vector mocks. It first reproduces original stale prior NPC after a later invalid F9 camera and demonstrates original F10 erroneously accepts it. Then loads only guarded dormant F9, verifies early camera abort clears stale F9/F10, F10 refuses, valid F9/F10 still works, player changes during LOS/last-hit callbacks fail closed, miss clears old state and every forbidden gameplay setter remains uncalled. CI Lua 5.1 and source-immutability proof are required before any conclusion.
+
+BOUNDARY: These are ONLY offline source and CI results. Do not install into active user game root or silently repackage frozen R007 original v003 stage; first real game BOOT/F4/F9 remains unperformed and ordered promotion still mandatory. Any later live candidate requires separate source review, package hash regeneration and actual real-game gate evidence.
