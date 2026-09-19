@@ -6,13 +6,16 @@ on:
       - homelander-p1-flight-v2-staging-20260919
       - homelander-p1-flight-v21-safety-20260919
       - homelander-p1-flight-v22-f5-binding-20260919
+      - homelander-p1-flight-v23-f5-entrypoint-20260919
     paths:
       - 'homelander_p1_build/homelander_p1.cpp'
       - 'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua'
       - 'homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua'
       - 'homelander_p1_build/tests/flight_v21_safety_test.lua'
+      - 'homelander_p1_build/tests/flight_v23_real_f5_integration.lua'
       - 'homelander_p1_build/P1_FLIGHT_V21_SAFETY_20260919.md'
       - 'homelander_p1_build/P1_FLIGHT_V22_F5_BINDING_20260919.md'
+      - 'homelander_p1_build/P1_FLIGHT_V23_REAL_F5_20260919.md'
       - 'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md'
       - 'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt'
       - '.github/workflows/homelander-p1-flight-v2-staging-ci.yml'
@@ -39,8 +42,10 @@ jobs:
             'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua',
             'homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua',
             'homelander_p1_build/tests/flight_v21_safety_test.lua',
+            'homelander_p1_build/tests/flight_v23_real_f5_integration.lua',
             'homelander_p1_build/P1_FLIGHT_V21_SAFETY_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V22_F5_BINDING_20260919.md',
+            'homelander_p1_build/P1_FLIGHT_V23_REAL_F5_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V2_REPRO_AUDIT_20260919.md',
             'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt',
@@ -69,10 +74,13 @@ jobs:
           "$LUAC" -p homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua
           "$LUAC" -p homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua
           "$LUAC" -p homelander_p1_build/tests/flight_v21_safety_test.lua
+          "$LUAC" -p homelander_p1_build/tests/flight_v23_real_f5_integration.lua
+          "$LUAC" -p homelander_p1_build/v003_transfer/lua_p1/setter_echo_probe.lua
 
       - name: Run offline Flight V2.1 safety regression suite
         run: |
           lua5.1 homelander_p1_build/tests/flight_v21_safety_test.lua
+          lua5.1 homelander_p1_build/tests/flight_v23_real_f5_integration.lua
 
       - name: Build staged Flight V2 ASI
         run: |
@@ -191,6 +199,9 @@ jobs:
           sha256sum homelander_p1_build/P1_FLIGHT_V21_SAFETY_20260919.md
           sha256sum homelander_p1_build/P1_FLIGHT_V22_F5_BINDING_20260919.md
           sha256sum homelander_p1_build/tests/flight_v21_safety_test.lua
+          sha256sum homelander_p1_build/tests/flight_v23_real_f5_integration.lua
+          sha256sum homelander_p1_build/v003_transfer/lua_p1/setter_echo_probe.lua
+          sha256sum homelander_p1_build/P1_FLIGHT_V23_REAL_F5_20260919.md
           sha256sum homelander_p1_build/homelander_p1.cpp
 
       - name: Assemble dormant Flight V2 bundle
@@ -201,17 +212,19 @@ jobs:
           cp homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md stage_flight_v2/
           cp homelander_p1_build/P1_FLIGHT_V21_SAFETY_20260919.md stage_flight_v2/
           cp homelander_p1_build/P1_FLIGHT_V22_F5_BINDING_20260919.md stage_flight_v2/
+          cp homelander_p1_build/P1_FLIGHT_V23_REAL_F5_20260919.md stage_flight_v2/
+          cp homelander_p1_build/tests/flight_v23_real_f5_integration.lua stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/tests/flight_v21_safety_test.lua stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/homelander_p1.cpp stage_flight_v2/homelander_p1_flight_v2_SOURCE.cpp
           cp homelander_p1_build/build_flight_v2/file.txt stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/build_flight_v2/headers.txt stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/build_flight_v2/imports.txt stage_flight_v2/CI_EVIDENCE/
           cp homelander_p1_build/build_flight_v2/sha256.txt stage_flight_v2/CI_EVIDENCE/
-          (cd stage_flight_v2 && sha256sum homelander_p1_flight_v2_STAGED.asi lua_p1/*.lua P1_FLIGHT_V2_STAGING_20260919.md P1_FLIGHT_V21_SAFETY_20260919.md P1_FLIGHT_V22_F5_BINDING_20260919.md CI_EVIDENCE/flight_v21_safety_test.lua homelander_p1_flight_v2_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_flight_v2 && sha256sum homelander_p1_flight_v2_STAGED.asi lua_p1/*.lua P1_FLIGHT_V2_STAGING_20260919.md P1_FLIGHT_V21_SAFETY_20260919.md P1_FLIGHT_V22_F5_BINDING_20260919.md P1_FLIGHT_V23_REAL_F5_20260919.md CI_EVIDENCE/flight_v21_safety_test.lua CI_EVIDENCE/flight_v23_real_f5_integration.lua homelander_p1_flight_v2_SOURCE.cpp > SHA256SUMS.txt)
           (cd stage_flight_v2 && sha256sum -c SHA256SUMS.txt)
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_FlightV22_F5Binding_DORMANT
+          name: Homelander_P1_FlightV23_RealF5_DORMANT
           path: stage_flight_v2/
           if-no-files-found: error
