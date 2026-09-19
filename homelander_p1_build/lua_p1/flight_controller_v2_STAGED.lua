@@ -326,12 +326,8 @@ function Homelander_FlightEnableVerifiedV2()
     end
 
     local h=HOMELANDER_PLAYER
-    if not exact_echo_binding(h) then
-        log("ABORT: setter echo is not bound to the current player")
-        return false
-    end
-    if not valid_player(h) then
-        log("ABORT: HOMELANDER_PLAYER missing/invalid")
+    if not flight_provenance_ok(h) then
+        log("ABORT: setter echo is not bound to the current verified player")
         return false
     end
 
