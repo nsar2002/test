@@ -1,0 +1,46 @@
+name: P1 R024 bounded Lua player global census source-only CI
+on:
+  push:
+    branches: [homelander-p1-r024-readonly-lua-global-census-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify original R007/v003/native and previous research unchanged
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='3a9e6df4cd82329a1708df0d2ab51003b1a2ce20'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/homelander-p1-r024-lua-global-census-ci.yml',
+          'homelander_p1_build/tests/r024_readonly_lua_global_census_SOURCE_ONLY.lua',
+          'homelander_p1_build/tests/r024_readonly_global_census_fixture.lua',
+          'homelander_p1_build/tests/r024_readme.md'}
+          assert changed<=allowed, changed-allowed
+          print('P1_R024_ORIGINAL_R007_V003_NATIVE_R018_R023_UNCHANGED_PASS')
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - name: Parse and test bounded read-only globals without any Prototype/game mutation
+        run: |
+          luac5.1 -p homelander_p1_build/tests/r024_readonly_lua_global_census_SOURCE_ONLY.lua
+          luac5.1 -p homelander_p1_build/tests/r024_readonly_global_census_fixture.lua
+          lua5.1 homelander_p1_build/tests/r024_readonly_global_census_fixture.lua homelander_p1_build/tests/r024_readonly_lua_global_census_SOURCE_ONLY.lua
+      - name: Publish isolated optional diagnostic source only
+        run: |
+          mkdir -p stage_r024
+          cp homelander_p1_build/tests/r024_readonly_lua_global_census_SOURCE_ONLY.lua stage_r024/
+          cp homelander_p1_build/tests/r024_readme.md stage_r024/
+          (cd stage_r024 && sha256sum *.lua *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r024 -type f | grep -Ei '\.(dll|asi|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R024_SOURCE_ONLY_NO_INSTALLER_NO_USER_GAME_BYTES_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R024_OptionalLuaGlobalCensus_SOURCE_ONLY_NOT_INSTALLABLE
+          path: stage_r024/
+          if-no-files-found: error
