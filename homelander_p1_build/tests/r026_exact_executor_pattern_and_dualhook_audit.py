@@ -89,10 +89,11 @@ def audit(image: bytes, patterns: dict[str,str], *, exact: bool=True) -> dict:
 def selftest():
     # Synthetic non-game binary; verify a unique pattern, wildcard, duplicate,
     # missing pattern and SHA pin failure cannot silently report compatibility.
-    sigs={"TestA":"53 55 ? 57","TestB":"8B 4C 24 ? 83"}
-    b=b"\x00"*31+bytes.fromhex("53 55 22 57")+b"\x00"*23+bytes.fromhex("8B 4C 24 44 83")+b"\x00"*8
+    sigs={"TestA":"53 55 ? 57","TestB":"8B 4C 24 ? 83",
+          "ExecutorGOMUpdate":"12 34 56"}
+    b=b"\x00"*31+bytes.fromhex("53 55 22 57")+b"\x00"*23+bytes.fromhex("8B 4C 24 44 83")+b"\x00"*8+bytes.fromhex("12 34 56")+b"\x00"*8
     out=audit(b,sigs,exact=False)
-    assert out["source_signatures_unique"]==2
+    assert out["source_signatures_unique"]==3
     assert out["dual_asi_safety_verified"] is False
     for damaged in (b+bytes.fromhex("53 55 66 57"),b.replace(bytes.fromhex("53 55 22 57"),b"\x00"*4)):
         try: audit(damaged,sigs,exact=False)
