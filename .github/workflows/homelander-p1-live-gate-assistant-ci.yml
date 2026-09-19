@@ -7,6 +7,8 @@ on:
     paths:
       - 'homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1'
       - 'homelander_p1_build/runtime_promotion/LIVE_GATE_ASSISTANT.md'
+      - 'homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.ps1'
+      - 'homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.cmd'
       - 'homelander_p1_build/runtime_promotion/promotion_manifest.json'
       - '.github/workflows/homelander-p1-live-gate-assistant-ci.yml'
   workflow_dispatch:
@@ -132,6 +134,28 @@ jobs:
           }
           Write-Host 'Launch/monitor semantics PASS'
 
+      - name: Validate first-live-test launcher
+        shell: pwsh
+        run: |
+          $path=(Resolve-Path 'homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.ps1').Path
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.ToString() }
+            throw "Launcher parser found $($errors.Count) error(s)."
+          }
+          $s=Get-Content -LiteralPath $path -Raw
+          if(-not $s.Contains("& $Manager -Action Install -Stage v003 -PrototypeRoot $Root")) { throw 'Launcher does not contain exact v003 install call.' }
+          if(-not $s.Contains("& $Observer -Action Observe -Stage v003 -PrototypeRoot $Root")) { throw 'Launcher does not contain exact v003 observer call.' }
+          if($s -match '(?i)-Action\s+Check') { throw 'Launcher must never record Check/PASS.' }
+          if($s -match '(?i)-Stage\s+v00(4|5|6|7|8|9)|-Stage\s+v01[0-6]') { throw 'Launcher must not contain a later-stage install/observe action.' }
+          if(-not $s.Contains('Refusing any skip or later-stage action')) { throw 'Missing no-skip guard.' }
+          if(-not $s.Contains('Refusing stale evidence')) { throw 'Missing stale-log guard.' }
+          $cmd=Get-Content 'homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.cmd' -Raw
+          if(-not $cmd.Contains('START_V003_LIVE_TEST.ps1')) { throw 'CMD wrapper does not call launcher.' }
+          Write-Host 'First-live-test launcher PASS'
+
       - name: Assemble validated live-assistant artifact
         shell: pwsh
         run: |
@@ -139,6 +163,8 @@ jobs:
           Copy-Item homelander_p1_build/runtime_promotion/P1_LIVE_GATE_ASSISTANT.ps1 live_assistant_release/
           Copy-Item homelander_p1_build/runtime_promotion/LIVE_GATE_ASSISTANT.md live_assistant_release/
           Copy-Item homelander_p1_build/runtime_promotion/promotion_manifest.json live_assistant_release/
+          Copy-Item homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.ps1 live_assistant_release/
+          Copy-Item homelander_p1_build/runtime_promotion/START_V003_LIVE_TEST.cmd live_assistant_release/
           @'
           branch=homelander-p1-live-gate-assistant-20260919
           commit=${{ github.sha }}
