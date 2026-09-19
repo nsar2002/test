@@ -202,7 +202,7 @@ function Run-SelfTest([switch]$SkipPackages) {
 }
 function Show-StageInstructions($Cfg) {
     Write-Host ''
-    Write-Host ("Stage {0} — {1}" -f $Cfg.stage,$Cfg.display)
+    Write-Host ("Stage {0} - {1}" -f $Cfg.stage,$Cfg.display)
     Write-Host ("Runtime gate: {0}" -f $Cfg.gate)
     Write-Host ("Key/evidence sequence: {0}" -f $Cfg.keys)
     if ([bool]$Cfg.visible) { Write-Host ("Visual confirmation required at Check: {0}" -f $Cfg.visiblePrompt) }
@@ -256,7 +256,7 @@ if ($Action -eq 'Next') {
         exit 0
     }
     $next = $Stages[$idx+1]
-    Write-Host ("Next authorized install: {0} — {1}" -f $next.stage,$next.display)
+    Write-Host ("Next authorized install: {0} - {1}" -f $next.stage,$next.display)
     Write-Host (".\P1_PROMOTION_MANAGER.ps1 -Action Install -Stage {0}" -f $next.stage)
     exit 0
 }
