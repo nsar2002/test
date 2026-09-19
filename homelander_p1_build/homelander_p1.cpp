@@ -880,6 +880,15 @@ namespace hl
             !g_renderEventGlobalSlot || !g_laserSightCallback)
             return false;
 
+        if (!IsReadableMemory(g_laserShader, sizeof(void*)) ||
+            !IsReadableMemory(*reinterpret_cast<void**>(g_laserShader), sizeof(void*)))
+        {
+            Log("LaserSight REFUSED: cached shader/vtable is no longer readable");
+            g_laserShaderGatePassed = false;
+            g_laserOneShotPassed = false;
+            return false;
+        }
+
         if (*g_renderEventGlobalSlot != nullptr)
         {
             Log("F14 REFUSED: engine render-event staging slot is already occupied");
