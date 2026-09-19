@@ -1,0 +1,61 @@
+name: P1 R029 original v003 native one-ASI clone appended R027 Lua5.1
+on:
+  push:
+    branches: [homelander-p1-r029-original-v003-native-clone-append-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-native-clone-source-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Freeze original R007/v003/manager/native and R027
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='4405222e7106e0c9b79341bc53a37a4c6d2785bf'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/homelander-p1-r029-native-clone-append-ci.yml',
+                   'homelander_p1_build/tests/r029_original_v003_append_smoke.lua',
+                   'homelander_p1_build/tests/r029_native_clone_only_readme.md'}
+          assert changed<=allowed,changed-allowed
+          print('P1_R029_OFFICIAL_R007_MANAGER_V003_NATIVE_R027_UNCHANGED_PASS')
+          PY
+      - name: Install independent actual Lua 5.1 compiler/interpreter
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lua5.1
+      - name: Append R027 to EXACT original v003 runtime probe without changing source baseline
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          base=Path('homelander_p1_build/v003_transfer/lua_p1/runtime_probe.lua').read_bytes()
+          r027=Path('homelander_p1_build/tests/r027_isolated_one_shot_player_diagnostic_SOURCE_ONLY.lua').read_bytes()
+          assert hashlib.sha256(base).hexdigest()=='bd7a6ec2006466b0f7b46f966f384103d35d5d98020bcdce1112e9b4f363a650'
+          assert hashlib.sha256(r027).hexdigest()=='488fae89f29fa9c0542be03ab764d8fb2466e9ae74a6bfdd938ec3fe588d145f'
+          assert b'local ENABLE_CAMERA_OBSERVER = false' in r027
+          marker=b'-- P1_R029_SEPARATE_CLONE_R027_CENSUS_APPEND_ONLY; NO ORIGINAL RELEASE/PROMOTION MODIFICATION'
+          complete=base+b'\n\n-- '+marker+b'\n'+r027+b'\n'
+          assert complete.startswith(base) and complete.count(marker)==1
+          Path('r029_runtime_probe_CLONE_ONLY_NOT_FOR_ORIGINAL.lua').write_bytes(complete)
+          print('P1_R029_EXACT_ORIGINAL_V003_RUNTIME_PLUS_PINNED_R027_APPEND_ONLY_PASS')
+          PY
+          luac5.1 -p r029_runtime_probe_CLONE_ONLY_NOT_FOR_ORIGINAL.lua
+          echo P1_R029_EXACT_CLONE_V003_R027_COMBINED_LUA51_SYNTAX_PASS
+      - name: Execute combined original runtime and appended census twice in SAME Lua state
+        run: |
+          lua5.1 homelander_p1_build/tests/r029_original_v003_append_smoke.lua r029_runtime_probe_CLONE_ONLY_NOT_FOR_ORIGINAL.lua
+      - name: Explicit no-installable delivery
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          f=Path('r029_runtime_probe_CLONE_ONLY_NOT_FOR_ORIGINAL.lua')
+          data=f.read_bytes()
+          assert b'ENABLE_CAMERA_OBSERVER = true' not in data
+          assert b'HOMELANDER_PLAYER = ' in data  # original frozen source still contains native F4 discovery
+          assert not Path('r029_runtime_probe_CLONE_ONLY_NOT_FOR_ORIGINAL.asi').exists()
+          print('P1_R029_NO_NEW_NATIVE_ASI_BINARY_NO_GAME_INSTALL_NO_GATE_PASS')
+          PY
