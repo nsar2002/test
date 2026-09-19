@@ -95,3 +95,5 @@ Do not promote v008 until the exact runtime chain passes:
 v003 F9 -> v004 F10 -> v005 F11 -> v006 F13 -> v006 F14 -> v007 F15 120-frame stability -> v008 F16 dynamic rendering.
 
 Only after F16 itself is stable may damage/DOT or target-specific impact effects be staged, and those remain separate mutation gates.
+
+Reproducibility build requested with C++ and all three LaserSight Lua source files intentionally unchanged.
