@@ -2,6 +2,7 @@
 import json, re, struct, sys, time
 from pathlib import PurePosixPath
 import requests
+from urllib.parse import quote
 
 RECORD_ID = 18644411
 EXPECTED_KEY = "Ephys_sparse coding.zip"
@@ -117,10 +118,14 @@ def main():
         return fail("BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA", "provider MD5 mismatch", provider_checksum=checksum)
     size = int(f.get("size", 0))
     url = (f.get("links") or {}).get("content")
-    if not url or size <= 0:
+    if not url:
+        # Transport-only fallback to Zenodo's canonical public file route.
+        # Exact record id, filename, provider checksum and byte size were already verified above.
+        url = f"https://zenodo.org/records/{RECORD_ID}/files/{quote(EXPECTED_KEY)}?download=1"
+    if size <= 0:
         return fail(
             "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
-            "missing provider content URL or byte size",
+            "missing provider byte size",
             provider_size=size,
             file_object_keys=sorted(f.keys()),
             available_link_keys=sorted((f.get("links") or {}).keys()),
