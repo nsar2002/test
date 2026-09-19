@@ -1,5 +1,5 @@
 name: V6 M4A1 causal SK temporal-regime gate
-# trigger revision 1: no scientific or execution-rule change
+# trigger revision 2: include frozen M4A1X channel-mapping addendum; no scientific metric-rule change
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - "fly_mnq/v6_m4a1_sk_temporal_regime.py"
       - "research/v6_m4a1_sk_temporal_regime_identifiability_protocol.md"
       - "research/v6_m4v0_independent_dsk_validation_reservation.md"
+      - "research/v6_m4a1x_multiclamp_channel_mapping_addendum.md"
   workflow_dispatch:
 
 permissions:
@@ -38,6 +39,7 @@ jobs:
           sha256sum fly_mnq/v6_m4a1_sk_temporal_regime.py > v6_m4a1_out/preexecution_sha256.txt
           sha256sum research/v6_m4a1_sk_temporal_regime_identifiability_protocol.md >> v6_m4a1_out/preexecution_sha256.txt
           sha256sum research/v6_m4v0_independent_dsk_validation_reservation.md >> v6_m4a1_out/preexecution_sha256.txt
+          sha256sum research/v6_m4a1x_multiclamp_channel_mapping_addendum.md >> v6_m4a1_out/preexecution_sha256.txt
           sha256sum research/results/v6_m4a0_chen_ephys_schema_result.json >> v6_m4a1_out/preexecution_sha256.txt
           cat v6_m4a1_out/preexecution_sha256.txt
 
@@ -57,6 +59,7 @@ jobs:
               "PASS_M4A1_SK_DURING_STIMULUS_EFFECT_IDENTIFIED",
               "NO_IDENTIFIABLE_M4A1_SK_TEMPORAL_EFFECT",
               "BLOCKED_M4A1_SOURCE_OR_PROTOCOL_PARITY",
+              "BLOCKED_M4A1X_CHANNEL_MAPPING_PARITY",
           }
           print("FORMAL_CLASSIFICATION", r["classification"])
           if r["classification"] not in allowed:
