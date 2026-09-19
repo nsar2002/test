@@ -90,6 +90,8 @@ valid=false
 Homelander_FlightDisableV2(true)
 assert_equal(writes,2,"invalid-player restore suppression")
 valid=true
+assert(not Homelander_FlightEnableVerifiedV2(),"invalid player revokes exact F5 binding")
+assert(Homelander_SetterEchoProbe_Verified(),"fresh F5 required after invalid player")
 
 -- Revoked F5 proof: F7 restore must not write.
 assert(Homelander_FlightEnableVerifiedV2(),"enable before revoked setter proof")
@@ -97,6 +99,8 @@ HOMELANDER_SETTER_ECHO_PASSED=false
 Homelander_FlightDisableV2(true)
 assert_equal(writes,2,"revoked-setter restore suppression")
 HOMELANDER_SETTER_ECHO_PASSED=true
+assert(not Homelander_FlightEnableVerifiedV2(),"manually reset boolean cannot revive revoked F5 binding")
+assert(Homelander_SetterEchoProbe_Verified(),"fresh F5 required after revoked proof")
 
 -- Focus-loss disable must never write a replacement velocity.
 assert(Homelander_FlightEnableVerifiedV2(),"enable before focus loss")
