@@ -11,6 +11,10 @@ local S = {
     frames = 0
 }
 
+-- A Lua-state bootstrap/reload must never inherit a prior stability proof.
+HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false
+HOMELANDER_LASERSIGHT_HELD_STABILITY_TARGET = nil
+
 local function log(msg)
     local line = PREFIX .. tostring(msg)
     if type(HL_Log) == "function" then HL_Log(line) else print(line) end
