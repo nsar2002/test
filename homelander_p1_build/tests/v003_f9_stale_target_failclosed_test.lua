@@ -33,7 +33,10 @@ HL_LastRayHitGOH=function()
  if switchAt=="goh" then HOMELANDER_PLAYER="B" end
  return candidate
 end
-go_GetDebugName=function(h) return tostring(h) end
+go_GetDebugName=function(h)
+ if switchAt=="debug" then HOMELANDER_PLAYER="B" end
+ return tostring(h)
+end
 local transformFault=nil
 go_Local2World=function(h,v)
  eq(h,"NPC","target local offset must use original NPC")
@@ -90,6 +93,12 @@ switchAt="goh"
 assert(not Homelander_FreeAimProbe(),"guarded F9 refuses player switch during last-hit callback")
 eq(HOMELANDER_FREEAIM_HIT,nil,"last-hit switch clears target")
 eq(HOMELANDER_FREEAIM_HIT_POS,nil,"last-hit switch clears world hitpoint")
+eq(HOMELANDER_FREEAIM_VERIFIED_PLAYER,nil,"last-hit switch clears originating F9 player")
+HOMELANDER_PLAYER="A";switchAt=nil
+switchAt="debug"
+assert(not Homelander_FreeAimProbe(),"guarded F9 rejects switch from optional hit debug-name getter")
+eq(HOMELANDER_FREEAIM_HIT,nil,"debug getter switch clears target")
+eq(HOMELANDER_FREEAIM_VERIFIED_PLAYER,nil,"debug getter switch clears proof token")
 HOMELANDER_PLAYER="A";switchAt=nil
 
 -- A legitimate F9 MISS must never leave an earlier target or F10 offset behind.
@@ -122,6 +131,13 @@ transformFault=nil
 assert(Homelander_FreeAimProbe(),"guarded F9 still works after failed F10")
 assert(Homelander_FreeAimLocalOffsetProbe(),"guarded F10 still accepts valid transform")
 eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,"NPC","guarded F10 positive target")
+eq(HOMELANDER_FREEAIM_VERIFIED_PLAYER,"A","guarded F9 GOH has exact originating player token")
+HOMELANDER_PLAYER="B"
+assert(not Homelander_FreeAimLocalOffsetProbe(),"guarded F10 refuses NPC proof from other player despite same GOH")
+eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET_GOH,nil,"cross-player F10 clears earlier offset")
+HOMELANDER_PLAYER="A"
+assert(Homelander_FreeAimProbe(),"fresh F9 after B->A player return")
+assert(Homelander_FreeAimLocalOffsetProbe(),"fresh same-player F10 passes after new F9")
 
 -- A native transform getter can switch current player while F10 is running.
 transformFault="switch"
