@@ -6,6 +6,7 @@ on:
       - homelander-p1-v003-freeaim-stale-state-20260919
     paths:
       - 'homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua'
+      - 'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua'
       - 'homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua'
       - 'homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md'
       - 'homelander_p1_build/F9_STALE_REPRO_TRIGGER.txt'
@@ -30,6 +31,7 @@ jobs:
           paths={x.strip() for x in Path('/tmp/f9_changed.txt').read_text().splitlines() if x.strip()}
           allowed={
             'homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua',
+            'homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua',
             'homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua',
             'homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md',
             'homelander_p1_build/F9_STALE_REPRO_TRIGGER.txt',
@@ -51,6 +53,7 @@ jobs:
           LUAC="$(command -v luac5.1 || command -v luac)"
           "$LUAC" -p homelander_p1_build/v003_transfer/lua_p1/freeaim_probe_v004_STAGED.lua
           "$LUAC" -p homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua
           "$LUAC" -p homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_STAGED.lua
           "$LUAC" -p homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua
           lua5.1 homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua
@@ -59,6 +62,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           src=Path('homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua').read_text()
+          offset=Path('homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua').read_text()
           assert src.count('clear_f9_f10_results()')==3, 'one definition, one F9 entry, one hit callback'
           assert src.count('HOMELANDER_FREEAIM_HIT = nil')>=2
           for token in ('go_ApplyDamage(', 'go_ApplyDamageAndHit(', 'go_SetHealth(',
@@ -66,17 +70,23 @@ jobs:
               assert token not in src, 'Unexpected game mutator in F9 source: '+token
           native=Path('homelander_p1_build/homelander_p1.cpp').read_text()
           assert 'freeaim_probe_v004_failclosed_DORMANT.lua' not in native,'Dormant F9 wired without live gate'
+          assert 'freeaim_local_offset_probe_v005_failclosed_DORMANT.lua' not in native,'Dormant F10 wired without live gate'
+          assert offset.count('clear_f10_results()')==2, 'one definition and one explicit F10 entry reset'
+          assert 'HOMELANDER_PLAYER ~= original_player' in offset
+          for token in ('go_ApplyDamage(', 'go_SetHealth(', 'phys_SetLinearVelocity(', 'go_Teleport(', 'em_AddWorldEffect('):
+              assert token not in offset, 'Unexpected game mutator in F10 source: '+token
           print('P1_V003_F9_GUARDED_SOURCE_AUDIT_PASS_NO_NATIVE_ACTIVATION')
           PY
       - name: Package source/test evidence WITHOUT executable game artifacts
         run: |
           mkdir -p staged_f9/CI_EVIDENCE
           cp homelander_p1_build/lua_p1/freeaim_probe_v004_failclosed_DORMANT.lua staged_f9/
+          cp homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_failclosed_DORMANT.lua staged_f9/
           cp homelander_p1_build/tests/v003_f9_stale_target_failclosed_test.lua staged_f9/CI_EVIDENCE/
           cp homelander_p1_build/P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md staged_f9/
-          (cd staged_f9 && sha256sum freeaim_probe_v004_failclosed_DORMANT.lua CI_EVIDENCE/v003_f9_stale_target_failclosed_test.lua P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md > SHA256SUMS.txt)
+          (cd staged_f9 && sha256sum freeaim_probe_v004_failclosed_DORMANT.lua freeaim_local_offset_probe_v005_failclosed_DORMANT.lua CI_EVIDENCE/v003_f9_stale_target_failclosed_test.lua P1_V003_F9_F10_STALE_STATE_GUARD_DORMANT_20260919.md > SHA256SUMS.txt)
           (cd staged_f9 && sha256sum -c SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_F9_F10_Failclosed_SOURCE_ONLY_DORMANT
+          name: Homelander_P1_F9_F10_Failclosed_v2_SOURCE_ONLY_DORMANT
           path: staged_f9/
