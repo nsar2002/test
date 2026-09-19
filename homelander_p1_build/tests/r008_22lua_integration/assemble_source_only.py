@@ -98,7 +98,7 @@ report = {
 }
 (destination / "CI_EVIDENCE").mkdir(parents=True, exist_ok=True)
 (destination / "CI_EVIDENCE" / "native_bootstrap_load_order.txt").write_text(
-    "\\n".join(load_order) + "\\n", encoding="utf-8"
+    "\n".join(load_order) + "\n", encoding="utf-8"
 )
 (destination / "INTEGRATION_MANIFEST.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
