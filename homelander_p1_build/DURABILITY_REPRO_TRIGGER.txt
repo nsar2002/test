@@ -1,0 +1,1 @@
+Durability snapshot reproducibility run 2 trigger — source/Lua unchanged
