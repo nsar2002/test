@@ -77,8 +77,8 @@ jobs:
           foreach($needle in @(
             'homelander_p1_runtime.log',
             'state.json',
-            "Join-Path $stateDir 'receipts'",
-            "Join-Path $stateDir 'live_observer'",
+            'Join-Path $stateDir ''receipts''',
+            'Join-Path $stateDir ''live_observer''',
             'prototypeenginef.dll',
             'binkw32.dll',
             'binkw32Hooked.dll',
@@ -87,7 +87,7 @@ jobs:
           )) {
             if(-not $s.Contains($needle)) { throw "Missing evidence scope item: $needle" }
           }
-          if($s -match "(?i)Join-Path \$stateDir 'backups'") { throw 'Exporter must not copy rollback backups.' }
+          if($s -match '(?i)Join-Path \$stateDir ''backups''') { throw 'Exporter must not copy rollback backups.' }
           Write-Host 'Evidence scope PASS'
 
       - name: Verify CMD launcher
