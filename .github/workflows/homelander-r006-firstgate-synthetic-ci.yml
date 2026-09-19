@@ -1,9 +1,9 @@
-name: Homelander R006 Synthetic First-v003 Launcher and Observer (No Real Game)
+name: Homelander R006 Full 13-stage Windows Synthetic Promotion/Rollback (No Real Game)
 
 on:
   push:
     branches:
-      - homelander-p1-r006-windows-firstgate-fixture-20260919
+      - homelander-p1-r006-fullchain-windows-fixture-20260919
     paths:
       - 'homelander_p1_build/tests/r006_windows_firstgate/**'
       - '.github/workflows/homelander-r006-firstgate-synthetic-ci.yml'
