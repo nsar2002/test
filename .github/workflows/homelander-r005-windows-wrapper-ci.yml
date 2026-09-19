@@ -1,0 +1,60 @@
+name: Homelander R005 Windows CMD Argument Forwarding (No Game)
+
+on:
+  push:
+    branches:
+      - homelander-p1-r005-windows-wrapper-ci-20260919
+    paths:
+      - 'homelander_p1_build/tests/r005_windows_wrapper/**'
+      - '.github/workflows/homelander-r005-windows-wrapper-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cmd-native:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute exact R005 shortcuts under native cmd.exe with harmless PowerShell stubs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dir = Join-Path $env:GITHUB_WORKSPACE 'homelander_p1_build/tests/r005_windows_wrapper'
+          $launch = Join-Path $dir 'START_V003_LIVE_TEST.cmd'
+          $export = Join-Path $dir 'P1_EXPORT_LIVE_EVIDENCE.cmd'
+          @'
+          param([string]$PrototypeRoot = '')
+          [System.IO.File]::WriteAllText((Join-Path $PSScriptRoot 'launch_seen.txt'), $PrototypeRoot)
+          if ($PrototypeRoot -eq 'EXIT_ZERO') { exit 0 }
+          exit 19
+          '@ | Set-Content -LiteralPath (Join-Path $dir 'START_V003_LIVE_TEST.ps1') -Encoding ASCII
+          @'
+          param([string]$Action = '', [string]$PrototypeRoot = '')
+          [System.IO.File]::WriteAllText((Join-Path $PSScriptRoot 'export_seen.txt'), ($Action + '|' + $PrototypeRoot))
+          if ($PrototypeRoot -eq 'EXIT_ZERO') { exit 0 }
+          exit 23
+          '@ | Set-Content -LiteralPath (Join-Path $dir 'P1_EXPORT_LIVE_EVIDENCE.ps1') -Encoding ASCII
+          $root = 'C:\Games\Prototype Test Folder'
+          $cmd = 'echo.|call "' + $launch + '" -PrototypeRoot "' + $root + '"'
+          & cmd.exe /d /c $cmd | Out-Host
+          $rc=$LASTEXITCODE
+          if ($rc -ne 19) { throw "Launcher failed to forward nonzero exit status: $rc" }
+          $got = [System.IO.File]::ReadAllText((Join-Path $dir 'launch_seen.txt'))
+          if ($got -cne $root) { throw "Launcher lost quoted game root: [$got]" }
+          Write-Host 'R005_WINDOWS_LAUNCH_ARG_AND_EXIT_PASS'
+          $cmd = 'echo.|call "' + $export + '" -PrototypeRoot "' + $root + '"'
+          & cmd.exe /d /c $cmd | Out-Host
+          $rc=$LASTEXITCODE
+          if ($rc -ne 23) { throw "Exporter failed to forward nonzero exit status: $rc" }
+          $got = [System.IO.File]::ReadAllText((Join-Path $dir 'export_seen.txt'))
+          if ($got -cne ('Export|' + $root)) { throw "Exporter lost -Action Export / quoted game root: [$got]" }
+          Write-Host 'R005_WINDOWS_EXPORT_ARG_AND_EXIT_PASS'
+          $cmd = 'echo.|call "' + $launch + '" -PrototypeRoot "EXIT_ZERO"'
+          & cmd.exe /d /c $cmd | Out-Host
+          $rc=$LASTEXITCODE
+          if ($rc -ne 0) { throw "Launcher failed to propagate success exit code: $rc" }
+          Write-Host 'R005_WINDOWS_LAUNCH_ZERO_EXIT_PASS'
+          # Game is never launched: the .ps1 files here are inert test stubs.
+          Write-Host 'R005_WINDOWS_WRAPPER_TEST_PASS: native cmd.exe and powershell.exe, no Prototype executable'
