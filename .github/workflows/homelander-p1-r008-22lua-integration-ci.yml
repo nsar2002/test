@@ -1,7 +1,7 @@
-name: Homelander P1 R008 22 Lua Native-Path Source Integration CI
+name: Homelander P1 R009 eye epoch complete 22 Lua source integration CI
 on:
   push:
-    branches: [homelander-p1-r008-22lua-integration-20260919]
+    branches: [homelander-p1-r009-f11-eye-epoch-20260919]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,16 +14,20 @@ jobs:
       - name: Scope audit - original game native, source stages and R007 manager remain frozen
         run: |
           set -eu
-          BASE=065648591801b81782f59d7f315a5260becb0b5a
+          BASE=d0c5adfc2a28860f13d9fd171a8dae7b510ddc6f
           python3 - <<'PY'
           import subprocess
-          base="065648591801b81782f59d7f315a5260becb0b5a"
+          base="d0c5adfc2a28860f13d9fd171a8dae7b510ddc6f"
           changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
           allowed={
            "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
            "homelander_p1_build/tests/r008_22lua_integration/README_SOURCE_ONLY.md",
            "homelander_p1_build/tests/r008_22lua_integration/bootstrap_definition_smoke.lua",
-           ".github/workflows/homelander-p1-r008-22lua-integration-ci.yml"}
+           ".github/workflows/homelander-p1-r008-22lua-integration-ci.yml",
+           "homelander_p1_build/lua_p1/eye_origin_probe_v006_epoch_DORMANT.lua",
+           "homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_f11_epoch_DORMANT.lua",
+           "homelander_p1_build/tests/r009_f11_eye_epoch_integration.lua",
+           "homelander_p1_build/tests/r009_f11_eye_epoch/README.md"}
           assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
           print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
           PY
@@ -59,6 +63,10 @@ jobs:
         run: |
           lua5.1 homelander_p1_build/tests/f9_numeric_epoch_integration.lua
           echo P1_R008_F9_F12_GUARDED_END_TO_END_MOCK_PASS
+      - name: Reproduce old F11 stale same-player callback and prove new F11/F12 eye generation
+        run: |
+          lua5.1 homelander_p1_build/tests/r009_f11_eye_epoch_integration.lua
+          echo P1_R009_REAL_SOURCE_F11_AND_F12_REENTRANCY_PASS
       - name: Cross-compile unchanged C++ Win32 ASI SCRATCH only, never package/install
         run: |
           mkdir -p scratch_pe32 stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE
@@ -104,6 +112,6 @@ jobs:
           (cd stage_r008_22lua_SOURCE_ONLY && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_R008_22Lua_Integrated_SOURCE_ONLY_NOT_INSTALLABLE
+          name: Homelander_P1_R009_22Lua_F11EyeEpoch_SOURCE_ONLY_NOT_INSTALLABLE
           path: stage_r008_22lua_SOURCE_ONLY/
           if-no-files-found: error
