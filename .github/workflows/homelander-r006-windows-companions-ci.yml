@@ -1,0 +1,53 @@
+name: Homelander R006 Native Windows Companion Scripts and Log Evaluator (No Game)
+
+on:
+  push:
+    branches:
+      - homelander-p1-r006-windows-companions-ci-20260919
+    paths:
+      - 'homelander_p1_build/tests/r006_windows_companions/**'
+      - '.github/workflows/homelander-r006-windows-companions-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-companion-checks:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse all original companion scripts using Windows PowerShell 5.1 and run self-tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dir = Join-Path $env:GITHUB_WORKSPACE 'homelander_p1_build/tests/r006_windows_companions'
+          $parseFile = Join-Path $env:RUNNER_TEMP 'R006_WindowsPS5_ParseFile.ps1'
+          @'
+          param([string]$Target)
+          $errors = @()
+          [void][System.Management.Automation.Language.Parser]::ParseFile($Target,[ref]$null,[ref]$errors)
+          if ($errors.Count -ne 0) { throw ($errors | Out-String) }
+          Write-Host ('R006_WINDOWS_COMPANION_PARSE_PASS ' + [System.IO.Path]::GetFileName($Target))
+          '@ | Set-Content -LiteralPath $parseFile -Encoding ASCII
+          foreach ($name in @('START_V003_LIVE_TEST.ps1','P1_LIVE_GATE_ASSISTANT.ps1','P1_EXPORT_LIVE_EVIDENCE.ps1')) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $parseFile -Target (Join-Path $dir $name) | Out-Host
+            if ($LASTEXITCODE -ne 0) { throw "Windows PowerShell parser rejected $name" }
+          }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir 'P1_LIVE_GATE_ASSISTANT.ps1') -Action SelfTest | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "R006 observer selftest failed" }
+          Write-Host 'R006_WINDOWS_OBSERVER_SELFTEST_PASS'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir 'P1_EXPORT_LIVE_EVIDENCE.ps1') -Action SelfTest | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "R006 evidence exporter selftest failed" }
+          Write-Host 'R006_WINDOWS_EVIDENCE_EXPORTER_SELFTEST_PASS'
+          $log = Join-Path $env:RUNNER_TEMP 'r006_synthetic_only.log'
+          [System.IO.File]::WriteAllText($log, "READY build=P1_RuntimeProbe_003_FREEAIM_STAGED_20260918`nF4: read-only discovery + flight math probe`n[HOMELANDER_P1_FREEAIM_V004] CAMERA | synthetic`n")
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir 'P1_LIVE_GATE_ASSISTANT.ps1') -Action EvaluateLog -Stage v003 -LogPath $log | Out-Host
+          if ($LASTEXITCODE -ne 4) { throw "Missing synthetic HIT should return 4, got $LASTEXITCODE" }
+          Write-Host 'R006_WINDOWS_OBSERVER_INCOMPLETE_LOG_REJECT_PASS'
+          [System.IO.File]::AppendAllText($log,"[HOMELANDER_P1_FREEAIM_V004] HIT | synthetic hitGOH=NPC_DUMMY`nABORT: synthetic failure`n")
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dir 'P1_LIVE_GATE_ASSISTANT.ps1') -Action EvaluateLog -Stage v003 -LogPath $log | Out-Host
+          if ($LASTEXITCODE -ne 5) { throw "Fatal synthetic log should return 5, got $LASTEXITCODE" }
+          Write-Host 'R006_WINDOWS_OBSERVER_FATAL_LOG_REJECT_PASS'
+          # No actual game was started and no authoritative receipt was written.
+          Write-Host 'R006_WINDOWS_COMPANION_SUITE_PASS_NO_REAL_GAME'
