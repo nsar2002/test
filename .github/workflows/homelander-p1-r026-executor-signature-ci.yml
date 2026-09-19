@@ -1,0 +1,65 @@
+name: P1 R026 exact third-party executor 14-pattern and dual-GOM-hook audit
+on:
+  push:
+    branches: [homelander-p1-r026-exact-executor-compat-audit-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-source-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: uranami/Prototype1-Lua-Tool
+          ref: c54b297105b54dec992885e81b083c4c0b95f7d3
+          path: upstream_executor_pinned
+      - name: Verify official R007 and original native source untouched; pin external source blobs
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='e683d2215578081a6d91e7ae9bbb01728da31656'
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={
+           '.github/workflows/homelander-p1-r026-executor-signature-ci.yml',
+           'homelander_p1_build/tests/r026_exact_executor_pattern_and_dualhook_audit.py',
+           'homelander_p1_build/tests/r026_readme.md'}
+          assert changed<=allowed, 'original game/manager/native modified: '+repr(changed-allowed)
+          root='upstream_executor_pinned'
+          assert subprocess.check_output(['git','-C',root,'rev-parse','HEAD'],text=True).strip()=='c54b297105b54dec992885e81b083c4c0b95f7d3'
+          assert subprocess.check_output(['git','-C',root,'hash-object','src/sdk/interfaces.cpp'],text=True).strip()=='3d334b20f20842cf63f1fa964d76c3cf13b40730'
+          assert subprocess.check_output(['git','-C',root,'hash-object','src/hooks.cpp'],text=True).strip()=='04c5aef179a2bc82e5c78d3a34d98de398ad8323'
+          print('P1_R026_PINNED_THIRDPARTY_SOURCE_AND_FROZEN_R007_NATIVE_SCOPE_PASS')
+          PY
+      - name: Extract 14 real third-party source signatures and prove shared native hook target
+        run: |
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          src=Path('homelander_p1_build/tests/r026_exact_executor_pattern_and_dualhook_audit.py')
+          spec=importlib.util.spec_from_file_location('audit',src)
+          a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
+          roots=Path('upstream_executor_pinned/src')
+          sig=a.extract_patterns((roots/'sdk/interfaces.cpp').read_text(),(roots/'hooks.cpp').read_text(),Path('homelander_p1_build/homelander_p1.cpp').read_text())
+          assert len(sig)==14 and sig['ExecutorGOMUpdate']==sig['ExecutorGOMUpdate']
+          assert 'GOMUpdate::Fn' in (roots/'hooks.cpp').read_text()
+          print('P1_R026_SOURCE_EXACT_14_PATTERN_EXTRACTION_SHARED_GAME_UPDATE_HOOK_PASS')
+          PY
+          python3 -m py_compile homelander_p1_build/tests/r026_exact_executor_pattern_and_dualhook_audit.py
+          python3 homelander_p1_build/tests/r026_exact_executor_pattern_and_dualhook_audit.py --selftest
+      - name: Publish audit source only, never upload user's proprietary engine or loader
+        run: |
+          mkdir -p stage_r026
+          cp homelander_p1_build/tests/r026_exact_executor_pattern_and_dualhook_audit.py stage_r026/
+          cp homelander_p1_build/tests/r026_readme.md stage_r026/
+          (cd stage_r026 && sha256sum *.py *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r026 -type f | grep -Ei '\\.(dll|asi|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R026_SOURCE_ONLY_NO_USER_GAME_FILES_OR_SECOND_ASI_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R026_ExactGame_14ExecutorPatterns_SharedHookRisk_SourceOnly
+          path: stage_r026/
+          if-no-files-found: error
