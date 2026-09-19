@@ -25,7 +25,7 @@ OUTPUT_BYTES = bytes.fromhex("8b 4c 24 18 8b 75 08 51 56 e8 08 59 46 00")
 SELECT_VA = 0x10375E76
 SELECT_BYTES = bytes.fromhex("f3 0f 10 4c 24 14 0f 2f c8 76 1a")
 NAME_VA = 0x10DF6E24
-NAME = b"ai_GetClosestCharacterToCamera\\x00"
+NAME = b"ai_GetClosestCharacterToCamera\x00"
 
 
 def audit(blob: bytes, *, pin: bool = True) -> dict:
@@ -35,11 +35,11 @@ def audit(blob: bytes, *, pin: bool = True) -> dict:
     if blob[:2] != b"MZ":
         raise ValueError("not MZ")
     pe_offset = struct.unpack_from("<I", blob, 0x3C)[0]
-    if blob[pe_offset:pe_offset + 4] != b"PE\\x00\\x00":
+    if blob[pe_offset:pe_offset + 4] != b"PE\x00\x00":
         raise ValueError("not PE32")
     machine, num_sections = struct.unpack_from("<HH", blob, pe_offset + 4)
     optsize = struct.unpack_from("<H", blob, pe_offset + 20)[0]
-    if machine != 0x14C or blob[pe_offset + 24:pe_offset + 26] != b"\\x0b\\x01":
+    if machine != 0x14C or blob[pe_offset + 24:pe_offset + 26] != b"\x0b\x01":
         raise ValueError("not x86 PE32")
     opt = pe_offset + 24
     real_base = struct.unpack_from("<I", blob, opt + 28)[0]
@@ -50,7 +50,7 @@ def audit(blob: bytes, *, pin: bool = True) -> dict:
         p = opt + optsize + i * 40
         if p + 40 > len(blob):
             raise ValueError("truncated sections")
-        label = blob[p:p+8].split(b"\\x00", 1)[0].decode("ascii","replace")
+        label = blob[p:p+8].split(b"\x00", 1)[0].decode("ascii","replace")
         rawsize, raw = struct.unpack_from("<II", blob, p + 16)
         va = struct.unpack_from("<I", blob, p + 12)[0]
         if raw + rawsize > len(blob):
@@ -99,20 +99,20 @@ def selftest():
     b = bytearray(0x400000)
     b[:2] = b"MZ"
     struct.pack_into("<I", b, 0x3C, 0x80)
-    b[0x80:0x84] = b"PE\\x00\\x00"
+    b[0x80:0x84] = b"PE\x00\x00"
     struct.pack_into("<HH", b, 0x84, 0x14C, 2)
     struct.pack_into("<H", b, 0x94, 0xE0)
-    b[0x98:0x9A] = b"\\x0b\\x01"
+    b[0x98:0x9A] = b"\x0b\x01"
     struct.pack_into("<I", b, 0x98+28, IMAGE_BASE)
     p = 0x80 + 24 + 0xE0
-    b[p:p+8] = b".text\\x00\\x00\\x00"
+    b[p:p+8] = b".text\x00\x00\x00"
     struct.pack_into("<III", b, p+12, 0x1000, 0x380000, 0x1000)
     p += 40
-    b[p:p+8] = b".rdata\\x00\\x00"
-    struct.pack_into("<III", b, p+12, 0x380000, 0x80000, 0x381000)
+    b[p:p+8] = b".rdata\x00\x00"
+    struct.pack_into("<III", b, p+12, 0xDF0000, 0x7E000, 0x381000)
     # Fixture mappings deliberately use explicit VA->file section offset.
     def map_va(va):
-        return va - IMAGE_BASE
+        if va >= 0x10DF0000:\n            return 0x381000 + va - 0x10DF0000\n        return va - IMAGE_BASE
     for va, expected in ((REG_VA, REG_BYTES), (THUNK_VA, THUNK_BYTES),
                          (IMPL_VA, IMPL_PROLOGUE), (OUTPUT_VA, OUTPUT_BYTES),
                          (SELECT_VA, SELECT_BYTES), (NAME_VA, NAME)):
