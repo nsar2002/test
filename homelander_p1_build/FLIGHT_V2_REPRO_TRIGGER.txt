@@ -4,3 +4,4 @@ Flight V2.2 exact-player F5 binding reproducibility run 2 — no functional sour
 Flight V2.3 canonical v003 F5-entrypoint integration reproducibility run 2 — functional files unchanged
 Flight V2.4 dynamics independent reproducibility build — source and tests unchanged
 Independent multisystem integration reproducibility run 2 — gameplay/controller/probe source unchanged
+Bootstrap-complete 22-Lua independent reproducibility run 2; runtime source unchanged\n
