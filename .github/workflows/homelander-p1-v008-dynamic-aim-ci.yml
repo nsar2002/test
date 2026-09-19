@@ -1,0 +1,151 @@
+name: Homelander P1 v008 Dynamic FreeAim CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-v008-dynamic-aim-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua'
+      - 'homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md'
+      - 'homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md'
+      - 'homelander_p1_build/P1_HELD_LASERSIGHT_GATE_20260919.md'
+      - 'homelander_p1_build/P1_DYNAMIC_FREEAIM_GATE_20260919.md'
+      - '.github/workflows/homelander-p1-v008-dynamic-aim-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Build v008
+        run: |
+          mkdir -p homelander_p1_build/build_v008
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_v008/homelander_p1_v008.asi \
+            -luser32
+          test -s homelander_p1_build/build_v008/homelander_p1_v008.asi
+
+      - name: Verify PE32 imports and F16 dispatch
+        run: |
+          file homelander_p1_build/build_v008/homelander_p1_v008.asi | tee homelander_p1_build/build_v008/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_v008/homelander_p1_v008.asi | tee homelander_p1_build/build_v008/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_v008/homelander_p1_v008.asi | tee homelander_p1_build/build_v008/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_v008/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_v008/imports.txt; then exit 1; fi
+          grep -q 'P1_RuntimeProbe_008_DYNAMIC_AIM_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+          grep -q 'VK_F16' homelander_p1_build/homelander_p1.cpp
+          grep -q 'Homelander_DynamicAimToggleV010' homelander_p1_build/homelander_p1.cpp
+          grep -q 'Homelander_DynamicAimTickV010' homelander_p1_build/homelander_p1.cpp
+          grep -q 'lasersight_dynamic_aim_gate_v010_STAGED.lua' homelander_p1_build/homelander_p1.cpp
+
+      - name: Validate Lua 5.1
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+
+      - name: Verify native F15 to F16 stability gates
+        run: |
+          grep -q 'g_laserHeldStabilityPassed' homelander_p1_build/homelander_p1.cpp
+          grep -q 'g_laserHeldSubmitFrames' homelander_p1_build/homelander_p1.cpp
+          grep -q 'g_laserHeldSubmitFrames >= 120u' homelander_p1_build/homelander_p1.cpp
+          grep -q 'dynamicSubmit && !g_laserHeldStabilityPassed' homelander_p1_build/homelander_p1.cpp
+          grep -q 'HL_LaserSightResetHeldGate' homelander_p1_build/homelander_p1.cpp
+          grep -q 'HL_LaserSightHeldStabilityProbe' homelander_p1_build/homelander_p1.cpp
+          grep -q 'unsupported submit mode' homelander_p1_build/homelander_p1.cpp
+          grep -q 'still owns a live handle' homelander_p1_build/homelander_p1.cpp
+
+      - name: Verify held gate synchronizes native reset
+        run: |
+          grep -q 'HL_LaserSightResetHeldGate' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = true' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'if S.frames == 120 then' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+
+      - name: Verify dynamic read-only acquisition boundary
+        run: |
+          D=homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED' "$D"
+          grep -q 'HL_LaserSightHeldStabilityProbe' "$D"
+          grep -q 'cm_GetCurrentRenderCameraPosition' "$D"
+          grep -q 'HL_GetCameraFrame' "$D"
+          grep -q 'fre_LineOfSightTest' "$D"
+          grep -q 'HL_LastRayHitGOH' "$D"
+          grep -q 'HOMELANDER_DYNAMIC_HIT_POS' "$D"
+          grep -q 'HL_LaserSightSubmitDual' "$D"
+          grep -q '^            2$' "$D"
+          if grep -q 'go_Local2World' "$D"; then
+            echo "Dynamic stage must render the fresh LOS world hit directly"
+            exit 1
+          fi
+          if grep -Eq 'go_ApplyDamage|go_ApplyDamageAndHit|em_AddWorldEffect|em_AddWorldEffectOriented|phys_SetLinearVelocity|phys_SetAngularVelocity|pcall\(ai_Laser|Homelander_FreeAimProbe|Homelander_FreeAimLocalOffsetProbe' "$D"; then
+            echo "Forbidden mutation/legacy helper found in dynamic stage"
+            exit 1
+          fi
+          if grep -Eq 'HOMELANDER_FREEAIM_(HIT|HIT_POS|HIT_NORMAL|FRACTION)[[:space:]]*=' "$D"; then
+            echo "Dynamic stage must not overwrite canonical F9 globals"
+            exit 1
+          fi
+
+      - name: Verify bounded runtime and mutual exclusion
+        run: |
+          D=homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+          grep -q 'HOMELANDER_DYNAMIC_MAX_RENDER_FRAMES' "$D"
+          grep -q 'HOMELANDER_DYNAMIC_MAX_TICKS' "$D"
+          grep -q 'if maxFrames < 60 then maxFrames = 60 end' "$D"
+          grep -q 'if maxFrames > 3600 then maxFrames = 3600 end' "$D"
+          grep -q 'if maxTicks < 120 then maxTicks = 120 end' "$D"
+          grep -q 'if maxTicks > 7200 then maxTicks = 7200 end' "$D"
+          grep -q 'Homelander_LaserSightHeldForceDisableV009' "$D"
+          grep -q 'Homelander_DynamicAimForceDisableV010' homelander_p1_build/homelander_p1.cpp
+
+      - name: Hash build and stage sources
+        run: |
+          sha256sum homelander_p1_build/build_v008/homelander_p1_v008.asi | tee homelander_p1_build/build_v008/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua
+          sha256sum homelander_p1_build/P1_DYNAMIC_FREEAIM_GATE_20260919.md
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant v008 bundle
+        run: |
+          mkdir -p stage_v008/lua_p1 stage_v008/CI_EVIDENCE
+          cp homelander_p1_build/build_v008/homelander_p1_v008.asi stage_v008/
+          cp homelander_p1_build/lua_p1/lasersight_native_gate_v008_STAGED.lua stage_v008/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua stage_v008/lua_p1/
+          cp homelander_p1_build/lua_p1/lasersight_dynamic_aim_gate_v010_STAGED.lua stage_v008/lua_p1/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_GATE_20260919.md stage_v008/
+          cp homelander_p1_build/P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md stage_v008/
+          cp homelander_p1_build/P1_HELD_LASERSIGHT_GATE_20260919.md stage_v008/
+          cp homelander_p1_build/P1_DYNAMIC_FREEAIM_GATE_20260919.md stage_v008/
+          cp homelander_p1_build/homelander_p1.cpp stage_v008/homelander_p1_v008_SOURCE.cpp
+          cp homelander_p1_build/build_v008/file.txt stage_v008/CI_EVIDENCE/
+          cp homelander_p1_build/build_v008/headers.txt stage_v008/CI_EVIDENCE/
+          cp homelander_p1_build/build_v008/imports.txt stage_v008/CI_EVIDENCE/
+          cp homelander_p1_build/build_v008/sha256.txt stage_v008/CI_EVIDENCE/
+          (cd stage_v008 && sha256sum homelander_p1_v008.asi lua_p1/*.lua P1_NATIVE_LASERSIGHT_GATE_20260919.md P1_NATIVE_LASERSIGHT_BINARY_AUDIT_20260919.md P1_HELD_LASERSIGHT_GATE_20260919.md P1_DYNAMIC_FREEAIM_GATE_20260919.md homelander_p1_v008_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_v008 && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_v008_DynamicFreeAimGate_DORMANT
+          path: stage_v008/
+          if-no-files-found: error
