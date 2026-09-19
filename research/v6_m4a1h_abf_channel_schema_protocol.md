@@ -29,9 +29,13 @@ M4A1H may not read or summarize:
 M4A1H may authorize a deterministic channel rule only if header metadata itself provides a source-semantic distinction that is consistent across all 30 files.
 
 Permitted channel rule:
-1. exact normalized ADC **name** semantics first;
-2. exact index only if the same semantic ADC name occupies that index in every selected file;
-3. unit alone is insufficient when multiple ADCs share a voltage unit.
+1. Normalize each ADC name by Unicode-lowercasing and removing every non-alphanumeric character.
+2. The frozen membrane-voltage semantic tokens are exactly: `vm`, `vmem`, `membranevoltage`, `membranepotential`, `vmon`, `vmonitor`.
+3. A file passes only if exactly one ADC name equals one of those tokens and its unit is voltage-convertible (`V`, `mV`, or `uV`).
+4. The same normalized semantic name must identify the membrane channel across all 30 files. An exact index may then be fixed only if that same semantic ADC name occupies the same index in every selected file.
+5. Unit alone is insufficient when multiple ADCs share a voltage unit.
+
+No substring matching, trace inspection, amplitude comparison, variance comparison, or response-shape inference is permitted.
 
 If channel names are generic/duplicated/empty such that membrane voltage cannot be identified independently of trace behavior, return:
 `BLOCKED_M4A1H_ADC_IDENTITY_NOT_SELF_DESCRIBING`.
