@@ -1,0 +1,49 @@
+name: P1 R023 exact-engine read-only player source static audit
+on:
+  push:
+    branches: [homelander-p1-r023-exact-engine-player-source-audit-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-audit-selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Frozen manager, genuine game sources and earlier suites unaffected
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only','bb92e80d20bcbf7619413fb9bf337c20d0826635...HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/homelander-p1-r023-exact-engine-audit-ci.yml',
+          'homelander_p1_build/tests/r023_exact_engine_player_source_audit.py',
+          'homelander_p1_build/tests/r023_readme.md'}
+          assert changed<=allowed, changed-allowed
+          print('P1_R023_OFFICIAL_R007_GAME_NATIVE_R018_R021_SOURCES_FROZEN_PASS')
+          PY
+      - name: Independent Python selftests with synthetic PE, NO proprietary DLL upload
+        run: |
+          python3 -m py_compile homelander_p1_build/tests/r023_exact_engine_player_source_audit.py
+          python3 homelander_p1_build/tests/r023_exact_engine_player_source_audit.py --selftest
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('homelander_p1_build/tests/r023_exact_engine_player_source_audit.py')
+          text=p.read_text()
+          assert 'EXACT_SHA256 = "ed0870eb24ace5565a0245ade42114f0724b881d3d75b793f376e9bb184f8d51"' in text
+          assert 'read_bytes()' in text and 'ctypes' not in text and 'subprocess' not in text
+          print('P1_R023_GENUINE_USER_ENGINE_HASH_PINNED_AND_NEVER_EXECUTED_PASS')
+          PY
+      - name: Source-only static analyzer package, no game DLL or installer
+        run: |
+          mkdir -p stage_r023
+          cp homelander_p1_build/tests/r023_exact_engine_player_source_audit.py stage_r023/
+          cp homelander_p1_build/tests/r023_readme.md stage_r023/
+          (cd stage_r023 && sha256sum *.py *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r023 -type f | grep -Ei '\.(dll|asi|exe|cmd|bat|ps1)$' || true)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R023_ExactGameDLL_StaticLuaAPI_Only_NotInstaller
+          path: stage_r023/
+          if-no-files-found: error
