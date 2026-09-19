@@ -55,14 +55,21 @@ function Homelander_FlightGroundProbeV018()
 
     local startUp = tonumber(HOMELANDER_FLIGHT_GROUND_START_UP) or 1.0
     local rayDown = tonumber(HOMELANDER_FLIGHT_GROUND_RAY_DOWN) or 8.0
+    if not finite(startUp) then startUp = 1.0 end
+    if not finite(rayDown) then rayDown = 8.0 end
     if startUp < 0.1 then startUp = 0.1 end
     if startUp > 3.0 then startUp = 3.0 end
     if rayDown < 2.0 then rayDown = 2.0 end
     if rayDown > 20.0 then rayDown = 20.0 end
 
     local up = Vector(0,1,0)
-    local start = playerPos + up * startUp
-    local rayEnd = playerPos - up * rayDown
+    local okRay, start, rayEnd = pcall(function()
+        return playerPos + up * startUp, playerPos - up * rayDown
+    end)
+    if not okRay or start == nil or rayEnd == nil then
+        log("ABORT: downward ray geometry invalid")
+        return false
+    end
 
     local ok, hit, fraction, hitPos, hitNormal =
         pcall(fre_LineOfSightTest, start, rayEnd, true, player)
@@ -81,9 +88,15 @@ function Homelander_FlightGroundProbeV018()
         return true
     end
 
-    local playerDistance = (playerPos - hitPos):magnitude()
-    local rayDistance = (start - hitPos):magnitude()
-    if not finite(playerDistance) or not finite(rayDistance) then
+    if hitPos == nil then
+        log("ABORT: ground hit without hit position")
+        HOMELANDER_FLIGHT_GROUND_PROBE_VALID = false
+        return false
+    end
+    local okDistance, playerDistance, rayDistance = pcall(function()
+        return (playerPos - hitPos):magnitude(), (start - hitPos):magnitude()
+    end)
+    if not okDistance or not finite(playerDistance) or not finite(rayDistance) then
         log("ABORT: non-finite ground distance")
         HOMELANDER_FLIGHT_GROUND_PROBE_VALID = false
         return false
