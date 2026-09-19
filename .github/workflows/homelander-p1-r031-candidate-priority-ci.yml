@@ -1,0 +1,69 @@
+name: P1 R031 prioritised Lua player-source census, original-v003 combination CI
+on:
+  push:
+    branches: [homelander-p1-r031-prioritized-no-native-census-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-candidate-first:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Verify official R007/native/original v003 source and prior R018-R029 untouched
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base='19c07a8da904ee5a6ff69d00da6f2917974f8007'
+          changes=set(subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines())
+          allowed={
+           '.github/workflows/homelander-p1-r031-candidate-priority-ci.yml',
+           'homelander_p1_build/tests/r031_prioritized_clone_only_census_SOURCE_ONLY.lua',
+           'homelander_p1_build/tests/r031_priority_noise_lua51_fixture.lua',
+           'homelander_p1_build/tests/r031_original_v003_append_lua51_fixture.lua',
+           'homelander_p1_build/tests/r031_source_only_readme.md',
+          }
+          assert changes<=allowed, 'Original gameplay/first gate modified: '+repr(changes-allowed)
+          print('P1_R031_OFFICIAL_R007_NATIVE_V003_R018_R029_IMMUTABLE_PASS')
+          PY
+      - run: sudo apt-get update -qq && sudo apt-get install -y lua5.1
+      - name: Exact frozen original v003+R031 SHA pins and Lua5.1 compilation
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          base=Path('homelander_p1_build/v003_transfer/lua_p1/runtime_probe.lua').read_bytes()
+          new=Path('homelander_p1_build/tests/r031_prioritized_clone_only_census_SOURCE_ONLY.lua').read_bytes()
+          sha=lambda b:hashlib.sha256(b).hexdigest()
+          assert sha(base)=='bd7a6ec2006466b0f7b46f966f384103d35d5d98020bcdce1112e9b4f363a650'
+          assert sha(new)=='609f2c92ae16f97cffe2b60fd14796a13913c7ec2b375bf70782d306bc52cdb1'
+          assert b'local ENABLE_CAMERA_OBSERVER = false' in new and b'local ENABLE_CAMERA_OBSERVER = true' not in new
+          marker=b'-- P1_R031_SEPARATE_CLONE_CENSUS_CANDIDATE_FIRST; NO ORIGINAL RELEASE/PROMOTION MODIFICATION'
+          assembled=base+b'\n\n-- '+marker+b'\n'+new+b'\n'
+          assert sha(assembled)=='d387fceddb45741aef7974c6b66b323f11fec49aff3ebdfb7cb08025edbf4d79'
+          Path('r031_combined_source_only.lua').write_bytes(assembled)
+          print('P1_R031_ORIGINAL_V003_PLUS_EXACT_R031_CLONE_HASH_PASS')
+          PY
+          luac5.1 -p r031_combined_source_only.lua
+          luac5.1 -p homelander_p1_build/tests/r031_priority_noise_lua51_fixture.lua
+          luac5.1 -p homelander_p1_build/tests/r031_original_v003_append_lua51_fixture.lua
+      - name: 512 function-noise negative and deterministic non-value census
+        run: |
+          lua5.1 homelander_p1_build/tests/r031_priority_noise_lua51_fixture.lua homelander_p1_build/tests/r031_prioritized_clone_only_census_SOURCE_ONLY.lua
+      - name: Original exact v003 F4 repeated with R031 appended, unknown player fails closed
+        run: |
+          lua5.1 homelander_p1_build/tests/r031_original_v003_append_lua51_fixture.lua r031_combined_source_only.lua
+      - name: Publish only standalone textual source and safety note, no game native binary
+        run: |
+          mkdir -p stage_r031
+          cp homelander_p1_build/tests/r031_prioritized_clone_only_census_SOURCE_ONLY.lua stage_r031/
+          cp homelander_p1_build/tests/r031_source_only_readme.md stage_r031/
+          (cd stage_r031 && sha256sum *.lua *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r031 -type f | grep -Ei '\\.(asi|dll|exe|bat|cmd|ps1)$' || true)"
+          echo P1_R031_DIAGNOSTIC_ONLY_NO_EXECUTABLE_OR_LIVE_GATE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: P1_R031_CandidatePriority_ExactOriginalV003_SourceOnly_NotInstaller
+          path: stage_r031/
+          if-no-files-found: error
