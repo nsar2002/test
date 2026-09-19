@@ -110,4 +110,49 @@ fre_LineOfSightTest=priorLos
 assert(Homelander_FreeAimLocalOffsetProbe(),"F10 accepts retained newest F9 z9")
 eq(HOMELANDER_FREEAIM_TARGET_LOCAL_OFFSET.z,9,"newest offset z9")
 print("P1_F9_NESTED_LOS_SUPERSEDED_ATTEMPT_PASS")
+
+-- A validity callback can also dispatch a later F9 with another target:
+-- the outer attempt must NOT overwrite the newer target after that callback.
+local originalValid=go_IsValid
+local originalLastGOH=HL_LastRayHitGOH
+local targetName="NPC"
+local triggerNPC=false
+go_IsValid=function(h)
+ if h=="NPC" and triggerNPC then
+  triggerNPC=false
+  hitZ=11
+  targetName="NPC2"
+  assert(Homelander_FreeAimProbe(),"new F9 from target go_IsValid")
+ end
+ return h=="NPC2" or originalValid(h)
+end
+HL_LastRayHitGOH=function() return targetName end
+targetName="NPC";hitZ=10;triggerNPC=true
+assert(not Homelander_FreeAimProbe(),"old F9 must abort on nested target-validity F9")
+eq(HOMELANDER_FREEAIM_HIT,"NPC2","new NPC2 GOH not overwritten by old NPC")
+eq(HOMELANDER_FREEAIM_HIT_POS.z,11,"new NPC2 hit point not overwritten")
+eq(HOMELANDER_FREEAIM_VERIFIED_EPOCH,HOMELANDER_FREEAIM_EPOCH,"new NPC2 proof remains current")
+print("P1_F9_TARGET_VALIDITY_CALLBACK_REENTRANCY_PASS")
+
+-- Diagnostics may also call a synchronous Lua callback via HL_Log.
+local originalLog=HL_Log
+local triggerCameraLog=false
+HL_Log=function(msg)
+ if triggerCameraLog and type(msg)=="string" and string.find(msg,"CAMERA |",1,true) then
+  triggerCameraLog=false
+  hitZ=13
+  targetName="NPC2"
+  assert(Homelander_FreeAimProbe(),"new F9 inside old F9 CAMERA log")
+ end
+ return originalLog(msg)
+end
+targetName="NPC";hitZ=12;triggerCameraLog=true
+assert(not Homelander_FreeAimProbe(),"old F9 aborts when camera log nests new F9")
+eq(HOMELANDER_FREEAIM_HIT,"NPC2","new log-callback NPC2 GOH retained")
+eq(HOMELANDER_FREEAIM_HIT_POS.z,13,"new log-callback hit point retained")
+eq(HOMELANDER_FREEAIM_VERIFIED_EPOCH,HOMELANDER_FREEAIM_EPOCH,"new log-callback proof current")
+HL_Log=originalLog
+go_IsValid=originalValid
+HL_LastRayHitGOH=originalLastGOH
+print("P1_F9_CAMERA_LOG_CALLBACK_REENTRANCY_PASS")
 print("P1_F9_F12_EPOCH_PROVENANCE_INTEGRATION_PASS")
