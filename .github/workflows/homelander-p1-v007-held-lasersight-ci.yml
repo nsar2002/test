@@ -62,6 +62,9 @@ jobs:
           grep -q 'HOMELANDER_LASERSIGHT_ONESHOT_LAST_TARGET' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           grep -q 'pcall(go_Local2World, G.target, G.local_offset)' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           grep -q 'HEARTBEAT' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_MAX_HELD_FRAMES' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'if max_frames < 60 then max_frames = 60 end' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'if max_frames > 3600 then max_frames = 3600 end' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           if grep -Eq 'go_ApplyDamage|go_ApplyDamageAndHit|em_AddWorldEffect|em_AddWorldEffectOriented|phys_SetLinearVelocity|phys_SetAngularVelocity|pcall\(ai_Laser|fre_LineOfSightTest|Homelander_FreeAimProbe|Homelander_FreeAimLocalOffsetProbe' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua; then
             echo "Forbidden mutation/legacy renderer/reacquisition found in v009 held gate"
             exit 1
@@ -74,6 +77,7 @@ jobs:
           grep -q 'g_laserOneShotPassed = false' homelander_p1_build/homelander_p1.cpp
           grep -q 'CallLua0(L, "Homelander_LaserSightHeldForceDisableV009", false)' homelander_p1_build/homelander_p1.cpp
           grep -q 'CleanupLaserSightHandles();' homelander_p1_build/homelander_p1.cpp
+          grep -q 'cached shader/vtable is no longer readable' homelander_p1_build/homelander_p1.cpp
           grep -q 'centerError > 0.02f' homelander_p1_build/homelander_p1.cpp
           grep -q 'beamDistance > 1200.0f' homelander_p1_build/homelander_p1.cpp
 
