@@ -1,0 +1,70 @@
+name: V6 M4A0 Chen ephys value-opaque schema gate
+
+on:
+  push:
+    paths:
+      - ".github/workflows/v6_m4a0_chensource_schema.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen dependency
+        run: |
+          python -m pip install --disable-pip-version-check requests==2.32.3
+
+      - name: Freeze execution bytes
+        run: |
+          mkdir -p v6_m4a0_out
+          sha256sum fly_mnq/v6_m4a0_chensource_schema_probe.py > v6_m4a0_out/preexecution_sha256.txt
+          sha256sum research/v6_m4a0_active_apl_source_schema_protocol.md >> v6_m4a0_out/preexecution_sha256.txt
+          cat v6_m4a0_out/preexecution_sha256.txt
+
+      - name: Execute value-opaque archive schema gate
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m4a0_chensource_schema_probe.py | tee v6_m4a0_out/stdout.txt
+          mv v6_m4a0_result.json v6_m4a0_out/
+
+      - name: Enforce formal classification vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m4a0_out/v6_m4a0_result.json"))
+          allowed={
+              "PASS_M4A0_CHEN_EPHYS_ARCHIVE_SCHEMA_QUALIFIED",
+              "BLOCKED_M4A0_CHEN_EPHYS_TRANSPORT_OR_ZIP_SCHEMA",
+              "BLOCKED_M4A0_CHEN_EPHYS_SCHEMA_NOT_SELF_DESCRIBING",
+          }
+          print("FORMAL_CLASSIFICATION", r["classification"])
+          if r["classification"] not in allowed:
+              raise SystemExit(2)
+          PY
+
+      - name: Hash outputs
+        run: |
+          set -euo pipefail
+          : > v6_m4a0_out/output_sha256.txt
+          for f in v6_m4a0_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m4a0_out/output_sha256.txt
+          done
+          cat v6_m4a0_out/output_sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fly-mnq-v6-m4a0-chen-ephys-schema
+          path: v6_m4a0_out/
+          retention-days: 14
