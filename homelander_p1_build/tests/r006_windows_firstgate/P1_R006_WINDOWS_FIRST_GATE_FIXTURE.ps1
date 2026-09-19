@@ -125,3 +125,99 @@ $liveState = Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\st
 if (@($liveState.passedStages).Count -ne 0) { throw 'First live launcher illegally recorded synthetic PASS state' }
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_OBSERVER_CHAIN_PASS_NO_AUTHORITY'
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_FIXTURE_PASS_NO_REAL_GAME'
+
+# FULL CHAIN: all generated stage packages and log lines are explicitly SYNTHETIC.
+# The first launcher produced only a non-authoritative observer candidate.
+RunManager -ManagerArgs @('-Action','Install','-Stage','v004') -Expected 1
+Write-Host 'R006_WINDOWS_FULLCHAIN_OBSERVER_CANNOT_UNLOCK_V004'
+RunManager -ManagerArgs @('-Action','Check','-Stage','v003')
+for ($i=1; $i -lt $stages.Count; $i++) {
+    $cfg=$stages[$i]
+    $expectedPrevious=$stages[$i-1].stage
+    if ((Sha (Join-Path $root 'homelander_p1.asi')) -ne $stages[$i-1].asiSha256) {
+        throw "Before stage $($cfg.stage) install the prior stage ASI is not intact: $expectedPrevious"
+    }
+    if ($i -eq 1) {
+        $zip=Join-Path $pack 'packages\v004.zip'
+        $savedZip=Join-Path $pack 'packages\v004.hidden.for.failure.test'
+        Move-Item -LiteralPath $zip -Destination $savedZip
+        try {
+            RunManager -ManagerArgs @('-Action','Install','-Stage','v004') -Expected 1
+            if ((Sha (Join-Path $root 'homelander_p1.asi')) -ne $stages[0].asiSha256) {
+                throw 'Missing package failure changed active v003'
+            }
+            Write-Host 'R006_WINDOWS_FULLCHAIN_MISSING_STAGE_PACKAGE_FAIL_CLOSED'
+        } finally {
+            Move-Item -LiteralPath $savedZip -Destination $zip
+        }
+    }
+    RunManager -ManagerArgs @('-Action','Install','-Stage',$cfg.stage)
+    if ((Sha (Join-Path $root 'homelander_p1.asi')) -ne $cfg.asiSha256) {
+        throw "Installed ASI hash not current for $($cfg.stage)"
+    }
+    if (!(Test-Path -LiteralPath (Join-Path $root ('lua_p1\' + $cfg.stage + '.lua')))) {
+        throw "Stage Lua file absent after install: $($cfg.stage)"
+    }
+    if ((Sha (Join-Path $root 'binkw32.dll')) -ne $loaderHash -or
+        (Sha (Join-Path $root 'binkw32Hooked.dll')) -ne $binkHash) {
+        throw "One of the two loader DLLs changed during synthetic install $($cfg.stage)"
+    }
+    $nextIndex=$i+1
+    if ($nextIndex -lt $stages.Count) {
+        RunManager -ManagerArgs @('-Action','Install','-Stage',$stages[$nextIndex].stage) -Expected 1
+        if ((Sha (Join-Path $root 'homelander_p1.asi')) -ne $cfg.asiSha256) {
+            throw "Later stage install bypassed missing current-stage evidence: $($cfg.stage)"
+        }
+    }
+    # A fresh per-stage log is synthesized for the CI test, NOT from Prototype.
+    $log=Join-Path $root 'homelander_p1_runtime.log'
+    if (Test-Path -LiteralPath $log) { throw "Install failed to archive previous stage's test log: $($cfg.stage)" }
+    [System.IO.File]::WriteAllText($log,"READY $($cfg.stage)\`nF9 SYNTHETIC PASS\`n")
+    RunManager -ManagerArgs @('-Action','Check','-Stage',$cfg.stage)
+    $state=Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\state.json') -Raw | ConvertFrom-Json
+    if ([string]$state.currentStage -ne $cfg.stage -or
+        @($state.passedStages) -notcontains $cfg.stage) {
+        throw "Synthetic check failed to record current stage $($cfg.stage)"
+    }
+    if (@($state.passedStages).Count -ne ($i+1)) {
+        throw "Synthetic state pass-count mismatch at $($cfg.stage)"
+    }
+    Write-Host ("R006_WINDOWS_FULLCHAIN_SYNTHETIC_STAGE_PASS_NOT_REAL_GAME " + $cfg.stage)
+}
+RunManager -ManagerArgs @('-Action','Next')
+$allState=Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\state.json') -Raw | ConvertFrom-Json
+if (@($allState.passedStages).Count -ne 13) {
+    throw 'Synthetic complete chain did not record 13 stages'
+}
+Write-Host 'R006_WINDOWS_FULLCHAIN_SYNTHETIC_13_OF_13_PASS_NOT_REAL_GAME'
+for ($i=$stages.Count-1; $i -ge 0; $i--) {
+    RunManager -ManagerArgs @('-Action','Rollback')
+    $expected=if ($i -eq 0) {'v001'} else {$stages[$i-1].stage}
+    $current=Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\state.json') -Raw | ConvertFrom-Json
+    if ($current.currentStage -ne $expected) {
+        throw "Rollback to $expected failed at iteration $i"
+    }
+    if ((Sha (Join-Path $root 'binkw32.dll')) -ne $loaderHash -or
+        (Sha (Join-Path $root 'binkw32Hooked.dll')) -ne $binkHash) {
+        throw "Loader chain changed on rollback $i"
+    }
+    Write-Host ("R006_WINDOWS_FULLCHAIN_SYNTHETIC_ROLLBACK_PASS " + $expected)
+}
+$finalState=Get-Content -LiteralPath (Join-Path $root '.homelander_promotion\state.json') -Raw | ConvertFrom-Json
+if (@($finalState.passedStages).Count -ne 0 -or
+    @($finalState.installHistory).Count -ne 0 -or
+    $finalState.currentStage -ne 'v001') {
+    throw 'After 13 rollbacks synthetic promotion state is not exact v001'
+}
+if ((Sha (Join-Path $root 'homelander_p1.asi')) -ne $baseHash) {
+    throw 'After 13 rollbacks the original v001 ASI bytes were not restored'
+}
+if (!(Test-Path -LiteralPath (Join-Path $root 'lua_p1\original-v1.lua'))) {
+    throw 'After 13 rollbacks the original v001 Lua file is absent'
+}
+foreach ($stage in $names) {
+    if (Test-Path -LiteralPath (Join-Path $root ('lua_p1\' + $stage + '.lua'))) {
+        throw "Unexpected synthetic stage Lua remained after rollback to v001: $stage"
+    }
+}
+Write-Host 'R006_WINDOWS_FULLCHAIN_SYNTHETIC_13_ROLLBACKS_TO_V001_PASS_NO_REAL_GAME'
