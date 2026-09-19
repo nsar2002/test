@@ -126,6 +126,14 @@ if (@($liveState.passedStages).Count -ne 0) { throw 'First live launcher illegal
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_OBSERVER_CHAIN_PASS_NO_AUTHORITY'
 Write-Host 'R006_WINDOWS_FIRST_GATE_SYNTHETIC_FIXTURE_PASS_NO_REAL_GAME'
 
+# The first-live observer may return before the fake game process exits.
+# Confirm the OS process has really terminated before any next-stage mutation.
+$processDeadline = [DateTime]::UtcNow.AddSeconds(15)
+while (Get-Process -Name 'prototypef' -ErrorAction SilentlyContinue) {
+    if ([DateTime]::UtcNow -gt $processDeadline) { throw 'Synthetic game failed to exit before full-chain test' }
+    Start-Sleep -Milliseconds 200
+}
+Write-Host 'R006_WINDOWS_FULLCHAIN_SYNTHETIC_GAME_EXIT_CONFIRMED'
 # FULL CHAIN: all generated stage packages and log lines are explicitly SYNTHETIC.
 # The first launcher produced only a non-authoritative observer candidate.
 RunManager -ManagerArgs @('-Action','Install','-Stage','v004') -Expected 1
