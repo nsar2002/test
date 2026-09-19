@@ -79,7 +79,7 @@ local oldDamagePos=HOMELANDER_DAMAGE_LAST_HIT_POS
 local originalVector=Vector
 local triggered=false
 Vector=function(...)
- local r=originalVector(unpack(arg or {...}))
+ local r=originalVector(...)
  if not triggered then
   triggered=true
   HOMELANDER_DAMAGE_LAST_HIT_POS=originalVector(7,8,9)
