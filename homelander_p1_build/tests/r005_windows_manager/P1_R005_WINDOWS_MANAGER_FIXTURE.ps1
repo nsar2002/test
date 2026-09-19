@@ -3,7 +3,10 @@
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $src = Join-Path $PSScriptRoot 'P1_PROMOTION_MANAGER.ps1'
-$actualManager = (Get-FileHash -LiteralPath $src -Algorithm SHA256).Hash.ToLowerInvariant()
+$managerText = [System.IO.File]::ReadAllText($src, [System.Text.Encoding]::UTF8).Replace("`r`n", "`n")
+$normalizedSource = Join-Path $env:RUNNER_TEMP ('p1_r005_manager_normalized_' + [guid]::NewGuid().ToString('N') + '.ps1')
+[System.IO.File]::WriteAllText($normalizedSource, $managerText, ([System.Text.UTF8Encoding]::new($false)))
+$actualManager = (Get-FileHash -LiteralPath $normalizedSource -Algorithm SHA256).Hash.ToLowerInvariant()
 $expectedManager = 'dc3868b0c9e6ad416f85600fbc64ceb7957fa0e72475cc815c40f7f94d6d476a'
 if ($actualManager -ne $expectedManager) { throw "Test manager is not byte-identical to R005: $actualManager" }
 $work = Join-Path $env:RUNNER_TEMP ('P1_R005_SYNTHETIC_' + [guid]::NewGuid().ToString('N'))
