@@ -162,7 +162,7 @@ jobs:
             'CallLua0(L, "Homelander_DurabilitySnapshotV02")': 1,
             'CallLua0(L, "Homelander_GrabStateProbeV01")': 1,
             'g_scriptsReady = setter && math && controller;': 1,
-            'g_f24Prev = false;': 1,
+            'g_f24Prev = false;': 2,  # one declaration and one bootstrap reset
           }
           for token,wanted in checks.items():
             got=c.count(token)
