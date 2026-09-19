@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_RuntimeProbe_015_TARGET_VFX_ROUTE_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_RuntimeProbe_016_VFX_ASSET_ALLOWLIST_STAGED_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
@@ -170,6 +170,7 @@ namespace hl
     bool g_f20Prev = false;
     bool g_f21Prev = false;
     bool g_f22Prev = false;
+    bool g_f23Prev = false;
     bool g_freeAimReady = false;
     bool g_localOffsetReady = false;
     bool g_eyeOriginReady = false;
@@ -183,6 +184,7 @@ namespace hl
     bool g_dotDryRunReady = false;
     bool g_damageHitPayloadReady = false;
     bool g_targetVfxRouteReady = false;
+    bool g_vfxAssetAllowlistReady = false;
 
     const char* kSigLuaPcall =
         "8B 4C 24 ? 83 EC ? 85 C9 56";
@@ -1437,6 +1439,7 @@ namespace hl
         g_dotDryRunReady = ExecuteLuaFile(L, "lua_p1\\dot_dryrun_scheduler_v014_STAGED.lua");
         g_damageHitPayloadReady = ExecuteLuaFile(L, "lua_p1\\damagehit_payload_probe_v015_STAGED.lua");
         g_targetVfxRouteReady = ExecuteLuaFile(L, "lua_p1\\target_vfx_route_probe_v016_STAGED.lua");
+        g_vfxAssetAllowlistReady = ExecuteLuaFile(L, "lua_p1\\vfx_asset_allowlist_probe_v017_STAGED.lua");
 
         g_laserShaderGatePassed = false;
         g_laserOneShotPassed = false;
@@ -1449,8 +1452,8 @@ namespace hl
 
         g_scriptsReady = setter && math && controller;
         g_f4Prev = g_f5Prev = g_f6Prev = g_f7Prev = g_f8Prev = g_f9Prev = g_f10Prev =
-            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = false;
-        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s",
+            g_f11Prev = g_f12Prev = g_f13Prev = g_f14Prev = g_f15Prev = g_f16Prev = g_f17Prev = g_f18Prev = g_f19Prev = g_f20Prev = g_f21Prev = g_f22Prev = g_f23Prev = false;
+        Log("Lua bootstrap scriptsReady=%s heatProbe=%s freeAim=%s localOffset=%s eyeOrigin=%s dualEyeRender=%s laserSightNative=%s heldLaserSight=%s dynamicAim=%s damageOneShot=%s impactVfx=%s targetContinuity=%s dotDryRun=%s damageHitPayload=%s targetVfxRoute=%s vfxAssetAllowlist=%s",
             g_scriptsReady ? "true" : "false",
             heatProbe ? "true" : "false",
             g_freeAimReady ? "true" : "false",
@@ -1465,7 +1468,8 @@ namespace hl
             g_targetContinuityReady ? "true" : "false",
             g_dotDryRunReady ? "true" : "false",
             g_damageHitPayloadReady ? "true" : "false",
-            g_targetVfxRouteReady ? "true" : "false");
+            g_targetVfxRouteReady ? "true" : "false",
+            g_vfxAssetAllowlistReady ? "true" : "false");
     }
 
     void BridgeTick(int L)
@@ -1715,6 +1719,19 @@ namespace hl
             else
             {
                 Log("F22 ignored: target VFX route staged Lua did not load");
+            }
+        }
+
+        if (RisingEdge(VK_F23, g_f23Prev, inputEnabled))
+        {
+            if (g_vfxAssetAllowlistReady)
+            {
+                Log("F23: one-shot READ-ONLY statically audited VFX asset allowlist");
+                CallLua0(L, "Homelander_VFXAssetAllowlistProbeV017");
+            }
+            else
+            {
+                Log("F23 ignored: VFX asset allowlist staged Lua did not load");
             }
         }
 
@@ -2230,7 +2247,7 @@ namespace hl
             return 0;
         }
 
-        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate, F19=read-only target continuity telemetry, F20=READ-ONLY DOT cadence dry-run, F21=READ-ONLY DamageAndHit payload probe, F22=READ-ONLY target classification/VFX route", kBuildId);
+        Log("READY build=%s. F4=read-only math, F5=echo gate, F6=enable flight, F7=disable, F8=read-only target, F9=read-only free-aim LOS, F10=read-only target-local roundtrip, F11=read-only EYEPOINT, F12=legacy ai_Laser falsification, F13=read-only shader, F14=real one-shot LaserSight, F15=held LaserSight toggle, F16=dynamic free-aim LaserSight toggle, F17=one-shot heat-vision damage gate, F18=one-shot impact VFX gate, F19=read-only target continuity telemetry, F20=READ-ONLY DOT cadence dry-run, F21=READ-ONLY DamageAndHit payload probe, F22=READ-ONLY target classification/VFX route, F23=READ-ONLY VFX asset allowlist", kBuildId);
         return 0;
     }
 }
