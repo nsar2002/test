@@ -92,7 +92,7 @@ For `IC_fp`, apply the same baseline, charging and late-pulse definitions to eve
 Each ABF file is one experimental unit unless file metadata proves multiple independent cells, in which case BLOCK rather than split post hoc.
 
 For each file:
-- AHP protocol: use the median across repeated identical depolarizing pulses if repeats exist;
+- AHP protocol: aggregate repeated identical depolarizing pulses separately by exact command-current level; the **largest positive command-current level common to every AHP file in both groups** is the frozen primary AHP level. This level is selected from the command waveform only, never from a voltage response. Lower common AHP levels, if present, remain secondary diagnostics.
 - IC_fp: compute charging and late-pulse amplitudes at each positive current level; preserve the complete current-response curve.
 
 No sweep/cell may be dropped because of bump size, apparent noise, sign, or group effect.
