@@ -41,7 +41,11 @@ CLASSIFICATIONS = {
     "PASS_M4A1_SK_DURING_STIMULUS_EFFECT_IDENTIFIED",
     "NO_IDENTIFIABLE_M4A1_SK_TEMPORAL_EFFECT",
     "BLOCKED_M4A1_SOURCE_OR_PROTOCOL_PARITY",
+    "BLOCKED_M4A1X_CHANNEL_MAPPING_PARITY",
 }
+
+class ChannelMappingParityError(ValueError):
+    pass
 
 def write_result(result):
     with open(OUT, "w", encoding="utf-8") as f:
@@ -59,6 +63,25 @@ def write_result(result):
 def blocked(reason, **extra):
     r = {
         "classification": "BLOCKED_M4A1_SOURCE_OR_PROTOCOL_PARITY",
+        "reason": reason,
+        "guardrails": {
+            "chen_selected_raw_payload_opened": True,
+            "unselected_archive_member_opened": False,
+            "m4v0_numeric_values_opened": False,
+            "amin_loaded": False,
+            "m3f4_residual_used_for_selection": False,
+            "mnq_loaded": False,
+            "active_conductance_fit": False,
+            "spatial_parameter_fit": False,
+        },
+    }
+    r.update(extra)
+    write_result(r)
+    return 0
+
+def blocked_mapping(reason, **extra):
+    r = {
+        "classification": "BLOCKED_M4A1X_CHANNEL_MAPPING_PARITY",
         "reason": reason,
         "guardrails": {
             "chen_selected_raw_payload_opened": True,
@@ -289,17 +312,25 @@ def pulse_metrics(v_mv, c_pa, rate):
 
 def read_abf(path, source_name, group, kind, crc):
     abf = pyabf.ABF(str(path))
-    adc_units = list(abf.adcUnits)
-    voltage_channels = []
-    for i, u in enumerate(adc_units):
-        try:
-            to_mv([0.0], u)
-            voltage_channels.append(i)
-        except Exception:
-            pass
-    if len(voltage_channels) != 1:
-        raise ValueError(f"{source_name}: expected exactly one voltage ADC channel, got {voltage_channels} from {adc_units}")
-    ch = voltage_channels[0]
+    adc_names = [str(x) for x in abf.adcNames]
+    adc_units = [str(x) for x in abf.adcUnits]
+    in0_channels = [
+        i for i, name in enumerate(adc_names)
+        if name.strip().casefold() == "in 0"
+    ]
+    if len(in0_channels) != 1:
+        raise ChannelMappingParityError(
+            f"{source_name}: exact IN 0 ADC count {len(in0_channels)} != 1; "
+            f"adc_names={adc_names!r}, adc_units={adc_units!r}"
+        )
+    ch = in0_channels[0]
+    try:
+        to_mv([0.0], adc_units[ch])
+    except Exception as exc:
+        raise ChannelMappingParityError(
+            f"{source_name}: IN 0 is not voltage-convertible; "
+            f"unit={adc_units[ch]!r}"
+        ) from exc
     pulses = []
     sweep_meta = []
     for sw in abf.sweepList:
@@ -330,8 +361,11 @@ def read_abf(path, source_name, group, kind, crc):
         "kind": kind,
         "crc32": crc,
         "abf_version": str(abf.abfVersionString),
-        "adc_names": list(abf.adcNames),
+        "adc_names": adc_names,
         "adc_units": adc_units,
+        "selected_voltage_channel_index": int(ch),
+        "selected_voltage_channel_name": adc_names[ch],
+        "selected_voltage_channel_unit": adc_units[ch],
         "channel_count": int(abf.channelCount),
         "sweep_count": int(abf.sweepCount),
         "sweeps": sweep_meta,
@@ -449,6 +483,12 @@ def main():
                 rec = read_abf(p, name, g, k, crc)
                 raw_records.append(rec)
                 print(f"READ {i:02d}/30 {g} {k} {name.rsplit('/',1)[-1]} sweeps={rec['sweep_count']} pulses={len(rec['pulses'])}")
+    except ChannelMappingParityError as exc:
+        return blocked_mapping(
+            f"frozen M4A1X IN 0 rule failed: {exc}",
+            source_counts={f"{g}:{k}": n for (g,k),n in sorted(counts.items())},
+            selected_members=extracted_names,
+        )
     except Exception as exc:
         return blocked(
             f"raw extraction/ABF parity failed: {type(exc).__name__}: {exc}",
