@@ -1,0 +1,64 @@
+name: Homelander P1 R020 actual F4 player-discovery + native dispatch parity
+on:
+  push:
+    branches: [homelander-p1-r020-real-f4-runtime-discovery-gate-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-f4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Scope original R007/v003, native C++, R018 assembled code and R019 firstgate preflight unmodified
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          base="89ae2f92780151fcdce6ebe7bdfb3e748272c878"
+          changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
+          allowed={
+           ".github/workflows/homelander-p1-r020-real-f4-ci.yml",
+           "homelander_p1_build/tests/r020_f4_real_source_discovery.lua",
+           "homelander_p1_build/tests/r020_native_dispatch_parity.py",
+           "homelander_p1_build/tests/r020_readme.md",
+          }
+          assert changed<=allowed, f"Unauthorized game/source/firstgate mutation: {changed-allowed}"
+          print("P1_R020_R007_V003_NATIVE_ASSEMBLED_R019_IMMUTABLE_PASS")
+          PY
+      - name: Install independent Lua5.1 compiler and runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lua5.1
+      - name: Reassemble actual 22 native-path source files without executables
+        run: |
+          python3 homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py stage_r020_SOURCE_ONLY_NOT_INSTALLABLE
+          python3 homelander_p1_build/tests/bootstrap_lua_dependency_audit.py stage_r020_SOURCE_ONLY_NOT_INSTALLABLE
+          for f in stage_r020_SOURCE_ONLY_NOT_INSTALLABLE/lua_p1/*.lua; do luac5.1 -p "$f"; done
+      - name: Replay exact v003 original Lua F4 no-player, verified A, rejected NPC and broken index paths
+        run: |
+          lua5.1 homelander_p1_build/tests/r020_f4_real_source_discovery.lua \
+            homelander_p1_build/v003_transfer/lua_p1/runtime_probe.lua \
+            stage_r020_SOURCE_ONLY_NOT_INSTALLABLE
+      - name: Audit real C++ native F4 reexecution, F9-F21 keyed dispatch and native per-frame ticks
+        run: |
+          python3 homelander_p1_build/tests/r020_native_dispatch_parity.py stage_r020_SOURCE_ONLY_NOT_INSTALLABLE
+      - name: R018 positive end-to-end gated chain remains reproducible ONLY with synthetic F4 player A
+        run: |
+          lua5.1 homelander_p1_build/tests/r018_assembled_f9_f21_native_order.lua \
+            stage_r020_SOURCE_ONLY_NOT_INSTALLABLE \
+            stage_r020_SOURCE_ONLY_NOT_INSTALLABLE/CI_EVIDENCE/native_bootstrap_load_order.txt
+      - name: Package ONLY scoped diagnostics, no user evidence, installer, ASI or DLL
+        run: |
+          mkdir -p stage_r020_DELIVERABLE
+          cp homelander_p1_build/tests/r020_f4_real_source_discovery.lua stage_r020_DELIVERABLE/
+          cp homelander_p1_build/tests/r020_native_dispatch_parity.py stage_r020_DELIVERABLE/
+          cp homelander_p1_build/tests/r020_readme.md stage_r020_DELIVERABLE/
+          (cd stage_r020_DELIVERABLE && sha256sum *.lua *.py *.md > SHA256SUMS.txt)
+          test -z "$(find stage_r020_DELIVERABLE -type f | grep -Ei '\.(dll|asi|exe|bat|cmd|ps1)$' || true)"
+          echo 'P1_R020_SOURCE_ONLY_NO_GAME_INSTALLABLE_PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_R020_ActualF4DiscoveryReplay_and_NativeDispatchAudit_SOURCE_ONLY
+          path: stage_r020_DELIVERABLE/
+          if-no-files-found: error
