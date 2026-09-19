@@ -50,6 +50,9 @@ Lua emits a heartbeat every 120 successful frames.
 - first-stage held rendering auto-disables after 600 successful frames by default.
 - HOMELANDER_LASERSIGHT_MAX_HELD_FRAMES may adjust this only within 60..3600 frames.
 - every native submit revalidates that the cached shader object and its vtable are still readable; failure closes both shader and one-shot native gates.
+- a new F15 enable resets HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED.
+- only after 120 consecutive successful held render frames does v009 set HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED=true and record the stable target.
+- later dynamic free-aim work must require this same-session stability proof.
 
 ## Safety bounds
 Inherited from v006 on every frame:
