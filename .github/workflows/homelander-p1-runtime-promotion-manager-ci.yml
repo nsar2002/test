@@ -1,0 +1,105 @@
+name: Homelander P1 Runtime Promotion Manager CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-runtime-promotion-manager-20260919
+    paths:
+      - 'homelander_p1_build/runtime_promotion/**'
+      - '.github/workflows/homelander-p1-runtime-promotion-manager-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-manager:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify frozen source hashes
+        shell: pwsh
+        run: |
+          $expected = @{
+            'homelander_p1_build/runtime_promotion/P1_PROMOTION_MANAGER.ps1' = 'dc3868b0c9e6ad416f85600fbc64ceb7957fa0e72475cc815c40f7f94d6d476a'
+            'homelander_p1_build/runtime_promotion/promotion_manifest.json' = 'c11b40023f2a79905503a3456b43b9b16f31160c1a31d91f2f7c11b16ebfffc3'
+            'homelander_p1_build/runtime_promotion/README_FIRST.txt' = 'fcd654c7b72b6e23937ac471991ce5edd72cab1aa6fcfd10874061ba165a3c5a'
+          }
+          foreach ($p in $expected.Keys) {
+            $h=(Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash.ToLowerInvariant()
+            if($h -ne $expected[$p]) { throw "Hash mismatch: $p expected=$($expected[$p]) actual=$h" }
+          }
+
+      - name: Parse PowerShell source
+        shell: pwsh
+        run: |
+          $path=(Resolve-Path 'homelander_p1_build/runtime_promotion/P1_PROMOTION_MANAGER.ps1').Path
+          $tokens=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.ToString() }
+            throw "PowerShell parser found $($errors.Count) error(s)."
+          }
+          Write-Host "PowerShell AST parse PASS"
+
+      - name: Run manager structural self-test
+        shell: pwsh
+        run: |
+          & ./homelander_p1_build/runtime_promotion/P1_PROMOTION_MANAGER.ps1 -Action SelfTest -SkipPackagePresence
+          if($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Validate frozen promotion order
+        shell: pwsh
+        run: |
+          $m=Get-Content 'homelander_p1_build/runtime_promotion/promotion_manifest.json' -Raw | ConvertFrom-Json
+          $actual=@($m.stages | ForEach-Object { $_.stage })
+          $expected=@('v003','v004','v005','v006','v007','v009','v010','v011','v012','v013','v014','v015','v016')
+          if($actual.Count -ne $expected.Count) { throw "Stage-count mismatch" }
+          for($i=0;$i -lt $expected.Count;$i++) {
+            if($actual[$i] -ne $expected[$i]) { throw "Order mismatch at $i: expected $($expected[$i]), got $($actual[$i])" }
+          }
+          if($actual -contains 'v008') { throw 'v008 must remain excluded; v009 supersedes it.' }
+          Write-Host "Promotion order PASS"
+
+      - name: Verify fail-closed safety controls
+        shell: pwsh
+        run: |
+          $p='homelander_p1_build/runtime_promotion/P1_PROMOTION_MANAGER.ps1'
+          $s=Get-Content $p -Raw
+          $need=@(
+            'Assert-LoaderChain',
+            'Assert-GameClosed',
+            'Validate-StagePackage $cfg -ExtractCheck',
+            'Previous live gate',
+            'No skipping is allowed',
+            'Restore-Backup $Root $backup',
+            'Archive-Log $Root',
+            'requiredRegex=@($cfg.required)',
+            'visualConfirmed=[bool]$ConfirmVisible',
+            'FAIL-CLOSED: forbidden/fatal runtime evidence found',
+            'homelander-p1-live-gate-receipt/1.0'
+          )
+          foreach($needle in $need) {
+            if(-not $s.Contains($needle)) { throw "Missing safety control: $needle" }
+          }
+          if($s -match 'Copy-Item[^\r\n]+binkw32') { throw 'Promotion manager must not copy loader DLLs.' }
+          Write-Host "Fail-closed controls PASS"
+
+      - name: Validate manifest semantics
+        shell: pwsh
+        run: |
+          $m=Get-Content 'homelander_p1_build/runtime_promotion/promotion_manifest.json' -Raw | ConvertFrom-Json
+          if($m.schema -ne 'homelander-p1-runtime-promotion/1.0') { throw 'Bad schema' }
+          if($m.baseline.stage -ne 'v001') { throw 'Baseline must be v001' }
+          if($m.baseline.asiSha256 -ne '577be0ad57823b8cf562bee014d2656819ff5c4159ef74b3c195e842d747b104') { throw 'Bad v001 hash' }
+          if($m.baseline.loaderSha256 -ne 'bc48bab2cf07eaf616e23ba9eef1922ea5e8590f722b6657a8f2ed986fe6f20e') { throw 'Bad loader hash' }
+          foreach($s in @($m.stages)) {
+            if([string]::IsNullOrWhiteSpace($s.packageSha256)) { throw "Missing package hash: $($s.stage)" }
+            if([string]::IsNullOrWhiteSpace($s.asiSha256)) { throw "Missing ASI hash: $($s.stage)" }
+            if(@($s.required).Count -lt 1) { throw "Missing live evidence regex: $($s.stage)" }
+          }
+          if(-not [bool](@($m.stages | Where-Object stage -eq 'v006')[0].visible)) { throw 'v006/F14 must require visual confirmation' }
+          if(-not [bool](@($m.stages | Where-Object stage -eq 'v011')[0].visible)) { throw 'v011/F18 must require visual confirmation' }
+          Write-Host "Manifest semantics PASS"
