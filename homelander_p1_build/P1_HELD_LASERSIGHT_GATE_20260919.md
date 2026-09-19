@@ -47,6 +47,9 @@ Lua emits a heartbeat every 120 successful frames.
 - focus loss force-disables held state.
 - invalid player/target/F10/F11 state auto-disables.
 - native submit failure auto-disables.
+- first-stage held rendering auto-disables after 600 successful frames by default.
+- HOMELANDER_LASERSIGHT_MAX_HELD_FRAMES may adjust this only within 60..3600 frames.
+- every native submit revalidates that the cached shader object and its vtable are still readable; failure closes both shader and one-shot native gates.
 
 ## Safety bounds
 Inherited from v006 on every frame:
