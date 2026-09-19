@@ -1,0 +1,102 @@
+name: Homelander P1 R008 22 Lua Native-Path Source Integration CI
+on:
+  push:
+    branches: [homelander-p1-r008-22lua-integration-20260919]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-source-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Scope audit - original game native, source stages and R007 manager remain frozen
+        run: |
+          set -eu
+          BASE=065648591801b81782f59d7f315a5260becb0b5a
+          python3 - <<'PY'
+          import subprocess
+          base="065648591801b81782f59d7f315a5260becb0b5a"
+          changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
+          allowed={
+           "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
+           "homelander_p1_build/tests/r008_22lua_integration/README_SOURCE_ONLY.md",
+           ".github/workflows/homelander-p1-r008-22lua-integration-ci.yml"}
+          assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
+          print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
+          PY
+      - name: Install independent Lua 5.1 and Win32 MinGW-w64
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 g++-mingw-w64-i686 binutils-mingw-w64-i686
+      - name: Assemble complete atomic 22-Lua source payload
+        run: |
+          python3 homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py stage_r008_22lua_SOURCE_ONLY
+          python3 homelander_p1_build/tests/bootstrap_lua_dependency_audit.py stage_r008_22lua_SOURCE_ONLY
+          cp homelander_p1_build/tests/r008_22lua_integration/README_SOURCE_ONLY.md stage_r008_22lua_SOURCE_ONLY/
+          mkdir -p stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE
+          cp homelander_p1_build/homelander_p1.cpp stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE/
+          cp homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE/
+      - name: Lua syntax parse 22/22 native runtime script paths
+        run: |
+          set -eu
+          N=0
+          for f in stage_r008_22lua_SOURCE_ONLY/lua_p1/*.lua; do
+            luac5.1 -p "$f"
+            N=$((N+1))
+          done
+          test "$N" -eq 22
+          echo P1_R008_ALL_22_NATIVE_LUA_SCRIPT_SYNTAX_PASS
+      - name: Execute full F9-F12 actual-source numeric provenance mocks
+        run: |
+          lua5.1 homelander_p1_build/tests/f9_numeric_epoch_integration.lua
+          echo P1_R008_F9_F12_GUARDED_END_TO_END_MOCK_PASS
+      - name: Cross-compile unchanged C++ Win32 ASI SCRATCH only, never package/install
+        run: |
+          mkdir -p scratch_pe32 stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows,--no-insert-timestamp \
+            -o scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi -luser32
+          test -s scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi
+          file scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi | tee stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/pe32_file.txt
+          i686-w64-mingw32-objdump -f scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi | tee stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/pe32_headers.txt
+          i686-w64-mingw32-objdump -p scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi > stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/pe32_imports.txt
+          grep -Eiq 'pei-i386|i386' stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/pe32_headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/pe32_imports.txt; then
+            echo "Unexpected MinGW runtime dynamic dependency"
+            exit 1
+          fi
+          sha256sum scratch_pe32/homelander_p1_NOT_FOR_INSTALL.asi > stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/scratch_ASI_SHA256_NOT_FOR_INSTALL.txt
+          echo P1_R008_UNCHANGED_NATIVE_PE32_SCRATCH_BUILD_PASS
+      - name: Verify stage inventory, exact override bytes and source-only package integrity
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          s=pathlib.Path("stage_r008_22lua_SOURCE_ONLY")
+          manifest=json.loads((s/"INTEGRATION_MANIFEST.json").read_text())
+          assert manifest["asi_included"] is False and manifest["real_game_tested"] is False
+          assert manifest["native_lua_unique_files"]==22 and manifest["native_lua_load_occurrences"]==24
+          assert len(manifest["members"])==22
+          guarded=[m for m in manifest["members"] if m["role"]=="guarded-F9-F12-byte-override"]
+          assert len(guarded)==4
+          for item in manifest["members"]:
+            f=s/item["native_path"]
+            assert f.is_file() and hashlib.sha256(f.read_bytes()).hexdigest()==item["sha256"],f
+            src=pathlib.Path(item["source"])
+            assert f.read_bytes()==src.read_bytes(),src
+          blocked={".asi",".exe",".dll",".ps1",".bat",".cmd",".zip"}
+          for f in s.rglob("*"):
+            if f.is_file(): assert f.suffix.lower() not in blocked,f
+          assert len(list((s/"lua_p1").glob("*.lua")))==22
+          print("P1_R008_ATOMIC_GUARDED_F9_F12_AND_22_LUA_HASHES_PASS")
+          print("P1_R008_SOURCE_ONLY_NO_ASI_EXE_DLL_OR_INSTALLER_PASS")
+          PY
+          (cd stage_r008_22lua_SOURCE_ONLY && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_R008_22Lua_Integrated_SOURCE_ONLY_NOT_INSTALLABLE
+          path: stage_r008_22lua_SOURCE_ONLY/
+          if-no-files-found: error
