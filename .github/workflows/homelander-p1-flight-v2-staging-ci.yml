@@ -39,6 +39,7 @@ jobs:
             'homelander_p1_build/tests/flight_v21_safety_test.lua',
             'homelander_p1_build/P1_FLIGHT_V21_SAFETY_20260919.md',
             'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md',
+            'homelander_p1_build/P1_FLIGHT_V2_REPRO_AUDIT_20260919.md',
             'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt',
             '.github/workflows/homelander-p1-flight-v2-staging-ci.yml',
           }
