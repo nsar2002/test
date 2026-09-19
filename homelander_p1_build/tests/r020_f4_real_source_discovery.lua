@@ -62,7 +62,7 @@ PLAYER=nil
 go_FindGOHByName=function(name) if name=="Alex" then return "NPC" end end
 dofile(original)
 assert(HOMELANDER_PLAYER==nil,"NPC named Alex is not player")
-assert(count("online_DeterminePlayerIndex")==1)
+assert(count("go_FindGOHByName:Alex.online_DeterminePlayerIndex OK | -1")==1, "named NPC must receive engine index -1")
 assert(count("NO VERIFIED PLAYER HANDLE")==1)
 print("P1_R020_REAL_ORIGINAL_F4_NAMED_NPC_INDEX_MINUS1_REJECT_PASS")
 -- Found by name and positive player index: original code accepts a validated
