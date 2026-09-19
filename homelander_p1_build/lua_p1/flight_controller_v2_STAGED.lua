@@ -73,10 +73,24 @@ end
 -- F5 only carries a boolean in the canonical v003 probe. Bind that proof to the
 -- precise player handle from the same successful, synchronous verified F5 call.
 -- This is a dormant Flight-only wrapper around the unchanged baseline probe.
+local OriginalSetterEcho = Homelander_SetterEchoProbe
 local OriginalSetterEchoVerified = Homelander_SetterEchoProbe_Verified
 HOMELANDER_FLIGHT_V22_ECHO_PLAYER = nil
-if type(OriginalSetterEchoVerified) == "function" then
-    function Homelander_SetterEchoProbe_Verified(...)
+
+-- Every echo entrypoint, including the canonical _PLAYER route, invalidates the
+-- previous flight provenance before any physical velocity setter is reached.
+local WrappedSetterEcho = nil
+if type(OriginalSetterEcho) == "function" then
+    WrappedSetterEcho = function(...)
+        HOMELANDER_FLIGHT_V22_ECHO_PLAYER = nil
+        return OriginalSetterEcho(...)
+    end
+    Homelander_SetterEchoProbe = WrappedSetterEcho
+end
+
+local WrappedSetterEchoVerified = nil
+if type(OriginalSetterEchoVerified) == "function" and WrappedSetterEcho ~= nil then
+    WrappedSetterEchoVerified = function(...)
         HOMELANDER_FLIGHT_V22_ECHO_PLAYER = nil
         HOMELANDER_SETTER_ECHO_PASSED = false
         local requested = HOMELANDER_PLAYER
@@ -96,8 +110,17 @@ if type(OriginalSetterEchoVerified) == "function" then
         log("F5 BOUND: setter echo proof is tied to current player")
         return true
     end
+    Homelander_SetterEchoProbe_Verified = WrappedSetterEchoVerified
 else
-    log("F5 BLOCKED: canonical verified setter echo unavailable")
+    log("F5 BLOCKED: canonical verified/core setter echo unavailable")
+end
+
+local function exact_echo_binding(h)
+    return h ~= nil and
+        HOMELANDER_FLIGHT_V22_ECHO_PLAYER == h and
+        WrappedSetterEcho ~= nil and WrappedSetterEchoVerified ~= nil and
+        Homelander_SetterEchoProbe == WrappedSetterEcho and
+        Homelander_SetterEchoProbe_Verified == WrappedSetterEchoVerified
 end
 
 local function normalized_copy(v)
@@ -288,7 +311,7 @@ function Homelander_FlightEnableVerifiedV2()
     end
 
     local h=HOMELANDER_PLAYER
-    if HOMELANDER_FLIGHT_V22_ECHO_PLAYER == nil or HOMELANDER_FLIGHT_V22_ECHO_PLAYER ~= h then
+    if not exact_echo_binding(h) then
         log("ABORT: setter echo is not bound to the current player")
         return false
     end
@@ -343,7 +366,7 @@ end
 function Homelander_FlightTickV2(inputFwd,inputRight,inputUp,boost)
     if not S.enabled or S.handle==nil then return false end
     if HOMELANDER_SETTER_ECHO_PASSED ~= true or
-       HOMELANDER_FLIGHT_V22_ECHO_PLAYER ~= S.handle or
+       not exact_echo_binding(S.handle) or
        HOMELANDER_PLAYER ~= S.handle or not valid_player(S.handle) then
         log("FAIL-CLOSED: player/setter proof changed while flight active")
         S.enabled=false
@@ -454,7 +477,7 @@ function Homelander_FlightDisableV2(restorePreflightVelocity)
     local restoreAllowed=wasEnabled and restorePreflightVelocity and h~=nil and v~=nil and
         hasfn("phys_SetLinearVelocity")
     if restoreAllowed and (HOMELANDER_SETTER_ECHO_PASSED ~= true or
-        HOMELANDER_FLIGHT_V22_ECHO_PLAYER ~= h or
+        not exact_echo_binding(h) or
         HOMELANDER_PLAYER ~= h or
         not (hasfn("go_IsValid") or hasfn("online_DeterminePlayerIndex")) or
         not valid_player(h)) then
