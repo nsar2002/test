@@ -1295,7 +1295,13 @@ namespace hl
         LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLaserSightSubmitDualHook), 0);
         LuaSetField(L, LUA_GLOBALSINDEX, "HL_LaserSightSubmitDual");
 
-        Log("Installed Lua bridges: HL_Log, HL_GetCameraFrame, HL_LastRayHitGOH, HL_LaserSightShaderProbe, HL_LaserSightSubmitDual");
+        LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLaserSightResetHeldGateHook), 0);
+        LuaSetField(L, LUA_GLOBALSINDEX, "HL_LaserSightResetHeldGate");
+
+        LuaPushCClosure(L, reinterpret_cast<void*>(&LuaLaserSightHeldStabilityProbeHook), 0);
+        LuaSetField(L, LUA_GLOBALSINDEX, "HL_LaserSightHeldStabilityProbe");
+
+        Log("Installed Lua bridges: HL_Log, HL_GetCameraFrame, HL_LastRayHitGOH, HL_LaserSightShaderProbe, HL_LaserSightSubmitDual, HL_LaserSightResetHeldGate, HL_LaserSightHeldStabilityProbe");
     }
 
     bool CallLua0(int L, const char* name, bool logFailure = true)
