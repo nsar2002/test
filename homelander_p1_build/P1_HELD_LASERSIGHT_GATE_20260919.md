@@ -74,3 +74,5 @@ Damage/DOT/VFX remain later independent gates.
 A second CI build is intentionally requested after the first green package using unchanged C++/Lua source hashes.
 
 Second reproducibility build requested after final timeout/shader hardening; C++ and Lua source are intentionally unchanged.
+
+Final reproducibility build requested after the 120-frame stability gate; C++ and both LaserSight Lua sources are unchanged.
