@@ -1,0 +1,197 @@
+name: Homelander P1 Flight V2 Staging CI
+
+on:
+  push:
+    branches:
+      - homelander-p1-flight-v2-staging-20260919
+    paths:
+      - 'homelander_p1_build/homelander_p1.cpp'
+      - 'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua'
+      - 'homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua'
+      - 'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md'
+      - 'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt'
+      - '.github/workflows/homelander-p1-flight-v2-staging-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-static-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify branch scope against canonical v016
+        run: |
+          git diff --name-only 030e936dcef1196d51d9adb9c79ea71080a82b23...HEAD | tee /tmp/changed.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          allowed={
+            'homelander_p1_build/homelander_p1.cpp',
+            'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua',
+            'homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua',
+            'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md',
+            'homelander_p1_build/FLIGHT_V2_REPRO_TRIGGER.txt',
+            '.github/workflows/homelander-p1-flight-v2-staging-ci.yml',
+          }
+          changed={x.strip() for x in Path('/tmp/changed.txt').read_text().splitlines() if x.strip()}
+          bad=changed-allowed
+          assert not bad, f'unexpected files changed from canonical v016: {sorted(bad)}'
+          required={
+            'homelander_p1_build/homelander_p1.cpp',
+            'homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua',
+            'homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua',
+            'homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md',
+          }
+          assert required <= changed, f'missing expected staged changes: {sorted(required-changed)}'
+          PY
+
+      - name: Install Win32 and Lua 5.1 tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-i686 binutils-mingw-w64-i686 lua5.1
+
+      - name: Validate new Lua with Lua 5.1 parser
+        run: |
+          LUAC="$(command -v luac5.1 || command -v luac)"
+          "$LUAC" -p homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua
+          "$LUAC" -p homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua
+
+      - name: Build staged Flight V2 ASI
+        run: |
+          mkdir -p homelander_p1_build/build_flight_v2
+          i686-w64-mingw32-g++ homelander_p1_build/homelander_p1.cpp \
+            -std=gnu++17 -O2 -Wall -Wextra \
+            -shared -static-libgcc -static-libstdc++ \
+            -Wl,--subsystem,windows \
+            -o homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi \
+            -luser32
+          test -s homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi
+
+      - name: Verify PE32 imports and staged build identity
+        run: |
+          file homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi | tee homelander_p1_build/build_flight_v2/file.txt
+          i686-w64-mingw32-objdump -f homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi | tee homelander_p1_build/build_flight_v2/headers.txt
+          i686-w64-mingw32-objdump -p homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi | tee homelander_p1_build/build_flight_v2/imports.txt
+          grep -Eiq 'pei-i386|i386' homelander_p1_build/build_flight_v2/headers.txt
+          if grep -Eiq 'libstdc\+\+-6\.dll|libgcc_s_.*\.dll|libwinpthread-1\.dll' homelander_p1_build/build_flight_v2/imports.txt; then
+            echo 'Unexpected dynamic MinGW runtime dependency'
+            exit 1
+          fi
+          grep -q 'P1_FlightV2_001_STAGED_20260919' homelander_p1_build/homelander_p1.cpp
+
+      - name: Verify Flight V2 native wiring
+        run: |
+          C=homelander_p1_build/homelander_p1.cpp
+          grep -q 'flight_controller_v2_STAGED.lua' "$C"
+          grep -q 'flight_ground_probe_v018_STAGED.lua' "$C"
+          grep -q 'Homelander_FlightGroundProbeV018' "$C"
+          grep -q 'Homelander_FlightEnableVerifiedV2' "$C"
+          grep -q 'Homelander_FlightDisableV2' "$C"
+          grep -q 'Homelander_FlightForceDisableV2' "$C"
+          grep -q 'Homelander_FlightNativeTickV2' "$C"
+          if grep -q 'ExecuteLuaFile(L, "lua_p1\\flight_controller_v1.lua")' "$C"; then
+            echo 'Old Flight v1 controller is still the active bootstrap controller'
+            exit 1
+          fi
+
+      - name: Verify simulation-delta acceleration and braking design
+        run: |
+          P=homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua
+          grep -q 'HOMELANDER_SETTER_ECHO_PASSED ~= true' "$P"
+          grep -q 'time_GetSimulationDelta()' "$P"
+          grep -q 'ai_GetPhysicsVelocity(S.handle)' "$P"
+          grep -q 'math.min(dt,0.05)' "$P"
+          grep -q 'S.planar_accel' "$P"
+          grep -q 'S.boost_accel' "$P"
+          grep -q 'S.air_brake' "$P"
+          grep -q 'S.vertical_accel' "$P"
+          grep -q 'S.hover_brake' "$P"
+          grep -q 'move_towards_vector' "$P"
+          grep -q 'move_towards_scalar' "$P"
+          grep -q 'phys_SetLinearVelocity(S.handle,desired,S.selector)' "$P"
+          grep -q 'Homelander_FlightForceDisableV2' "$P"
+          grep -q 'HL_GetCameraFrame' "$P"
+          grep -q 'cm_GetCurrentRenderCameraPosition' "$P"
+
+      - name: Verify exactly one active velocity submit and no unsafe mutation classes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua').read_text()
+          # One active per-tick submit plus one explicit pre-flight restore is allowed.
+          calls=s.count('pcall(phys_SetLinearVelocity')
+          direct=s.count('phys_SetLinearVelocity(S.handle,desired,S.selector)')
+          assert direct==1, f'expected exactly one active direct submit site, got {direct}'
+          assert calls==1, f'expected exactly one guarded restore call, got {calls}'
+          forbidden=[
+            'go_ApplyDamage(', 'go_ApplyDamageAndHit(', 'em_AddWorldEffect',
+            'go_SetHealth', 'go_SetMaxHealth', 'go_Teleport', 'go_PlayerTeleport',
+            'phys_EnablePhysics', 'ai_Laser(', 'HL_LaserSightSubmitDual'
+          ]
+          for token in forbidden:
+              assert token not in s, f'forbidden Flight V2 mutation/render primitive: {token}'
+          PY
+
+      - name: Verify ground probe is strictly read-only and not a guessed landing controller
+        run: |
+          P=homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua
+          grep -q 'fre_LineOfSightTest, start, rayEnd, true, player' "$P"
+          grep -q 'HOMELANDER_FLIGHT_GROUND_PLAYER_DISTANCE' "$P"
+          grep -q 'HOMELANDER_FLIGHT_GROUND_RAY_DISTANCE' "$P"
+          grep -q 'HIT READ ONLY' "$P"
+          python3 - <<'PY'
+          from pathlib import Path
+          gp=Path('homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua').read_text()
+          fc=Path('homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua').read_text()
+          forbidden=[
+            'phys_SetLinearVelocity', 'phys_SetAngularVelocity', 'phys_EnablePhysics',
+            'go_Teleport', 'go_PlayerTeleport', 'go_ApplyDamage', 'go_ApplyDamageAndHit',
+            'em_AddWorldEffect', 'go_SetHealth', 'go_SetMaxHealth', 'ai_Laser('
+          ]
+          for token in forbidden:
+              assert token not in gp, f'ground probe is not read-only: {token}'
+          assert fc.count('HOMELANDER_FLIGHT_GROUND_PLAYER_DISTANCE')==1, 'ground distance must remain telemetry-only in V2'
+          line=[x for x in fc.splitlines() if 'HOMELANDER_FLIGHT_GROUND_PLAYER_DISTANCE' in x][0]
+          assert 'tostring' in line and not any(op in line for op in ['<','>','==']), 'ground telemetry unexpectedly controls flight'
+          assert 'landing' not in fc.lower() or 'landingassist=false' in fc.lower(), 'automatic landing logic should not be staged before calibration'
+          PY
+
+      - name: Verify runtime boundary documentation
+        run: |
+          D=homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md
+          grep -q 'Automatic landing/takeoff thresholds are not guessed' "$D"
+          grep -q 'F5 same-velocity setter echo PASS remains mandatory' "$D"
+          grep -q 'focus loss disables controller without writing a replacement velocity' "$D"
+          grep -q 'must not be promoted based on static CI' "$D"
+
+      - name: Hash build and sources
+        run: |
+          sha256sum homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi | tee homelander_p1_build/build_flight_v2/sha256.txt
+          sha256sum homelander_p1_build/lua_p1/flight_controller_v2_STAGED.lua
+          sha256sum homelander_p1_build/lua_p1/flight_ground_probe_v018_STAGED.lua
+          sha256sum homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md
+          sha256sum homelander_p1_build/homelander_p1.cpp
+
+      - name: Assemble dormant Flight V2 bundle
+        run: |
+          mkdir -p stage_flight_v2/lua_p1 stage_flight_v2/CI_EVIDENCE
+          cp homelander_p1_build/build_flight_v2/homelander_p1_flight_v2_STAGED.asi stage_flight_v2/
+          cp homelander_p1_build/lua_p1/*.lua stage_flight_v2/lua_p1/
+          cp homelander_p1_build/P1_FLIGHT_V2_STAGING_20260919.md stage_flight_v2/
+          cp homelander_p1_build/homelander_p1.cpp stage_flight_v2/homelander_p1_flight_v2_SOURCE.cpp
+          cp homelander_p1_build/build_flight_v2/file.txt stage_flight_v2/CI_EVIDENCE/
+          cp homelander_p1_build/build_flight_v2/headers.txt stage_flight_v2/CI_EVIDENCE/
+          cp homelander_p1_build/build_flight_v2/imports.txt stage_flight_v2/CI_EVIDENCE/
+          cp homelander_p1_build/build_flight_v2/sha256.txt stage_flight_v2/CI_EVIDENCE/
+          (cd stage_flight_v2 && sha256sum homelander_p1_flight_v2_STAGED.asi lua_p1/*.lua P1_FLIGHT_V2_STAGING_20260919.md homelander_p1_flight_v2_SOURCE.cpp > SHA256SUMS.txt)
+          (cd stage_flight_v2 && sha256sum -c SHA256SUMS.txt)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Homelander_P1_FlightV2_001_DORMANT
+          path: stage_flight_v2/
+          if-no-files-found: error
