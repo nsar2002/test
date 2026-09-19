@@ -37,7 +37,7 @@ def main() -> None:
         data = path.read_bytes()
         if sha(data) != expected:
             raise SystemExit("REFUSE unverified "+name+" original source sha256 mismatch at "+str(path))
-        if b"\\x00" in data:
+        if b"\x00" in data:
             raise SystemExit("Binary NUL in source")
         sources[name] = data
     orig = sources["original"].decode("utf-8")
