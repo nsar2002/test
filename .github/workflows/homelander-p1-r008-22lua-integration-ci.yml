@@ -1,7 +1,7 @@
-name: Homelander P1 R017 F21 payload ownership complete 22 Lua CI
+name: Homelander P1 R018 assembled native-order F9-F21 end-to-end source CI
 on:
   push:
-    branches: [homelander-p1-r017-f21-payload-20260919]
+    branches: [homelander-p1-r018-assembled-f9-f21-20260919]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,10 +14,10 @@ jobs:
       - name: Scope audit - original game native, source stages and R007 manager remain frozen
         run: |
           set -eu
-          BASE=a61bc16da489a21a79182b48bd85c6fae65588e7
+          BASE=9f27ef44926e89d4fd68a34c8db0b49a1385e0e3
           python3 - <<'PY'
           import subprocess
-          base="a61bc16da489a21a79182b48bd85c6fae65588e7"
+          base="9f27ef44926e89d4fd68a34c8db0b49a1385e0e3"
           changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
           allowed={
            "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
@@ -55,7 +55,9 @@ jobs:
            "homelander_p1_build/tests/r016_f20_player/README.md",
            "homelander_p1_build/lua_p1/damagehit_payload_probe_v015_player_DORMANT.lua",
            "homelander_p1_build/tests/r017_f21_player_integration.lua",
-           "homelander_p1_build/tests/r017_f21_payload/README.md"}
+           "homelander_p1_build/tests/r017_f21_payload/README.md",
+           "homelander_p1_build/tests/r018_assembled_f9_f21_native_order.lua",
+           "homelander_p1_build/tests/r018_assembled_chain/README.md"}
           assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
           print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
           PY
@@ -71,6 +73,13 @@ jobs:
           mkdir -p stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE
           cp homelander_p1_build/homelander_p1.cpp stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE/
           cp homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py stage_r008_22lua_SOURCE_ONLY/SOURCE_REFERENCE/
+      - name: Execute assembled 22 Lua files in native order and all F9-F21 gated callbacks in one mock state
+        run: |
+          lua5.1 homelander_p1_build/tests/r018_assembled_f9_f21_native_order.lua \
+            stage_r008_22lua_SOURCE_ONLY \
+            stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/native_bootstrap_load_order.txt
+          cp homelander_p1_build/tests/r018_assembled_f9_f21_native_order.lua stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE/
+          echo P1_R018_ALL_ASSEMBLED_F9_F21_CALLBACKS_ONE_LUA_STATE_PASS
       - name: Lua syntax parse 22/22 native runtime script paths
         run: |
           set -eu
@@ -172,6 +181,6 @@ jobs:
           (cd stage_r008_22lua_SOURCE_ONLY && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_R017_22Lua_F21Payload_SOURCE_ONLY_NOT_INSTALLABLE
+          name: Homelander_P1_R018_22Lua_Integrated_F9_F21_SOURCE_ONLY_NOT_INSTALLABLE
           path: stage_r008_22lua_SOURCE_ONLY/
           if-no-files-found: error
