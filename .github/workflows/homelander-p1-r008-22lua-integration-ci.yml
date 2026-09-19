@@ -1,7 +1,7 @@
-name: Homelander P1 R016 F20 originating player full 22 Lua CI
+name: Homelander P1 R017 F21 payload ownership complete 22 Lua CI
 on:
   push:
-    branches: [homelander-p1-r016-f20-player-20260919]
+    branches: [homelander-p1-r017-f21-payload-20260919]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,10 +14,10 @@ jobs:
       - name: Scope audit - original game native, source stages and R007 manager remain frozen
         run: |
           set -eu
-          BASE=45431d6679be04c14be7a293d142caa6ef8f7d8b
+          BASE=a61bc16da489a21a79182b48bd85c6fae65588e7
           python3 - <<'PY'
           import subprocess
-          base="45431d6679be04c14be7a293d142caa6ef8f7d8b"
+          base="a61bc16da489a21a79182b48bd85c6fae65588e7"
           changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
           allowed={
            "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
@@ -52,7 +52,10 @@ jobs:
            "homelander_p1_build/tests/r015_f19_player/README.md",
            "homelander_p1_build/lua_p1/dot_dryrun_scheduler_v014_player_DORMANT.lua",
            "homelander_p1_build/tests/r016_f20_player_integration.lua",
-           "homelander_p1_build/tests/r016_f20_player/README.md"}
+           "homelander_p1_build/tests/r016_f20_player/README.md",
+           "homelander_p1_build/lua_p1/damagehit_payload_probe_v015_player_DORMANT.lua",
+           "homelander_p1_build/tests/r017_f21_player_integration.lua",
+           "homelander_p1_build/tests/r017_f21_payload/README.md"}
           assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
           print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
           PY
@@ -120,6 +123,10 @@ jobs:
         run: |
           lua5.1 homelander_p1_build/tests/r016_f20_player_integration.lua
           echo P1_R016_ORIGINATING_PLAYER_DRYRUN_REAL_SOURCE_PASS
+      - name: Reproduce F21 cross-player dry-run payload and verify exact F11 eye/provenance
+        run: |
+          lua5.1 homelander_p1_build/tests/r017_f21_player_integration.lua
+          echo P1_R017_F21_EXACT_ORIGIN_EYE_AND_REENTRANCY_REAL_SOURCE_PASS
       - name: Cross-compile unchanged C++ Win32 ASI SCRATCH only, never package/install
         run: |
           mkdir -p scratch_pe32 stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE
@@ -149,7 +156,7 @@ jobs:
           assert manifest["native_lua_unique_files"]==22 and manifest["native_lua_load_occurrences"]==24
           assert len(manifest["members"])==22
           guarded=[m for m in manifest["members"] if m["role"]=="guarded-native-path-source-override"]
-          assert len(guarded)==11
+          assert len(guarded)==12
           for item in manifest["members"]:
             f=s/item["native_path"]
             assert f.is_file() and hashlib.sha256(f.read_bytes()).hexdigest()==item["sha256"],f
@@ -159,12 +166,12 @@ jobs:
           for f in s.rglob("*"):
             if f.is_file(): assert f.suffix.lower() not in blocked,f
           assert len(list((s/"lua_p1").glob("*.lua")))==22
-          print("P1_R016_ATOMIC_ELEVEN_GUARDS_22_LUA_HASHES_PASS")
+          print("P1_R017_ATOMIC_TWELVE_GUARDS_22_LUA_HASHES_PASS")
           print("P1_R008_SOURCE_ONLY_NO_ASI_EXE_DLL_OR_INSTALLER_PASS")
           PY
           (cd stage_r008_22lua_SOURCE_ONLY && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_R016_22Lua_F20Player_SOURCE_ONLY_NOT_INSTALLABLE
+          name: Homelander_P1_R017_22Lua_F21Payload_SOURCE_ONLY_NOT_INSTALLABLE
           path: stage_r008_22lua_SOURCE_ONLY/
           if-no-files-found: error
