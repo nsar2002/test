@@ -65,6 +65,9 @@ jobs:
           grep -q 'HOMELANDER_LASERSIGHT_MAX_HELD_FRAMES' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           grep -q 'if max_frames < 60 then max_frames = 60 end' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           grep -q 'if max_frames > 3600 then max_frames = 3600 end' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = false' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'HOMELANDER_LASERSIGHT_HELD_STABILITY_PASSED = true' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
+          grep -q 'if S.frames == 120 then' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua
           if grep -Eq 'go_ApplyDamage|go_ApplyDamageAndHit|em_AddWorldEffect|em_AddWorldEffectOriented|phys_SetLinearVelocity|phys_SetAngularVelocity|pcall\(ai_Laser|fre_LineOfSightTest|Homelander_FreeAimProbe|Homelander_FreeAimLocalOffsetProbe' homelander_p1_build/lua_p1/lasersight_held_gate_v009_STAGED.lua; then
             echo "Forbidden mutation/legacy renderer/reacquisition found in v009 held gate"
             exit 1
