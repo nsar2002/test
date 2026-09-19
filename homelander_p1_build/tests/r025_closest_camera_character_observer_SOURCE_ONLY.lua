@@ -63,6 +63,12 @@ function Homelander_R025_ObserveClosestCameraCharacter()
     -- Avoid tostring(candidate), raw addresses, nested userdata access.
     log("CANDIDATE | Lua type=" .. type(candidate) ..
         " ; closest-to-camera is NOT synonymous with player")
+    -- The P1 native Lua GOH bridge consumes actual typed userdata. An unknown
+    -- scalar/table return must NEVER be handed to an arbitrary native GOH API.
+    if type(candidate) ~= "userdata" then
+        log("REJECT | non-userdata candidate cannot be trusted as engine GOH")
+        return false
+    end
     local okValid, valid = safe("go_IsValid", candidate)
     if not okValid or valid ~= true then
         log("REJECT | candidate is not explicitly valid GOH")
