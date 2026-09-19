@@ -22,7 +22,7 @@
 namespace hl
 {
     constexpr int LUA_GLOBALSINDEX = -10002;
-    constexpr const char* kBuildId = "P1_FlightV2_001_STAGED_20260919";
+    constexpr const char* kBuildId = "P1_FlightV26_F24ReadOnly_DORMANT_20260919";
 
     HMODULE g_self = nullptr;
     HMODULE g_engine = nullptr;
