@@ -86,7 +86,7 @@ function SelfTest {
  $start="[HOMELANDER_P1_FREEAIM_V004] BEGIN - READ ONLY`n"
  $cam="[HOMELANDER_P1_FREEAIM_V004] CAMERA | axis=3`n"
  $hit="[HOMELANDER_P1_FREEAIM_V004] HIT | fraction=0.5 hitGOH=NPC`n"
- $end="[HOMELANDER_P1_FREEAIM_V004] END — READ ONLY`n"
+ $end="[HOMELANDER_P1_FREEAIM_V004] END - READ ONLY`n"
  $valid=$a+$f4+$f9+$start+$cam+$hit+$end
  if((Test-Ordered $valid $b) -ne 'ORDERED_F4_F9_HIT_END_CONSISTENT'){throw 'valid chronological test failed'}
  foreach($bad in @(
