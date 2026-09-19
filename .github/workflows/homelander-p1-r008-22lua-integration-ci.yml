@@ -1,7 +1,7 @@
-name: Homelander P1 R009 eye epoch complete 22 Lua source integration CI
+name: Homelander P1 R010 F10 attempt complete 22 Lua integration CI
 on:
   push:
-    branches: [homelander-p1-r009-f11-eye-epoch-20260919]
+    branches: [homelander-p1-r010-f10-attempt-20260919]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,10 +14,10 @@ jobs:
       - name: Scope audit - original game native, source stages and R007 manager remain frozen
         run: |
           set -eu
-          BASE=d0c5adfc2a28860f13d9fd171a8dae7b510ddc6f
+          BASE=b021c955f431db39f31dcb714b1ebf2460fd3508
           python3 - <<'PY'
           import subprocess
-          base="d0c5adfc2a28860f13d9fd171a8dae7b510ddc6f"
+          base="b021c955f431db39f31dcb714b1ebf2460fd3508"
           changed=set(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
           allowed={
            "homelander_p1_build/tests/r008_22lua_integration/assemble_source_only.py",
@@ -27,7 +27,12 @@ jobs:
            "homelander_p1_build/lua_p1/eye_origin_probe_v006_epoch_DORMANT.lua",
            "homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_f11_epoch_DORMANT.lua",
            "homelander_p1_build/tests/r009_f11_eye_epoch_integration.lua",
-           "homelander_p1_build/tests/r009_f11_eye_epoch/README.md"}
+           "homelander_p1_build/tests/r009_f11_eye_epoch/README.md",
+           "homelander_p1_build/lua_p1/freeaim_probe_v004_numeric_f10attempt_DORMANT.lua",
+           "homelander_p1_build/lua_p1/freeaim_local_offset_probe_v005_attempt_DORMANT.lua",
+           "homelander_p1_build/lua_p1/dual_eye_freeaim_render_v007_f10_f11_epoch_DORMANT.lua",
+           "homelander_p1_build/tests/r010_f10_attempt_integration.lua",
+           "homelander_p1_build/tests/r010_f10_attempt/README.md"}
           assert changed<=allowed, "Unexpected original native/stage/manager file modified: "+str(sorted(changed-allowed))
           print("P1_R008_NATIVE_R007_STAGES_MANAGER_IMMUTABLE_PASS")
           PY
@@ -67,6 +72,10 @@ jobs:
         run: |
           lua5.1 homelander_p1_build/tests/r009_f11_eye_epoch_integration.lua
           echo P1_R009_REAL_SOURCE_F11_AND_F12_REENTRANCY_PASS
+      - name: Reproduce older F10 same-F9 stale offset and validate new F10-attempt/F12 provenance
+        run: |
+          lua5.1 homelander_p1_build/tests/r010_f10_attempt_integration.lua
+          echo P1_R010_REAL_SOURCE_F10_ATTEMPT_AND_F12_REENTRANCY_PASS
       - name: Cross-compile unchanged C++ Win32 ASI SCRATCH only, never package/install
         run: |
           mkdir -p scratch_pe32 stage_r008_22lua_SOURCE_ONLY/CI_EVIDENCE
@@ -112,6 +121,6 @@ jobs:
           (cd stage_r008_22lua_SOURCE_ONLY && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt)
       - uses: actions/upload-artifact@v4
         with:
-          name: Homelander_P1_R009_22Lua_F11EyeEpoch_SOURCE_ONLY_NOT_INSTALLABLE
+          name: Homelander_P1_R010_22Lua_F10Attempt_F11Eye_SOURCE_ONLY_NOT_INSTALLABLE
           path: stage_r008_22lua_SOURCE_ONLY/
           if-no-files-found: error
