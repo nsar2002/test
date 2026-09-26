@@ -21,7 +21,12 @@ FOOTER_SPAN_LIMIT = 16 << 20  # any read deeper than this from the file end woul
 
 
 def ssl_context():
-    ca = os.environ.get("SSL_CERT_FILE") or ("/root/.ccr/ca-bundle.crt" if Path("/root/.ccr/ca-bundle.crt").is_file() else None)
+    ca = os.environ.get("SSL_CERT_FILE")
+    if not ca:
+        try:  # proxy CA bundle of the authoring container; unreadable on GitHub runners
+            ca = "/root/.ccr/ca-bundle.crt" if Path("/root/.ccr/ca-bundle.crt").is_file() else None
+        except OSError:
+            ca = None
     return ssl.create_default_context(cafile=ca) if ca else ssl.create_default_context()
 
 
