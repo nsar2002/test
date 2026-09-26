@@ -1,6 +1,332 @@
 {
-  "classification": "BLOCKED_M5B3C0_SOURCE_SCHEMA",
+  "checks": {
+    "footers_parsed": true,
+    "no_body_reads": true,
+    "pre_post_identifiers": true,
+    "roi_column": false,
+    "xyz_columns": true
+  },
+  "classification": "PASS_M5B3C0_SYNAPSE_SCHEMA_RESOLVER_FEASIBLE",
   "firewall": "footer/schema only; no record-batch or dictionary bodies read",
-  "probes": [],
-  "reason": "PermissionError(13, 'Permission denied')"
+  "probes": [
+    {
+      "body_reads_detected": [],
+      "content_length": 6777179098,
+      "file": "syn-partners-male-cns-v1.0-minconf-0.5.feather",
+      "num_record_batches": 4759,
+      "range_reads": [
+        {
+          "distance_from_end": 10,
+          "length": 10,
+          "offset": 6777179088
+        },
+        {
+          "distance_from_end": 116642,
+          "length": 116632,
+          "offset": 6777062456
+        }
+      ],
+      "schema": [
+        {
+          "dictionary": false,
+          "name": "x_pre",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "y_pre",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "z_pre",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "body_pre",
+          "type": "int64"
+        },
+        {
+          "dictionary": false,
+          "name": "conf_pre",
+          "type": "float"
+        },
+        {
+          "dictionary": false,
+          "name": "x_post",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "y_post",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "z_post",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "body_post",
+          "type": "int64"
+        },
+        {
+          "dictionary": false,
+          "name": "conf_post",
+          "type": "float"
+        },
+        {
+          "dictionary": true,
+          "name": "primary_post",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        }
+      ],
+      "schema_metadata_keys": [
+        "pandas"
+      ],
+      "server_headers": {
+        "ETag": "\"58efcf712f8c4d4de5f2ad51e97def76\"",
+        "Last-Modified": "Wed, 03 Jun 2026 13:55:42 GMT",
+        "x-goog-generation": "1780494942562468",
+        "x-goog-hash": "crc32c=jTlNIA=="
+      }
+    },
+    {
+      "body_reads_detected": [],
+      "content_length": 13061489098,
+      "file": "syn-points-male-cns-v1.0-minconf-0.5.feather",
+      "num_record_batches": 5455,
+      "range_reads": [
+        {
+          "distance_from_end": 10,
+          "length": 10,
+          "offset": 13061489088
+        },
+        {
+          "distance_from_end": 140770,
+          "length": 140760,
+          "offset": 13061348328
+        }
+      ],
+      "schema": [
+        {
+          "dictionary": false,
+          "name": "z",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "y",
+          "type": "int32"
+        },
+        {
+          "dictionary": false,
+          "name": "x",
+          "type": "int32"
+        },
+        {
+          "dictionary": true,
+          "name": "kind",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "dictionary": false,
+          "name": "conf",
+          "type": "float"
+        },
+        {
+          "dictionary": false,
+          "name": "sv",
+          "type": "int64"
+        },
+        {
+          "dictionary": false,
+          "name": "body",
+          "type": "int64"
+        },
+        {
+          "dictionary": true,
+          "name": "compartment",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "dictionary": false,
+          "name": "major_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "major",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "primary_label",
+          "type": "uint8"
+        },
+        {
+          "dictionary": true,
+          "name": "primary",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": true,
+          "name": "superprimary",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "dictionary": false,
+          "name": "superprimary_label",
+          "type": "uint8"
+        },
+        {
+          "dictionary": false,
+          "name": "subprimary_label",
+          "type": "uint8"
+        },
+        {
+          "dictionary": true,
+          "name": "subprimary",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "medulla_r_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "medulla_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_r_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_plate_r_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_plate_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "medulla_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "medulla_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_plate_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_plate_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "medulla_l_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "medulla_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_l_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_plate_l_column_label",
+          "type": "int16"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_plate_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "medulla_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "medulla_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "lobula_plate_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "dictionary": true,
+          "name": "lobula_plate_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "dictionary": false,
+          "name": "point_id",
+          "type": "uint64"
+        }
+      ],
+      "schema_metadata_keys": [
+        "pandas"
+      ],
+      "server_headers": {
+        "ETag": "\"c69d08758de07582035cc8843574493a\"",
+        "Last-Modified": "Wed, 03 Jun 2026 13:56:31 GMT",
+        "x-goog-generation": "1780494991007477",
+        "x-goog-hash": "crc32c=1E7gRw=="
+      }
+    }
+  ],
+  "reason": "schemas expose pre/post identifiers and ROI or coordinates"
 }
