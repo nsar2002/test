@@ -1,0 +1,208 @@
+{
+  "amendment_sha256": "e84ac515e047c2b759ef3d471158919d3bd46871a096cc410a48de93f1106445",
+  "classification": "PASS_M5D1B_VALENCE_EXTENSION_FROZEN",
+  "compartment_coverage": {
+    "B'1": {
+      "gate_dan_merged": {
+        "PAM13": "UNTESTED",
+        "PAM14": "UNTESTED"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    },
+    "B'2": {
+      "gate_dan_merged": {
+        "PAM02": "APPETITIVE",
+        "PAM03": "UNTESTED",
+        "PAM05": "UNTESTED",
+        "PAM06": "UNTESTED",
+        "PAM15": "UNTESTED"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNRESOLVED",
+        "UNTESTED"
+      ]
+    },
+    "B1": {
+      "gate_dan_merged": {
+        "PAM09": "UNTESTED",
+        "PAM10": "UNRESOLVED"
+      },
+      "signed_mbon": [
+        "REPULSIVE"
+      ],
+      "signed_teaching": [],
+      "single_compartment_mbon_merged": [
+        "REPULSIVE"
+      ]
+    },
+    "a'1": {
+      "gate_dan_merged": {
+        "PPL103": "AVERSIVE"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNRESOLVED",
+        "UNTESTED"
+      ]
+    },
+    "a'2": {
+      "gate_dan_merged": {
+        "PPL105": "UNRESOLVED"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    },
+    "a'3": {
+      "gate_dan_merged": {
+        "PPL104": "AVERSIVE"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNRESOLVED",
+        "UNTESTED"
+      ]
+    },
+    "a1": {
+      "gate_dan_merged": {
+        "PAM11": "APPETITIVE"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    },
+    "a2": {
+      "gate_dan_merged": {
+        "PPL105": "UNRESOLVED"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [],
+      "single_compartment_mbon_merged": [
+        "UNRESOLVED",
+        "UNTESTED"
+      ]
+    },
+    "a3": {
+      "gate_dan_merged": {
+        "PPL106": "AVERSIVE"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    },
+    "y2": {
+      "gate_dan_merged": {
+        "PPL103": "AVERSIVE"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    },
+    "y4": {
+      "gate_dan_merged": {
+        "PAM07": "UNRESOLVED",
+        "PAM08": "UNRESOLVED"
+      },
+      "signed_mbon": [
+        "REPULSIVE"
+      ],
+      "signed_teaching": [],
+      "single_compartment_mbon_merged": [
+        "REPULSIVE"
+      ]
+    },
+    "y5": {
+      "gate_dan_merged": {
+        "PAM01": "APPETITIVE",
+        "PAM15": "UNTESTED"
+      },
+      "signed_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ],
+      "single_compartment_mbon_merged": [
+        "UNTESTED"
+      ]
+    }
+  },
+  "compartments_with_signed_teaching_and_signed_plastic_mbon": [],
+  "criteria": {
+    "A_source_parity": true,
+    "B_completeness": true,
+    "C_evidence_integrity": true,
+    "D_bridge_integrity": true,
+    "E_no_outcome_contamination": true,
+    "F_inventory_completeness": true,
+    "G_merge_correctness": true
+  },
+  "failure_records": [],
+  "guardrails": {
+    "amin_numeric_opened": false,
+    "cluster_prior_used_as_source": false,
+    "m4v0_numeric_opened": false,
+    "market_reward_pnl_opened": false,
+    "model_outcome_used": false
+  },
+  "merged_label_counts": {
+    "DAN": {
+      "APPETITIVE": 3,
+      "AVERSIVE": 4,
+      "UNRESOLVED": 4,
+      "UNTESTED": 10
+    },
+    "MBON": {
+      "ATTRACTIVE": 2,
+      "REPULSIVE": 2,
+      "UNRESOLVED": 8,
+      "UNTESTED": 26
+    }
+  },
+  "reason": "all frozen extension criteria held",
+  "source_parity": {
+    "S1_sha256": true,
+    "S2_sha256": true,
+    "S3_sha256": true,
+    "S4_sha256": true,
+    "S5_sha256": true,
+    "S6_sha256": true,
+    "amendment_present": true,
+    "annotations_sha256": true,
+    "m5b3b_result_sha256": true,
+    "m5b3b_script_sha256": true,
+    "sha256:fly_mnq/v6_m5d1_valence_source_verifier.py": true,
+    "sha256:research/results/v6_m5d1_valence_source_result.json": true,
+    "sha256:research/v6_m5d1_valence_source_protocol_amendment_20260926.md": true,
+    "sha256:research/v6_m5d1_valence_source_table.json": true,
+    "sha256:research/v6_m5d1b_valence_extension_protocol.md": true,
+    "table_present": true
+  },
+  "table_sha256": "4fb51f577e2136604ee15e5daf0b8d76888c3d601336e4742144c8a76e8dc5ff"
+}
