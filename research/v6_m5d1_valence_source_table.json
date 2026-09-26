@@ -1,0 +1,1346 @@
+{
+  "amendment": "research/v6_m5d1_valence_source_protocol_amendment_20260926.md",
+  "dan_records": [
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "(A) Top: Diagram of the expression patterns of PAM-γ5 (MB315C) and PAM-β′2a (MB109B) as well as that obtained by combining them. As illustrated in the circuit diagram, each of these DANs innervates one of two compartments that are spanned by a common MBON. Bottom: Activating the combined drivers induced significantly higher appetitive memory than obtained by activating either driver alone.",
+          "source": "S1"
+        }
+      ],
+      "label": "APPETITIVE",
+      "note": "Combined drivers MB315C+MB109B (PAM-γ5 + PAM-β′2a) induced appetitive memory; shared line.",
+      "shared_line": true,
+      "source_names": [
+        "PAM-γ5"
+      ],
+      "token": "y5",
+      "type": "PAM01"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "(A) Top: Diagram of the expression patterns of PAM-γ5 (MB315C) and PAM-β′2a (MB109B) as well as that obtained by combining them. As illustrated in the circuit diagram, each of these DANs innervates one of two compartments that are spanned by a common MBON. Bottom: Activating the combined drivers induced significantly higher appetitive memory than obtained by activating either driver alone.",
+          "source": "S1"
+        }
+      ],
+      "label": "APPETITIVE",
+      "note": "Combined drivers MB315C+MB109B (PAM-γ5 + PAM-β′2a) induced appetitive memory; shared line.",
+      "shared_line": true,
+      "source_names": [
+        "PAM-β′2a"
+      ],
+      "token": "B'2a",
+      "type": "PAM02"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B2B'2a",
+      "type": "PAM03"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B2",
+      "type": "PAM04"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B'2p",
+      "type": "PAM05"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B'2m",
+      "type": "PAM06"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Figure 2—figure supplement 2. Additional drivers that induced weak, but significant, memory.",
+          "source": "S1"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB296B expresses in PPL1-γ2α′1, a subset of the expression pattern of MB099C, and MB063B expresses in PAM-β1, a subset of the expression pattern of MB213B (Aso et al. 2014a). These drivers show significant memory compared to the control genotype, but much weaker than the combination lines (MB099C and MB213B; see Figure 2B) used in our main experiments. MB312C (Aso et al. 2014a) expresses in a combination of PAM-γ4 and PAM-γ4 < γ1γ2.",
+          "source": "S1"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 1: result reported, but no statement naming the type states its sign; no sign assigned. Name contains whitespace (amendment provision 4); MB312C labels PAM-γ4 and PAM-γ4 < γ1γ2.",
+      "shared_line": true,
+      "source_names": [
+        "PAM-γ4 < γ1γ2"
+      ],
+      "token": "y4<y1y2",
+      "type": "PAM07"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Figure 2—figure supplement 2. Additional drivers that induced weak, but significant, memory.",
+          "source": "S1"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB296B expresses in PPL1-γ2α′1, a subset of the expression pattern of MB099C, and MB063B expresses in PAM-β1, a subset of the expression pattern of MB213B (Aso et al. 2014a). These drivers show significant memory compared to the control genotype, but much weaker than the combination lines (MB099C and MB213B; see Figure 2B) used in our main experiments. MB312C (Aso et al. 2014a) expresses in a combination of PAM-γ4 and PAM-γ4 < γ1γ2.",
+          "source": "S1"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 1: result reported, but no statement naming the type states its sign; no sign assigned. MB312C labels PAM-γ4 and PAM-γ4 < γ1γ2.",
+      "shared_line": true,
+      "source_names": [
+        "PAM-γ4"
+      ],
+      "token": "y4",
+      "type": "PAM08"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B1ped",
+      "type": "PAM09"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Figure 2—figure supplement 2. Additional drivers that induced weak, but significant, memory.",
+          "source": "S1"
+        },
+        {
+          "quote": "MB043C, MB213B and MB315C+MB109B all showed significant appetitive memory at ISI = +10 s and +30 s; MB315C+MB109B also showed significant appetitive memory at ISI = 0.",
+          "source": "S1"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB296B expresses in PPL1-γ2α′1, a subset of the expression pattern of MB099C, and MB063B expresses in PAM-β1, a subset of the expression pattern of MB213B (Aso et al. 2014a). These drivers show significant memory compared to the control genotype, but much weaker than the combination lines (MB099C and MB213B; see Figure 2B) used in our main experiments. MB312C (Aso et al. 2014a) expresses in a combination of PAM-γ4 and PAM-γ4 < γ1γ2.",
+          "source": "S1"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 1: result reported, but no statement naming the type states its sign; no sign assigned. MB063B (PAM-β1) showed significant memory without a stated sign; the appetitive statement names only line MB213B.",
+      "shared_line": false,
+      "source_names": [
+        "PAM-β1"
+      ],
+      "token": "B1",
+      "type": "PAM10"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "This observation suggests that the initial memory may not be affected by the second training, resulting in co-existing appetitive memories for both odors. Indeed, flies were able to retain associations between each of two odors and PAM-α1 (MB043C) activation",
+          "source": "S1"
+        }
+      ],
+      "label": "APPETITIVE",
+      "note": "Co-existing appetitive memories for associations between each of two odors and PAM-α1 (MB043C) activation.",
+      "shared_line": false,
+      "source_names": [
+        "PAM-α1"
+      ],
+      "token": "a1",
+      "type": "PAM11"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y3",
+      "type": "PAM12"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B'1ap",
+      "type": "PAM13"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B'1m",
+      "type": "PAM14"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y5B'2a",
+      "type": "PAM15"
+    },
+    {
+      "bridge_rule": "fallback",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "Pairing one of two odors with activation of PPL1-γ1pedc, results in robust aversive memory to the paired odor (Aso et al., 2010; Figure 1C–E and Video 2).",
+          "source": "S1"
+        },
+        {
+          "quote": "We found that when PPL1-γ1pedc stimulation fell within a 30-s time window following the onset of a 10-s odor presentation, an aversive memory was formed (negative PI, Figure 1F).",
+          "source": "S1"
+        }
+      ],
+      "label": "AVERSIVE",
+      "note": "Forward pairing (stimulation within 30 s after odor onset) gives aversive memory; backward gives appetitive, excluded by the frozen timing rule.",
+      "shared_line": false,
+      "source_names": [
+        "PPL1-γ1pedc"
+      ],
+      "token": "y1ped",
+      "type": "PPL101"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y1",
+      "type": "PPL102"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "We found that two sets of DANs, PPL1-α3 alone (MB630B) or the combination of PPL1-γ2α′1 and PPL1-α′2α2 (MB099C) can induce 1-day and 4-day aversive memory after spaced training (Figure 2C), suggesting that the effects of spaced training can be implemented in individual compartments.",
+          "source": "S1"
+        },
+        {
+          "quote": "(C) Training ten times with 15-min rest intervals (10x spaced training) resulted in significant 4-day aversive memory when using the three drivers, MB099C, MB060B and MB065B that express in the combination of the γ2, α′1, α′2 and α2 compartments (PPL1-γ2α′1 and PPL1-α′2α2). MB060B and MB065B also express in α3 and α′3 (PPL1-α3 and PPL1-α′3).",
+          "source": "S1"
+        }
+      ],
+      "label": "AVERSIVE",
+      "note": "Shared line MB099C (PPL1-γ2α′1 + PPL1-α′2α2) induced 1-day and 4-day aversive memory after spaced training.",
+      "shared_line": true,
+      "source_names": [
+        "PPL1-γ2α′1"
+      ],
+      "token": "y2a'1",
+      "type": "PPL103"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "(C) Training ten times with 15-min rest intervals (10x spaced training) resulted in significant 4-day aversive memory when using the three drivers, MB099C, MB060B and MB065B that express in the combination of the γ2, α′1, α′2 and α2 compartments (PPL1-γ2α′1 and PPL1-α′2α2). MB060B and MB065B also express in α3 and α′3 (PPL1-α3 and PPL1-α′3).",
+          "source": "S1"
+        }
+      ],
+      "label": "AVERSIVE",
+      "note": "Shared lines MB060B/MB065B (also PPL1-α3, PPL1-γ2α′1, PPL1-α′2α2) induced 4-day aversive memory.",
+      "shared_line": true,
+      "source_names": [
+        "PPL1-α′3"
+      ],
+      "token": "a'3",
+      "type": "PPL104"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "We found that two sets of DANs, PPL1-α3 alone (MB630B) or the combination of PPL1-γ2α′1 and PPL1-α′2α2 (MB099C) can induce 1-day and 4-day aversive memory after spaced training (Figure 2C), suggesting that the effects of spaced training can be implemented in individual compartments.",
+          "source": "S1"
+        },
+        {
+          "quote": "(C) Training ten times with 15-min rest intervals (10x spaced training) resulted in significant 4-day aversive memory when using the three drivers, MB099C, MB060B and MB065B that express in the combination of the γ2, α′1, α′2 and α2 compartments (PPL1-γ2α′1 and PPL1-α′2α2). MB060B and MB065B also express in α3 and α′3 (PPL1-α3 and PPL1-α′3).",
+          "source": "S1"
+        }
+      ],
+      "label": "AVERSIVE",
+      "note": "Shared line MB099C (PPL1-γ2α′1 + PPL1-α′2α2) induced 1-day and 4-day aversive memory after spaced training.",
+      "shared_line": true,
+      "source_names": [
+        "PPL1-α′2α2"
+      ],
+      "token": "a'2a2",
+      "type": "PPL105"
+    },
+    {
+      "bridge_rule": "fallback",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "We found that two sets of DANs, PPL1-α3 alone (MB630B) or the combination of PPL1-γ2α′1 and PPL1-α′2α2 (MB099C) can induce 1-day and 4-day aversive memory after spaced training (Figure 2C), suggesting that the effects of spaced training can be implemented in individual compartments.",
+          "source": "S1"
+        }
+      ],
+      "label": "AVERSIVE",
+      "note": "PPL1-α3 alone (MB630B) induced 1-day and 4-day aversive memory after spaced training.",
+      "shared_line": false,
+      "source_names": [
+        "PPL1-α3"
+      ],
+      "token": "",
+      "type": "PPL106"
+    }
+  ],
+  "elife_article_xml_commit": "d146492a0d8efed2fc3bb377ef9b22dde455936b",
+  "inventory": [
+    {
+      "disposition": "used",
+      "name": "PAM-α1",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-β1",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-β′2a",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ4",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ5",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α3",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α′2α2",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α′3",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ1pedc",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ2α′1",
+      "reason": "",
+      "source": "S1"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-01",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-02",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-03",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-04",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-05",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-06",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-07",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-08",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-09",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-10",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-11",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-12",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-13",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-14",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-15",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-16",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-17",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-18",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-19",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-20",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-21",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-22",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-DAN",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-calyx",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-gamma-ped>alpha/beta",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α'1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-α2",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α2p3p",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α2sc",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α3",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α′1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α′2",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α′3ap",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-α′3m",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-β1>α",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-β2β′2a",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-β′1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-β′2a_bilateral",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-β′2mp",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-β′2mp_bilateral",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-γ1ped>α/β",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ1pedc>α/β",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ1γ2",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ2α′1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON-γ3",
+      "reason": "does not bridge to any MaleCNS record under the frozen rules (numbered, spelled-out, typo or non-unique compartment-set name)",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ3β′1",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ4>γ1γ2",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ4γ5",
+      "reason": "",
+      "source": "S2"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON-γ5β′2a",
+      "reason": "",
+      "source": "S2"
+    }
+  ],
+  "mbon_records": [
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Similarly, we observed that activating CsChrimson with MB011B, but not with MB210B or MB002B, produced a significant aversive effect (see Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "When five glutamatergic MBONs (MBON-γ4>γ1γ2, MBON-β1>α, MBON-γ5β′2a, MBON-β′2mp and MBON-β′2mp_bilateral) were activated using MB434B + MB011B/CsChrimson, the avoidance response is observed in a slightly higher fraction of flies than in Video 2.",
+          "source": "S2"
+        },
+        {
+          "quote": "MB002B (MBON-γ5β′2a), MBON-β′2mp R12C11 R14C08 MB011B MBON-γ5β′2a, MBON-β′2mp, MBON-β′2mp_bilateral R14C08 R15B01",
+          "source": "S2"
+        },
+        {
+          "quote": "MB210B MBON-γ5β′2a, MBON-β′2mp, (MBON-β′2mp_bilateral) R15B01 R27G01",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: MB011B gave a significant aversive (avoidance) effect but MB210B and MB002B, which label the same M4/M6 types per the S2 driver table, did not; no sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-γ5β′2a"
+      ],
+      "token": "y5B'2a",
+      "type": "MBON01"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-β2β′2a"
+      ],
+      "token": "B2B'2a",
+      "type": "MBON02"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Similarly, we observed that activating CsChrimson with MB011B, but not with MB210B or MB002B, produced a significant aversive effect (see Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "When five glutamatergic MBONs (MBON-γ4>γ1γ2, MBON-β1>α, MBON-γ5β′2a, MBON-β′2mp and MBON-β′2mp_bilateral) were activated using MB434B + MB011B/CsChrimson, the avoidance response is observed in a slightly higher fraction of flies than in Video 2.",
+          "source": "S2"
+        },
+        {
+          "quote": "MB002B (MBON-γ5β′2a), MBON-β′2mp R12C11 R14C08 MB011B MBON-γ5β′2a, MBON-β′2mp, MBON-β′2mp_bilateral R14C08 R15B01",
+          "source": "S2"
+        },
+        {
+          "quote": "MB210B MBON-γ5β′2a, MBON-β′2mp, (MBON-β′2mp_bilateral) R15B01 R27G01",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: MB011B gave a significant aversive (avoidance) effect but MB210B and MB002B, which label the same M4/M6 types per the S2 driver table, did not; no sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-β′2mp"
+      ],
+      "token": "B'2mp",
+      "type": "MBON03"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Similarly, we observed that activating CsChrimson with MB011B, but not with MB210B or MB002B, produced a significant aversive effect (see Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "When five glutamatergic MBONs (MBON-γ4>γ1γ2, MBON-β1>α, MBON-γ5β′2a, MBON-β′2mp and MBON-β′2mp_bilateral) were activated using MB434B + MB011B/CsChrimson, the avoidance response is observed in a slightly higher fraction of flies than in Video 2.",
+          "source": "S2"
+        },
+        {
+          "quote": "MB210B MBON-γ5β′2a, MBON-β′2mp, (MBON-β′2mp_bilateral) R15B01 R27G01",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: MB011B gave a significant aversive (avoidance) effect but MB210B and MB002B, which label the same M4/M6 types per the S2 driver table, did not; no sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-β′2mp_bilateral"
+      ],
+      "token": "B'2mp_bilateral",
+      "type": "MBON04"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "For example, the avoidance-mediating MBON-γ4>γ1γ2 targets the compartments of attraction-mediating MBON-γ2α′1 and MBON-γ1pedc>α/β (Figure 14).",
+          "source": "S2"
+        },
+        {
+          "quote": "When two glutamatergic MBONs (MBON-γ4>γ1γ2 and MBON-β1>α) were activated using MB434B/CsChrimson, flies tended to avoid entering light-on quadrants.",
+          "source": "S2"
+        }
+      ],
+      "label": "REPULSIVE",
+      "note": "Described as avoidance-mediating; activation with MB434B caused avoidance.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ4>γ1γ2"
+      ],
+      "token": "y4>y1y2",
+      "type": "MBON05"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "When two glutamatergic MBONs (MBON-γ4>γ1γ2 and MBON-β1>α) were activated using MB434B/CsChrimson, flies tended to avoid entering light-on quadrants.",
+          "source": "S2"
+        }
+      ],
+      "label": "REPULSIVE",
+      "note": "Shared line MB434B (MBON-γ4>γ1γ2 + MBON-β1>α) caused avoidance of light-on quadrants.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-β1>α"
+      ],
+      "token": "B1>a",
+      "type": "MBON06"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-α1"
+      ],
+      "token": "a1",
+      "type": "MBON07"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ3β′1"
+      ],
+      "token": "y3B'1",
+      "type": "MBON09"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-β′1"
+      ],
+      "token": "B'1",
+      "type": "MBON10"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "For example, activation of MBON-γ1pedc>α/β and MBON-γ2α′1 attracted flies (Figure 2), whereas DAN input to these regions induced aversive memory (Figure 6G) (Aso et al., 2010, 2012).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, the avoidance-mediating MBON-γ4>γ1γ2 targets the compartments of attraction-mediating MBON-γ2α′1 and MBON-γ1pedc>α/β (Figure 14).",
+          "source": "S2"
+        }
+      ],
+      "label": "ATTRACTIVE",
+      "note": "Activation of MBON-γ1pedc>α/β attracted flies; described as attraction-mediating.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ1pedc>α/β"
+      ],
+      "token": "y1pedc>a/B",
+      "type": "MBON11"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [
+        {
+          "quote": "For example, activation of MBON-γ1pedc>α/β and MBON-γ2α′1 attracted flies (Figure 2), whereas DAN input to these regions induced aversive memory (Figure 6G) (Aso et al., 2010, 2012).",
+          "source": "S2"
+        },
+        {
+          "quote": "But the fact that CsChrimson activation of the cholinergic MBON-γ2α′1 and V2 cluster MBONs resulted in attraction, strongly suggests that at least some of the cholinergic MBONs have a role in directly mediating the conditioned response.",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, the avoidance-mediating MBON-γ4>γ1γ2 targets the compartments of attraction-mediating MBON-γ2α′1 and MBON-γ1pedc>α/β (Figure 14).",
+          "source": "S2"
+        }
+      ],
+      "label": "ATTRACTIVE",
+      "note": "Activation of MBON-γ2α′1 attracted flies; described as attraction-mediating.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ2α′1"
+      ],
+      "token": "y2a'1",
+      "type": "MBON12"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text. S2 reports blocking, not activation, results for this type.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-α′2"
+      ],
+      "token": "a'2",
+      "type": "MBON13"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text. S2 reports blocking, not activation, results for this type.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-α3"
+      ],
+      "token": "a3",
+      "type": "MBON14"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Consistent with this implied combinatorial action of V2 cluster MBONs, activating subsets of these MBONs with CsChrimson resulted in weak attraction that only reached statistical significance when MB052B was used as the driver (Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB052B MBON-α2sc, (MBON-α2p3p), (MBON-α′3m), MBON-α′3ap, MBON-α′1 R71D08 R11F03",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: attraction reached significance only with the V2 group driver MB052B; subsets gave weak effects; no individual sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-α'1",
+        "MBON-α′1"
+      ],
+      "token": "a'1",
+      "type": "MBON15"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "a'1a'2",
+      "type": "MBON15-like"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Consistent with this implied combinatorial action of V2 cluster MBONs, activating subsets of these MBONs with CsChrimson resulted in weak attraction that only reached statistical significance when MB052B was used as the driver (Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB052B MBON-α2sc, (MBON-α2p3p), (MBON-α′3m), MBON-α′3ap, MBON-α′1 R71D08 R11F03",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: attraction reached significance only with the V2 group driver MB052B; subsets gave weak effects; no individual sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-α′3ap"
+      ],
+      "token": "a'3ap",
+      "type": "MBON16"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Consistent with this implied combinatorial action of V2 cluster MBONs, activating subsets of these MBONs with CsChrimson resulted in weak attraction that only reached statistical significance when MB052B was used as the driver (Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB052B MBON-α2sc, (MBON-α2p3p), (MBON-α′3m), MBON-α′3ap, MBON-α′1 R71D08 R11F03",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: attraction reached significance only with the V2 group driver MB052B; subsets gave weak effects; no individual sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-α′3m"
+      ],
+      "token": "a'3m",
+      "type": "MBON17"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "a'2a'3",
+      "type": "MBON17-like"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Consistent with this implied combinatorial action of V2 cluster MBONs, activating subsets of these MBONs with CsChrimson resulted in weak attraction that only reached statistical significance when MB052B was used as the driver (Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB052B MBON-α2sc, (MBON-α2p3p), (MBON-α′3m), MBON-α′3ap, MBON-α′1 R71D08 R11F03",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: attraction reached significance only with the V2 group driver MB052B; subsets gave weak effects; no individual sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-α2sc"
+      ],
+      "token": "a2sc",
+      "type": "MBON18"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [
+        {
+          "quote": "Consistent with this implied combinatorial action of V2 cluster MBONs, activating subsets of these MBONs with CsChrimson resulted in weak attraction that only reached statistical significance when MB052B was used as the driver (Figure 2C).",
+          "source": "S2"
+        },
+        {
+          "quote": "For example, MB011B and MB052B, which drive expression in groups of three or five cell types that use the same transmitter (the glutamatergic M4/M6 and cholinergic V2 clusters, respectively; Table 1), caused strong responses, while activation with drivers for smaller subsets or individual cell types within these groups had much reduced effects (Figure 2C).",
+          "source": "S2"
+        }
+      ],
+      "evidence": [
+        {
+          "quote": "MB052B MBON-α2sc, (MBON-α2p3p), (MBON-α′3m), MBON-α′3ap, MBON-α′1 R71D08 R11F03",
+          "source": "S2"
+        }
+      ],
+      "label": "UNRESOLVED",
+      "note": "Amendment provision 2: attraction reached significance only with the V2 group driver MB052B; subsets gave weak effects; no individual sign assigned.",
+      "shared_line": true,
+      "source_names": [
+        "MBON-α2p3p"
+      ],
+      "token": "a2p3p",
+      "type": "MBON19"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text. Table 1 lists MBON-γ1γ2 (MBON-20) as N.D.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ1γ2"
+      ],
+      "token": "y1y2",
+      "type": "MBON20"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ4γ5"
+      ],
+      "token": "y4y5",
+      "type": "MBON21"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-calyx"
+      ],
+      "token": "calyx",
+      "type": "MBON22"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "a2sp",
+      "type": "MBON23"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "B2y5",
+      "type": "MBON24"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ1γ2"
+      ],
+      "token": "y1y2",
+      "type": "MBON25"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ1γ2"
+      ],
+      "token": "y1y2",
+      "type": "MBON25-like"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y2",
+      "type": "MBON25-like"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "b'2d",
+      "type": "MBON26"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y5d",
+      "type": "MBON27"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "a'3a",
+      "type": "MBON28"
+    },
+    {
+      "bridge_rule": "primary",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "Amendment provision 5: bridged name appears only in nomenclature/driver listings; no activation result in S2 text.",
+      "shared_line": false,
+      "source_names": [
+        "MBON-γ4γ5"
+      ],
+      "token": "y4y5",
+      "type": "MBON29"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y1y2y3",
+      "type": "MBON30"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "a'1a",
+      "type": "MBON31"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y2",
+      "type": "MBON32"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y2y3",
+      "type": "MBON33"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y2",
+      "type": "MBON34"
+    },
+    {
+      "bridge_rule": "none",
+      "context_quotes": [],
+      "evidence": [],
+      "label": "UNTESTED",
+      "note": "No S1/S2 source name bridges to this record under the frozen rules.",
+      "shared_line": false,
+      "source_names": [],
+      "token": "y2",
+      "type": "MBON35"
+    }
+  ],
+  "protocol_freeze_commit": "f29b87c90bfc5c831fa505ee8cbf3b20d8ba55ce",
+  "schema": "V6-M5D1 valence source table v1"
+}
