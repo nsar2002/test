@@ -1,0 +1,136 @@
+{
+  "bridged_types": [
+    "MBON01",
+    "MBON03",
+    "MBON04",
+    "MBON09",
+    "MBON16",
+    "MBON17",
+    "MBON19",
+    "MBON20",
+    "MBON21",
+    "MBON24",
+    "MBON25",
+    "MBON26",
+    "MBON27",
+    "MBON29",
+    "MBON30",
+    "MBON31",
+    "MBON32",
+    "MBON33",
+    "MBON34",
+    "MBON35"
+  ],
+  "classification": "PASS_M5D1C_TYPE_NUMBER_BRIDGE_FROZEN",
+  "compartment_coverage": {
+    "B'1": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": []
+    },
+    "B'2": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ]
+    },
+    "B1": {
+      "signed_plastic_mbon": [
+        "REPULSIVE"
+      ],
+      "signed_teaching": []
+    },
+    "a'1": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ]
+    },
+    "a'2": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": []
+    },
+    "a'3": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ]
+    },
+    "a1": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ]
+    },
+    "a2": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": []
+    },
+    "a3": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ]
+    },
+    "y2": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "AVERSIVE"
+      ]
+    },
+    "y4": {
+      "signed_plastic_mbon": [
+        "REPULSIVE"
+      ],
+      "signed_teaching": []
+    },
+    "y5": {
+      "signed_plastic_mbon": [],
+      "signed_teaching": [
+        "APPETITIVE"
+      ]
+    }
+  },
+  "compartments_with_signed_teaching_and_signed_plastic_mbon": [],
+  "criteria": {
+    "A_source_parity": true,
+    "B_completeness": true,
+    "C_evidence_integrity": true,
+    "D_bridge_integrity": true,
+    "E_no_outcome_contamination": true,
+    "F_inventory_completeness": true,
+    "G_merge_correctness": true
+  },
+  "failure_records": [],
+  "guardrails": {
+    "cluster_prior_used_as_source": false,
+    "market_reward_pnl_opened": false,
+    "model_outcome_used": false
+  },
+  "mbon_merged_label_counts": {
+    "ATTRACTIVE": 3,
+    "REPULSIVE": 4,
+    "UNRESOLVED": 8,
+    "UNTESTED": 23
+  },
+  "reason": "all frozen type-number bridge criteria held",
+  "signed_multi_compartment_mbons_nonplastic_under_m5b3b": [
+    "MBON11(y1pedc>a/B)=ATTRACTIVE",
+    "MBON12(y2a'1)=ATTRACTIVE",
+    "MBON21(y4y5)=REPULSIVE",
+    "MBON29(y4y5)=REPULSIVE",
+    "MBON33(y2y3)=ATTRACTIVE"
+  ],
+  "source_parity": {
+    "S4_sha256": true,
+    "S5_sha256": true,
+    "annotations_sha256": true,
+    "sha256:fly_mnq/v6_m5d1_valence_source_verifier.py": true,
+    "sha256:fly_mnq/v6_m5d1b_valence_extension_verifier.py": true,
+    "sha256:research/results/v6_m5d1b_valence_extension_result.json": true,
+    "sha256:research/v6_m5d1_valence_source_table.json": true,
+    "sha256:research/v6_m5d1b_valence_extension_table.json": true,
+    "sha256:research/v6_m5d1c_type_number_bridge_protocol.md": true,
+    "table_present": true
+  },
+  "table_sha256": "62283466a9363f35904c003f4d348c9560f3bc92e3ffbd5ab0f12716b2f0581a"
+}
