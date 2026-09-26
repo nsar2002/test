@@ -1,0 +1,903 @@
+{
+  "dan_records": [
+    {
+      "merged_label": "APPETITIVE",
+      "token": "y5",
+      "type": "PAM01"
+    },
+    {
+      "merged_label": "APPETITIVE",
+      "token": "B'2a",
+      "type": "PAM02"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B2B'2a",
+      "type": "PAM03"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B2",
+      "type": "PAM04"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B'2p",
+      "type": "PAM05"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B'2m",
+      "type": "PAM06"
+    },
+    {
+      "merged_label": "UNRESOLVED",
+      "token": "y4<y1y2",
+      "type": "PAM07"
+    },
+    {
+      "merged_label": "UNRESOLVED",
+      "token": "y4",
+      "type": "PAM08"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B1ped",
+      "type": "PAM09"
+    },
+    {
+      "merged_label": "UNRESOLVED",
+      "token": "B1",
+      "type": "PAM10"
+    },
+    {
+      "merged_label": "APPETITIVE",
+      "token": "a1",
+      "type": "PAM11"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "y3",
+      "type": "PAM12"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B'1ap",
+      "type": "PAM13"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "B'1m",
+      "type": "PAM14"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "y5B'2a",
+      "type": "PAM15"
+    },
+    {
+      "merged_label": "AVERSIVE",
+      "token": "y1ped",
+      "type": "PPL101"
+    },
+    {
+      "merged_label": "UNTESTED",
+      "token": "y1",
+      "type": "PPL102"
+    },
+    {
+      "merged_label": "AVERSIVE",
+      "token": "y2a'1",
+      "type": "PPL103"
+    },
+    {
+      "merged_label": "AVERSIVE",
+      "token": "a'3",
+      "type": "PPL104"
+    },
+    {
+      "merged_label": "UNRESOLVED",
+      "token": "a'2a2",
+      "type": "PPL105"
+    },
+    {
+      "merged_label": "AVERSIVE",
+      "token": "",
+      "type": "PPL106"
+    }
+  ],
+  "inventory_s5_numbers": [
+    {
+      "disposition": "used",
+      "name": "MBON01",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON03",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON04",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON09",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON16",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON17",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON19",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON20",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON21",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON23",
+      "reason": "no confirmed MaleCNS record under the frozen cross-check"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON24",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON25",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON26",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON27",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "MBON28",
+      "reason": "no confirmed MaleCNS record under the frozen cross-check"
+    },
+    {
+      "disposition": "used",
+      "name": "MBON29",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON30",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON31",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON32",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON33",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON34",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "MBON35",
+      "reason": ""
+    }
+  ],
+  "mbon_records": [
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON01"
+        ]
+      },
+      "token": "y5B'2a",
+      "type": "MBON01"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B2B'2a",
+      "type": "MBON02"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON03"
+        ]
+      },
+      "token": "B'2mp",
+      "type": "MBON03"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON04"
+        ]
+      },
+      "token": "B'2mp_bilateral",
+      "type": "MBON04"
+    },
+    {
+      "m5d1b_label": "REPULSIVE",
+      "merged_label": "REPULSIVE",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y4>y1y2",
+      "type": "MBON05"
+    },
+    {
+      "m5d1b_label": "REPULSIVE",
+      "merged_label": "REPULSIVE",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B1>a",
+      "type": "MBON06"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a1",
+      "type": "MBON07"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON09"
+        ]
+      },
+      "token": "y3B'1",
+      "type": "MBON09"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'1",
+      "type": "MBON10"
+    },
+    {
+      "m5d1b_label": "ATTRACTIVE",
+      "merged_label": "ATTRACTIVE",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1pedc>a/B",
+      "type": "MBON11"
+    },
+    {
+      "m5d1b_label": "ATTRACTIVE",
+      "merged_label": "ATTRACTIVE",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2a'1",
+      "type": "MBON12"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'2",
+      "type": "MBON13"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a3",
+      "type": "MBON14"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'1",
+      "type": "MBON15"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'1a'2",
+      "type": "MBON15-like"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON16"
+        ]
+      },
+      "token": "a'3ap",
+      "type": "MBON16"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON17"
+        ]
+      },
+      "token": "a'3m",
+      "type": "MBON17"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'2a'3",
+      "type": "MBON17-like"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a2sc",
+      "type": "MBON18"
+    },
+    {
+      "m5d1b_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON19"
+        ]
+      },
+      "token": "a2p3p",
+      "type": "MBON19"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON20"
+        ]
+      },
+      "token": "y1y2",
+      "type": "MBON20"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "REPULSIVE",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "Training flies by paring odor presentation with activation of MBON21, using either of the two lines tested (SS81853 and SS81521), resulted in robust aversive memory (Figure 2C) as previously observed with another driver for this cell type that displayed weaker expression (see SS46348 in Figure 1—figure supplement 2; Otto et al., 2020).",
+            "source": "S5"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "When CsChrimson is expressed in MBON21 or MBON29, flies avoid illuminated quadrants of the arena.",
+            "source": "S5"
+          }
+        ],
+        "label": "REPULSIVE",
+        "note": "S5: CsChrimson activation of MBON21 caused avoidance of illuminated quadrants; as US it induced aversive memory (context).",
+        "shared_line": false,
+        "source_names": [
+          "MBON21"
+        ]
+      },
+      "token": "y4y5",
+      "type": "MBON21"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "calyx",
+      "type": "MBON22"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a2sp",
+      "type": "MBON23"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON24"
+        ]
+      },
+      "token": "B2y5",
+      "type": "MBON24"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON25"
+        ]
+      },
+      "token": "y1y2",
+      "type": "MBON25"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1y2",
+      "type": "MBON25-like"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2",
+      "type": "MBON25-like"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON26"
+        ]
+      },
+      "token": "b'2d",
+      "type": "MBON26"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON27"
+        ]
+      },
+      "token": "y5d",
+      "type": "MBON27"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No confirmed type-number bridge for this record.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'3a",
+      "type": "MBON28"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "REPULSIVE",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "Both driver lines for the atypical MBON29 similarly induced aversive memory.",
+            "source": "S5"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "When CsChrimson is expressed in MBON21 or MBON29, flies avoid illuminated quadrants of the arena.",
+            "source": "S5"
+          }
+        ],
+        "label": "REPULSIVE",
+        "note": "S5: CsChrimson activation of MBON29 caused avoidance; as US it induced aversive memory (context).",
+        "shared_line": false,
+        "source_names": [
+          "MBON29"
+        ]
+      },
+      "token": "y4y5",
+      "type": "MBON29"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON30"
+        ]
+      },
+      "token": "y1y2y3",
+      "type": "MBON30"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON31"
+        ]
+      },
+      "token": "a'1a",
+      "type": "MBON31"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON32"
+        ]
+      },
+      "token": "y2",
+      "type": "MBON32"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "ATTRACTIVE",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "In contrast, training flies with activation of MBON33 induced appetitive memory.",
+            "source": "S5"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "Conversely, CsChrismon activation in a line for MBON33 promoted attraction to the illuminated quadrants, although this effect was observed only at the first test period.",
+            "source": "S5"
+          }
+        ],
+        "label": "ATTRACTIVE",
+        "note": "S5: activation of an MBON33 line promoted attraction, observed only at the first test period (caveat recorded); as US it induced appetitive memory (context).",
+        "shared_line": false,
+        "source_names": [
+          "MBON33"
+        ]
+      },
+      "token": "y2y3",
+      "type": "MBON33"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON34"
+        ]
+      },
+      "token": "y2",
+      "type": "MBON34"
+    },
+    {
+      "m5d1b_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "s5_finding": {
+        "bridge_rule": "type_number",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Type number bridged (cross-check confirmed) but S5 states no activation-valence result for it.",
+        "shared_line": false,
+        "source_names": [
+          "MBON35"
+        ]
+      },
+      "token": "y2",
+      "type": "MBON35"
+    }
+  ],
+  "protocol_freeze_commit": "ff25ecee094507b2cd58782ae196d041ba01002d",
+  "schema": "V6-M5D1C type-number bridge table v1"
+}
