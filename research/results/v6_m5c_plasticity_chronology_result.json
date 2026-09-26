@@ -1,0 +1,196 @@
+{
+  "check_counts": {
+    "B_pairing_kernel_exact": {
+      "checks": 6048,
+      "failures": 0
+    },
+    "C_order_sign_rule": {
+      "checks": 6048,
+      "failures": 0
+    },
+    "D_coincidence_requirement": {
+      "checks": 216,
+      "failures": 0
+    },
+    "E_compartment_locality": {
+      "checks": 72,
+      "failures": 0
+    },
+    "F_nonplastic_invariance": {
+      "checks": 31464,
+      "failures": 0
+    },
+    "G_bounds": {
+      "checks": 31464,
+      "failures": 0
+    },
+    "G_saturation": {
+      "checks": 144,
+      "failures": 0
+    },
+    "H_causality_no_lookahead": {
+      "checks": 288,
+      "failures": 0
+    },
+    "I_determinism": {
+      "checks": 72,
+      "failures": 0
+    },
+    "J_permutation_equivariance": {
+      "checks": 72,
+      "failures": 0
+    },
+    "K_valence_agnostic_shared_rule": {
+      "checks": 6553,
+      "failures": 0
+    },
+    "L_m4b0_integration": {
+      "checks": 73,
+      "failures": 0
+    },
+    "M_interface_firewall": {
+      "checks": 2,
+      "failures": 0
+    }
+  },
+  "classification": "PASS_M5C_DOPAMINE_GATED_KC_MBON_CHRONOLOGY_QUALIFIED",
+  "criteria": {
+    "A_prerequisite_parity": true,
+    "B_pairing_kernel_exact": true,
+    "C_order_sign_rule": true,
+    "D_coincidence_requirement": true,
+    "E_compartment_locality": true,
+    "F_nonplastic_invariance": true,
+    "G_bounds": true,
+    "G_saturation": true,
+    "H_causality_no_lookahead": true,
+    "I_determinism": true,
+    "J_permutation_equivariance": true,
+    "K_valence_agnostic_shared_rule": true,
+    "L_m4b0_integration": true,
+    "M_interface_firewall": true
+  },
+  "declared_limitations": [
+    "hemisphere-pooled gate populations (M5B3B not side-resolved)",
+    "single shared rule across compartments",
+    "abstract discrete time steps",
+    "aggregate KC->MBON body-pair plasticity",
+    "synthetic binary DAN activity; no DAN dynamics, feedback or valence"
+  ],
+  "diagnostics": {
+    "eligible_edge_npz_file_sha256": "cc347569347e3332ead93eeb94411641d542818953cc6a5e9db8565b9711cf01",
+    "eligible_edge_npz_file_sha256_matches_recorded": true,
+    "integration_reference_point": {
+      "fraction_eligible_edges_changed": 0.9990954319312528,
+      "mean_gain_by_compartment": {
+        "B'1": 0.9997077384954056,
+        "B'2": 1.000190982787586,
+        "B1": 0.9998021978928496,
+        "a'1": 1.000069427824897,
+        "a'2": 0.9988785616480281,
+        "a'3": 0.9988926131408825,
+        "a1": 0.9989258367301838,
+        "a2": 1.0007464638030297,
+        "a3": 0.9979812104719868,
+        "y2": 1.0003819965992562,
+        "y4": 0.999392608282255,
+        "y5": 0.9987822086644988
+      },
+      "trajectory_sha256": "5331a987974cb205e88fd262b297427b636131706894ea8e618ce7ad1c727c25"
+    },
+    "kernel_reference_point": {
+      "-1": 0.050000000000000044,
+      "-2": 0.02499999999999991,
+      "-3": 0.012499999999999956,
+      "0": -0.050000000000000044,
+      "1": -0.025000000000000022,
+      "2": -0.012499999999999956,
+      "3": -0.006249999999999978
+    }
+  },
+  "failure_records": [],
+  "grid": {
+    "eta_minus": [
+      0.05,
+      0.5
+    ],
+    "eta_plus": [
+      0.05,
+      0.5
+    ],
+    "g_max": [
+      1.5,
+      2.0
+    ],
+    "lam_D": [
+      0.0,
+      0.5,
+      0.9
+    ],
+    "lam_K": [
+      0.0,
+      0.5,
+      0.9
+    ]
+  },
+  "grid_points": 72,
+  "guardrails": {
+    "amin_numeric_opened": false,
+    "m4v0_numeric_opened": false,
+    "market_reward_pnl_opened": false,
+    "mbon_readout_defined": false,
+    "multi_compartment_mbon_edges_plastic": false,
+    "parameter_values_selected": false,
+    "reward_valence_assigned": false,
+    "synapse_coordinates_opened": false
+  },
+  "input_manifest": [
+    "fly_mnq/v6_m4b0_functional_apl_sparsifier.py",
+    "fly_mnq/v6_m5b3b_compartment_gating_mvp.py",
+    "research/results/v6_m5b2_exact_learner_topology_result.json",
+    "research/results/v6_m5b3a_compartment_label_schema_result.json",
+    "research/results/v6_m5b3b_compartment_gating_mvp_result.json",
+    "research/v6_m5c_dopamine_gated_plasticity_chronology_protocol.md",
+    "v6_m5b3b_out/v6_m5b3b_compartment_gating_mvp_result.json",
+    "v6_m5b3b_out/v6_m5b3b_eligible_kc_mbon_edges.npz",
+    "v6_m5b3b_out/v6_m5b3b_gate_population_by_compartment.json",
+    "v6_m5b3b_work/body-annotations.feather",
+    "v6_m5b3b_work/connectome-weights.feather"
+  ],
+  "prerequisite_parity": {
+    "eligible_compartments_exact": true,
+    "eligible_edges_all_found_in_exact_kc_mbon": true,
+    "fast_dan_set_equals_frozen_type_rule": true,
+    "kc_mbon_pairs_unique": true,
+    "kc_somaSide_exact_LR": true,
+    "m5b3b_rerun_eligible_edge_content_digest": true,
+    "m5b3b_rerun_sha256:v6_m5b3b_out/v6_m5b3b_compartment_gating_mvp_result.json": true,
+    "m5b3b_rerun_sha256:v6_m5b3b_out/v6_m5b3b_gate_population_by_compartment.json": true,
+    "sha256:fly_mnq/v6_m4b0_functional_apl_sparsifier.py": true,
+    "sha256:fly_mnq/v6_m5b3b_compartment_gating_mvp.py": true,
+    "sha256:research/results/v6_m5b2_exact_learner_topology_result.json": true,
+    "sha256:research/results/v6_m5b3a_compartment_label_schema_result.json": true,
+    "sha256:research/results/v6_m5b3b_compartment_gating_mvp_result.json": true,
+    "sha256:research/v6_m5c_dopamine_gated_plasticity_chronology_protocol.md": true,
+    "source_annotations_sha256": true,
+    "source_weights_sha256": true,
+    "structure_counts_exact": true
+  },
+  "protocol_freeze_commit": "5fcce75f15360ca6795926217b6bcb21129cba1f",
+  "protocol_sha256": "4590ab29cfba6fe9a559003286c94146cb96082bbe2f6c6d864437c5ce26eee6",
+  "reason": "all frozen chronology criteria held at all 72 grid points",
+  "seed": 20260926,
+  "structure_counts": {
+    "DAN": 340,
+    "ELIGIBLE_EDGES": 26532,
+    "FAST_DAN": 328,
+    "GATE_COMPARTMENTS": 16,
+    "KC": 4064,
+    "KC_L": 2019,
+    "KC_MBON_EDGES": 61210,
+    "KC_R": 2045,
+    "MBON": 97,
+    "NONFAST_DAN": 12,
+    "NONPLASTIC_EDGES": 34678
+  }
+}
