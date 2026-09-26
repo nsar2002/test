@@ -1,0 +1,1227 @@
+{
+  "amendment": "research/v6_m5d1b_valence_extension_protocol_amendment_20260926.md",
+  "dan_records": [
+    {
+      "m5d1_label": "APPETITIVE",
+      "merged_label": "APPETITIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "We identified two DAN cell types that exhibited the valence-inversion phenotype: PPL1-γ1pedc and PAM-γ5/PAM-β'2a.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "Conversely, with PAM-γ5 and PAM-β'2a stimulation, memory valence flipped in the opposite direction, from positive to negative in TH mutants.",
+            "source": "S6"
+          }
+        ],
+        "label": "APPETITIVE",
+        "note": "Intact-background valence of combined PAM-γ5 + PAM-β'2a stimulation was positive (flipped to negative only in TH mutants); shared line; amendment provisions 2-3.",
+        "shared_line": true,
+        "source_names": [
+          "PAM-γ5"
+        ]
+      },
+      "token": "y5",
+      "type": "PAM01"
+    },
+    {
+      "m5d1_label": "APPETITIVE",
+      "merged_label": "APPETITIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "We identified two DAN cell types that exhibited the valence-inversion phenotype: PPL1-γ1pedc and PAM-γ5/PAM-β'2a.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "Conversely, with PAM-γ5 and PAM-β'2a stimulation, memory valence flipped in the opposite direction, from positive to negative in TH mutants.",
+            "source": "S6"
+          }
+        ],
+        "label": "APPETITIVE",
+        "note": "Intact-background valence of combined PAM-γ5 + PAM-β'2a stimulation was positive; shared line; amendment provisions 2-3.",
+        "shared_line": true,
+        "source_names": [
+          "PAM-β'2a",
+          "PAM-β′2a"
+        ]
+      },
+      "token": "B'2a",
+      "type": "PAM02"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B2B'2a",
+      "type": "PAM03"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B2",
+      "type": "PAM04"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'2p",
+      "type": "PAM05"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'2m",
+      "type": "PAM06"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y4<y1y2",
+      "type": "PAM07"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "S6 mentions PAM-γ4 only for NOS/receptor expression; no memory result.",
+        "shared_line": false,
+        "source_names": [
+          "PAM-γ4"
+        ]
+      },
+      "token": "y4",
+      "type": "PAM08"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B1ped",
+      "type": "PAM09"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B1",
+      "type": "PAM10"
+    },
+    {
+      "m5d1_label": "APPETITIVE",
+      "merged_label": "APPETITIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [
+          {
+            "quote": "For instance, the dopaminergic neuron PAM-α1 can induce a 24 hr memory with a single 1 min training session, whereas PPL1-α3 requires 10 repetitions of the same training to induce a 24 hr memory.",
+            "source": "S6"
+          }
+        ],
+        "label": "UNRESOLVED",
+        "note": "M5D1 amendment provision 1: memory induction reported without a stated sign.",
+        "shared_line": false,
+        "source_names": [
+          "PAM-α1"
+        ]
+      },
+      "token": "a1",
+      "type": "PAM11"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "S6 mentions PAM-γ3 only for NOS expression; no memory result.",
+        "shared_line": false,
+        "source_names": [
+          "PAM-γ3"
+        ]
+      },
+      "token": "y3",
+      "type": "PAM12"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'1ap",
+      "type": "PAM13"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'1m",
+      "type": "PAM14"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "fallback",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "We identified two DAN cell types that exhibited the valence-inversion phenotype: PPL1-γ1pedc and PAM-γ5/PAM-β'2a.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "The slash names denote the combination of PAM-γ5 and PAM-β'2a (a different pair of types) in manipulated backgrounds; the frozen fallback bridges them to PAM15, but S6 reports no admissible result for the PAM-γ5β'2a cell type.",
+        "shared_line": false,
+        "source_names": [
+          "PAM-γ5/PAM-β'2a",
+          "PAM-γ5/β'2a"
+        ]
+      },
+      "token": "y5B'2a",
+      "type": "PAM15"
+    },
+    {
+      "m5d1_label": "AVERSIVE",
+      "merged_label": "AVERSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "With PPL1-γ1pedc stimulation, memory valence switched from negative to positive in TH mutant animals.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "In wild-type flies, PPL1-γ1pedc activation as brief as 10 s can induce significant negative-valence memory.",
+            "source": "S6"
+          }
+        ],
+        "label": "AVERSIVE",
+        "note": "Wild-type activation gives negative-valence (aversive) memory; TH-mutant inversion recorded as context (amendment provision 3).",
+        "shared_line": false,
+        "source_names": [
+          "PPL1-γ1ped"
+        ]
+      },
+      "token": "y1ped",
+      "type": "PPL101"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "fallback",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "Frozen-rule artifact: the S6 typo 'PPL1-γ1ped' primary-matches PPL101 (token y1ped) and also fallback-matches PPL102 (parsed set {y1} unique). Its only S6 statements concern activation without odor, so there is no pairing result and no sign.",
+        "shared_line": false,
+        "source_names": [
+          "PPL1-γ1ped"
+        ]
+      },
+      "token": "y1",
+      "type": "PPL102"
+    },
+    {
+      "m5d1_label": "AVERSIVE",
+      "merged_label": "AVERSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "primary",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "When NOS was ectopically expressed in PPL1-γ2α′1, the valence of the memory formed by the 3 × 1 min training protocol switched to positive.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "Activation of PPL1-γ2α'1 resulted in negative-valence memory in both TH mutant and wild type, suggesting a cotransmitter with the same sign of action as dopamine.",
+            "source": "S6"
+          }
+        ],
+        "label": "AVERSIVE",
+        "note": "Single-type activation gives negative-valence memory in wild type; ectopic-NOS inversion recorded as context (provision 3).",
+        "shared_line": false,
+        "source_names": [
+          "PPL1-γ2α'1",
+          "PPL1-γ2α’1",
+          "PPL1-γ2α′1"
+        ]
+      },
+      "token": "y2a'1",
+      "type": "PPL103"
+    },
+    {
+      "m5d1_label": "AVERSIVE",
+      "merged_label": "AVERSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S6 source name bridges to this record under the frozen rules.",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'3",
+      "type": "PPL104"
+    },
+    {
+      "m5d1_label": "AVERSIVE",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [
+          {
+            "quote": "PPL1-α′2/α′2 (MB-V1) does not respond to heat and shock (Kirkhart and Scott, 2015; Mao and Davis, 2009) and cannot induce aversive memory by itself, but can have a synergistic effect on memory retention when coactivated with PPL1-γ2α′1 (Aso and Rubin, 2016).",
+            "source": "S6"
+          },
+          {
+            "quote": "L PPL1-α′2α2 PPL1-05 1 MB058B MB-V1",
+            "source": "S3"
+          }
+        ],
+        "bridge_rule": "primary",
+        "conflict": true,
+        "context_quotes": [],
+        "evidence": [
+          {
+            "quote": "In contrast, other DANs from the PPL1 cluster that do not exhibit significant NOS expression, PPL1-α3 or a combination of PPL1-γ2α'1 and PPL1-α'2α2, are able to induce stable memory lasting for 4 days after 10x spaced training (Aso and Rubin, 2016).",
+            "source": "S6"
+          }
+        ],
+        "label": "UNRESOLVED",
+        "note": "M5D1B amendment provision 1: S6 states PPL1-α′2/α′2 (MB-V1) cannot induce aversive memory by itself; S3 confirms MB-V1 = PPL1-α′2α2 (line MB058B).",
+        "shared_line": false,
+        "source_names": [
+          "PPL1-α'2α2",
+          "PPL1-α′2α2"
+        ]
+      },
+      "token": "a'2a2",
+      "type": "PPL105"
+    },
+    {
+      "m5d1_label": "AVERSIVE",
+      "merged_label": "AVERSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "fallback",
+        "conflict": false,
+        "context_quotes": [
+          {
+            "quote": "Activation of PPL1-α3 or PAM-β'1 in the TH mutant background did not induce significant memory, indicating that these cells do not express a cotransmitter capable of inducing memory without dopamine.",
+            "source": "S6"
+          }
+        ],
+        "evidence": [
+          {
+            "quote": "Note that activation of PPL1-α3 can induce negative-valence memory in a wild-type background, but only after 10x spaced training (Aso and Rubin, 2016).",
+            "source": "S6"
+          }
+        ],
+        "label": "AVERSIVE",
+        "note": "Wild-type activation gives negative-valence memory after 10x spaced training; TH-mutant null result recorded as context (provision 3).",
+        "shared_line": false,
+        "source_names": [
+          "PPL1-α3"
+        ]
+      },
+      "token": "",
+      "type": "PPL106"
+    }
+  ],
+  "elife_article_xml_commit": "d146492a0d8efed2fc3bb377ef9b22dde455936b",
+  "inventory_s5": [],
+  "inventory_s6": [
+    {
+      "disposition": "unused",
+      "name": "PAM-DAN",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "unused",
+      "name": "PAM-DANs",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-α1",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "PAM-β'1",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-β'2a",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-β′2a",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ3",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ4",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ5",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ5/PAM-β'2a",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PAM-γ5/β'2a",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "PPL1-DANs",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "unused",
+      "name": "PPL1-induced",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α'2α2",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α3",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "PPL1-α′2/α′2",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-α′2α2",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ1ped",
+      "reason": ""
+    },
+    {
+      "disposition": "unused",
+      "name": "PPL1-γ1pedc",
+      "reason": "does not bridge under the frozen rules (generic, typo, non-unique set, or type already primary-matched)"
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ2α'1",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ2α’1",
+      "reason": ""
+    },
+    {
+      "disposition": "used",
+      "name": "PPL1-γ2α′1",
+      "reason": ""
+    }
+  ],
+  "mbon_records": [
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y5B'2a",
+      "type": "MBON01"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B2B'2a",
+      "type": "MBON02"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'2mp",
+      "type": "MBON03"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'2mp_bilateral",
+      "type": "MBON04"
+    },
+    {
+      "m5d1_label": "REPULSIVE",
+      "merged_label": "REPULSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y4>y1y2",
+      "type": "MBON05"
+    },
+    {
+      "m5d1_label": "REPULSIVE",
+      "merged_label": "REPULSIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B1>a",
+      "type": "MBON06"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a1",
+      "type": "MBON07"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y3B'1",
+      "type": "MBON09"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B'1",
+      "type": "MBON10"
+    },
+    {
+      "m5d1_label": "ATTRACTIVE",
+      "merged_label": "ATTRACTIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1pedc>a/B",
+      "type": "MBON11"
+    },
+    {
+      "m5d1_label": "ATTRACTIVE",
+      "merged_label": "ATTRACTIVE",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2a'1",
+      "type": "MBON12"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'2",
+      "type": "MBON13"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a3",
+      "type": "MBON14"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'1",
+      "type": "MBON15"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'1a'2",
+      "type": "MBON15-like"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'3ap",
+      "type": "MBON16"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'3m",
+      "type": "MBON17"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'2a'3",
+      "type": "MBON17-like"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a2sc",
+      "type": "MBON18"
+    },
+    {
+      "m5d1_label": "UNRESOLVED",
+      "merged_label": "UNRESOLVED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a2p3p",
+      "type": "MBON19"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1y2",
+      "type": "MBON20"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y4y5",
+      "type": "MBON21"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "calyx",
+      "type": "MBON22"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a2sp",
+      "type": "MBON23"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "B2y5",
+      "type": "MBON24"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1y2",
+      "type": "MBON25"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1y2",
+      "type": "MBON25-like"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2",
+      "type": "MBON25-like"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "b'2d",
+      "type": "MBON26"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y5d",
+      "type": "MBON27"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'3a",
+      "type": "MBON28"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y4y5",
+      "type": "MBON29"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y1y2y3",
+      "type": "MBON30"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "a'1a",
+      "type": "MBON31"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2",
+      "type": "MBON32"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2y3",
+      "type": "MBON33"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2",
+      "type": "MBON34"
+    },
+    {
+      "m5d1_label": "UNTESTED",
+      "merged_label": "UNTESTED",
+      "new_finding": {
+        "alias_quotes": [],
+        "bridge_rule": "none",
+        "conflict": false,
+        "context_quotes": [],
+        "evidence": [],
+        "label": "UNTESTED",
+        "note": "No S5 MBON name bridges under the frozen rules (S5 uses hemibrain type numbers).",
+        "shared_line": false,
+        "source_names": []
+      },
+      "token": "y2",
+      "type": "MBON35"
+    }
+  ],
+  "protocol_freeze_commit": "d823e04bc67285cbccc027786925b576ad85c757",
+  "schema": "V6-M5D1B valence extension table v1"
+}
