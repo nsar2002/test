@@ -1,0 +1,2301 @@
+{
+  "aggregate_parity": {
+    "duplicate_weight_pairs": 0,
+    "exact": true,
+    "pairs_only_in_synapses": 0,
+    "pairs_only_in_weights": 0,
+    "pairs_with_unequal_count": 0,
+    "synapse_pairs": 61210,
+    "synapse_rows": 463640,
+    "weight_pairs": 61210,
+    "weight_sum": 463640
+  },
+  "classification": "FAIL_M5B3C_RESOLVER_VALIDATION",
+  "criteria": {
+    "A_prerequisites_exact": true,
+    "B_source_integrity": true,
+    "C_aggregate_parity_exact": true,
+    "D_join_complete_consistent": true,
+    "E1_pooled_single_compartment_agreement": false,
+    "E2_every_single_compartment_body_plurality": false,
+    "F_no_market_valence_theta_criterion": true
+  },
+  "diagnostics": {
+    "conf_range": {
+      "conf_post": [
+        0.5000119805335999,
+        1.0
+      ],
+      "conf_pre": [
+        0.699999988079071,
+        0.9900000095367432
+      ]
+    },
+    "multi_compartment_bodies": [
+      {
+        "bodyId": 10013,
+        "in_map": {
+          "B'2": 2856,
+          "y5": 10982
+        },
+        "kc_synapses": 20439,
+        "named": [
+          "y5",
+          "B'2"
+        ],
+        "offmap": {
+          "B2": 13,
+          "y3": 67,
+          "y4": 362
+        },
+        "type": "MBON01",
+        "unresolved": 6159,
+        "unresolved_primary_top": {
+          "CRE(R)": 4950,
+          "CentralBrain-unspecified": 1209
+        }
+      },
+      {
+        "bodyId": 10704,
+        "in_map": {
+          "y1": 10775
+        },
+        "kc_synapses": 16863,
+        "named": [
+          "y1"
+        ],
+        "offmap": {
+          "B'1": 14,
+          "B'2": 66,
+          "B1": 194,
+          "B2": 90,
+          "a'2": 11,
+          "a'3": 3,
+          "a1": 580,
+          "a2": 220,
+          "a3": 86,
+          "y2": 57,
+          "y3": 41,
+          "y4": 6,
+          "y5": 7
+        },
+        "type": "MBON11",
+        "unresolved": 4713,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 588,
+          "ICL(L)": 9,
+          "PED(L)": 4062,
+          "PED(R)": 37,
+          "SCL(L)": 5
+        }
+      },
+      {
+        "bodyId": 10804,
+        "in_map": {
+          "y1": 1582,
+          "y2": 424
+        },
+        "kc_synapses": 2502,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "B1": 6,
+          "a1": 23,
+          "y3": 78,
+          "y4": 24,
+          "y5": 2
+        },
+        "type": "MBON20",
+        "unresolved": 363,
+        "unresolved_primary_top": {
+          "CRE(R)": 6,
+          "CentralBrain-unspecified": 345,
+          "PED(R)": 4,
+          "SCL(R)": 8
+        }
+      },
+      {
+        "bodyId": 10826,
+        "in_map": {
+          "y4": 2732,
+          "y5": 955
+        },
+        "kc_synapses": 3980,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B1": 1,
+          "B2": 52,
+          "y1": 8,
+          "y2": 3,
+          "y3": 126
+        },
+        "type": "MBON21",
+        "unresolved": 103,
+        "unresolved_primary_top": {
+          "CRE(L)": 80,
+          "CRE(R)": 3,
+          "CentralBrain-unspecified": 15,
+          "PED(L)": 5
+        }
+      },
+      {
+        "bodyId": 11145,
+        "in_map": {
+          "y1": 1240,
+          "y2": 590
+        },
+        "kc_synapses": 2102,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "B1": 1,
+          "B2": 1,
+          "y3": 107,
+          "y4": 48,
+          "y5": 11
+        },
+        "type": "MBON20",
+        "unresolved": 104,
+        "unresolved_primary_top": {
+          "CRE(L)": 1,
+          "CentralBrain-unspecified": 93,
+          "PED(L)": 10
+        }
+      },
+      {
+        "bodyId": 11402,
+        "in_map": {
+          "y1": 14250
+        },
+        "kc_synapses": 24597,
+        "named": [
+          "y1"
+        ],
+        "offmap": {
+          "B'1": 16,
+          "B'2": 31,
+          "B1": 329,
+          "B2": 136,
+          "a'1": 18,
+          "a'2": 21,
+          "a1": 1769,
+          "a2": 135,
+          "a3": 81,
+          "y2": 37,
+          "y3": 40,
+          "y4": 52,
+          "y5": 19
+        },
+        "type": "MBON11",
+        "unresolved": 7663,
+        "unresolved_primary_top": {
+          "CRE(R)": 25,
+          "CentralBrain-unspecified": 2438,
+          "PED(L)": 48,
+          "PED(R)": 5042,
+          "SCL(R)": 99
+        }
+      },
+      {
+        "bodyId": 11785,
+        "in_map": {
+          "y2": 495,
+          "y3": 234
+        },
+        "kc_synapses": 862,
+        "named": [
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "B'1": 11,
+          "y4": 81,
+          "y5": 2
+        },
+        "type": "MBON33",
+        "unresolved": 39,
+        "unresolved_primary_top": {
+          "CRE(L)": 11,
+          "CentralBrain-unspecified": 28
+        }
+      },
+      {
+        "bodyId": 13728,
+        "in_map": {
+          "a'1": 808,
+          "y2": 3308
+        },
+        "kc_synapses": 5426,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 898,
+          "a'2": 201,
+          "a1": 166,
+          "y3": 1
+        },
+        "type": "MBON12",
+        "unresolved": 44,
+        "unresolved_primary_top": {
+          "CRE(L)": 26,
+          "CentralBrain-unspecified": 18
+        }
+      },
+      {
+        "bodyId": 13768,
+        "in_map": {
+          "a'1": 747,
+          "y2": 3030
+        },
+        "kc_synapses": 5844,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 1359,
+          "a'2": 318,
+          "a1": 305,
+          "y1": 1
+        },
+        "type": "MBON12",
+        "unresolved": 84,
+        "unresolved_primary_top": {
+          "CRE(L)": 61,
+          "CentralBrain-unspecified": 23
+        }
+      },
+      {
+        "bodyId": 15708,
+        "in_map": {
+          "B2": 1676,
+          "y5": 98
+        },
+        "kc_synapses": 1833,
+        "named": [
+          "B2",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 32
+        },
+        "type": "MBON24",
+        "unresolved": 27,
+        "unresolved_primary_top": {
+          "CRE(R)": 19,
+          "CentralBrain-unspecified": 8
+        }
+      },
+      {
+        "bodyId": 18406,
+        "in_map": {
+          "B2": 1670,
+          "y5": 103
+        },
+        "kc_synapses": 1801,
+        "named": [
+          "B2",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 18
+        },
+        "type": "MBON24",
+        "unresolved": 10,
+        "unresolved_primary_top": {
+          "CRE(L)": 1,
+          "CentralBrain-unspecified": 9
+        }
+      },
+      {
+        "bodyId": 18713,
+        "in_map": {
+          "B'1": 2707,
+          "y3": 11990
+        },
+        "kc_synapses": 16349,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 68,
+          "B1": 1,
+          "B2": 2,
+          "y2": 1131,
+          "y4": 368,
+          "y5": 21
+        },
+        "type": "MBON09",
+        "unresolved": 61,
+        "unresolved_primary_top": {
+          "CRE(L)": 61
+        }
+      },
+      {
+        "bodyId": 19267,
+        "in_map": {
+          "B'1": 1778,
+          "y3": 12389
+        },
+        "kc_synapses": 15702,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 7,
+          "B1": 1,
+          "B2": 1,
+          "y2": 1046,
+          "y4": 420,
+          "y5": 6
+        },
+        "type": "MBON09",
+        "unresolved": 54,
+        "unresolved_primary_top": {
+          "CRE(L)": 54
+        }
+      },
+      {
+        "bodyId": 21242,
+        "in_map": {
+          "B'1": 5412,
+          "y3": 8102
+        },
+        "kc_synapses": 14224,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 136,
+          "B1": 1,
+          "y2": 34,
+          "y4": 214,
+          "y5": 5
+        },
+        "type": "MBON09",
+        "unresolved": 320,
+        "unresolved_primary_top": {
+          "CRE(L)": 9,
+          "CRE(R)": 80,
+          "CentralBrain-unspecified": 231
+        }
+      },
+      {
+        "bodyId": 26853,
+        "in_map": {
+          "a2": 332,
+          "a3": 1
+        },
+        "kc_synapses": 406,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 57,
+          "a'3": 3
+        },
+        "type": "MBON19",
+        "unresolved": 13,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 7,
+          "SIP(R)": 6
+        }
+      },
+      {
+        "bodyId": 31083,
+        "in_map": {
+          "a'1": 132,
+          "a'2": 208
+        },
+        "kc_synapses": 665,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 161,
+          "a'3": 14,
+          "a1": 117,
+          "a2": 4,
+          "y2": 27
+        },
+        "type": "MBON15-like",
+        "unresolved": 2,
+        "unresolved_primary_top": {
+          "CRE(L)": 1,
+          "SIP(L)": 1
+        }
+      },
+      {
+        "bodyId": 33617,
+        "in_map": {
+          "a2": 230,
+          "a3": 23
+        },
+        "kc_synapses": 428,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 153,
+          "a'3": 15
+        },
+        "type": "MBON19",
+        "unresolved": 7,
+        "unresolved_primary_top": {
+          "SIP(R)": 7
+        }
+      },
+      {
+        "bodyId": 36094,
+        "in_map": {
+          "a2": 182,
+          "a3": 5
+        },
+        "kc_synapses": 650,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 444,
+          "a'3": 12,
+          "a1": 3
+        },
+        "type": "MBON19",
+        "unresolved": 4,
+        "unresolved_primary_top": {
+          "SIP(L)": 4
+        }
+      },
+      {
+        "bodyId": 38859,
+        "in_map": {
+          "a'1": 156,
+          "a'2": 529
+        },
+        "kc_synapses": 951,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 170,
+          "a'3": 1,
+          "a1": 54,
+          "a2": 38,
+          "a3": 3
+        },
+        "type": "MBON15-like",
+        "unresolved": 0,
+        "unresolved_primary_top": {}
+      },
+      {
+        "bodyId": 44619,
+        "in_map": {
+          "a'1": 378,
+          "a'2": 341
+        },
+        "kc_synapses": 1056,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 117,
+          "a'3": 25,
+          "a1": 55,
+          "a2": 71,
+          "a3": 3,
+          "y2": 31
+        },
+        "type": "MBON15-like",
+        "unresolved": 35,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 29,
+          "SIP(R)": 6
+        }
+      },
+      {
+        "bodyId": 47551,
+        "in_map": {
+          "a2": 255,
+          "a3": 9
+        },
+        "kc_synapses": 501,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 211,
+          "a'3": 22
+        },
+        "type": "MBON19",
+        "unresolved": 4,
+        "unresolved_primary_top": {
+          "SIP(L)": 4
+        }
+      },
+      {
+        "bodyId": 87077,
+        "in_map": {
+          "y1": 298,
+          "y2": 175
+        },
+        "kc_synapses": 517,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "y3": 5,
+          "y5": 5
+        },
+        "type": "MBON25",
+        "unresolved": 34,
+        "unresolved_primary_top": {
+          "CRE(L)": 2,
+          "CentralBrain-unspecified": 32
+        }
+      },
+      {
+        "bodyId": 110448,
+        "in_map": {
+          "y1": 188,
+          "y2": 66
+        },
+        "kc_synapses": 262,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "y3": 1
+        },
+        "type": "MBON25-like",
+        "unresolved": 7,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 7
+        }
+      },
+      {
+        "bodyId": 187741,
+        "in_map": {
+          "a'1": 325,
+          "a'2": 95
+        },
+        "kc_synapses": 563,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 86,
+          "a1": 12,
+          "y2": 41
+        },
+        "type": "MBON15-like",
+        "unresolved": 4,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 3,
+          "SIP(R)": 1
+        }
+      },
+      {
+        "bodyId": 394860,
+        "in_map": {
+          "y1": 348,
+          "y2": 181
+        },
+        "kc_synapses": 554,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "y3": 20,
+          "y4": 3,
+          "y5": 1
+        },
+        "type": "MBON25",
+        "unresolved": 1,
+        "unresolved_primary_top": {
+          "CRE(R)": 1
+        }
+      },
+      {
+        "bodyId": 513174,
+        "in_map": {
+          "y1": 1677,
+          "y2": 2595,
+          "y3": 1729
+        },
+        "kc_synapses": 6361,
+        "named": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "B'1": 105,
+          "B'2": 2,
+          "y4": 137,
+          "y5": 10
+        },
+        "type": "MBON30",
+        "unresolved": 106,
+        "unresolved_primary_top": {
+          "CRE(L)": 24,
+          "CRE(R)": 22,
+          "CentralBrain-unspecified": 60
+        }
+      },
+      {
+        "bodyId": 513387,
+        "in_map": {
+          "a'2": 22,
+          "a'3": 647
+        },
+        "kc_synapses": 920,
+        "named": [
+          "a'2",
+          "a'3"
+        ],
+        "offmap": {
+          "a2": 116,
+          "a3": 102
+        },
+        "type": "MBON17-like",
+        "unresolved": 33,
+        "unresolved_primary_top": {
+          "SIP(L)": 33
+        }
+      },
+      {
+        "bodyId": 513391,
+        "in_map": {
+          "a'2": 299,
+          "a'3": 489
+        },
+        "kc_synapses": 969,
+        "named": [
+          "a'2",
+          "a'3"
+        ],
+        "offmap": {
+          "a2": 144,
+          "a3": 31
+        },
+        "type": "MBON17-like",
+        "unresolved": 6,
+        "unresolved_primary_top": {
+          "SIP(R)": 6
+        }
+      },
+      {
+        "bodyId": 515015,
+        "in_map": {
+          "y1": 1795,
+          "y2": 2191,
+          "y3": 928
+        },
+        "kc_synapses": 5498,
+        "named": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "B'1": 18,
+          "B'2": 2,
+          "B1": 3,
+          "a1": 1,
+          "y4": 130,
+          "y5": 15
+        },
+        "type": "MBON30",
+        "unresolved": 415,
+        "unresolved_primary_top": {
+          "CRE(L)": 7,
+          "CRE(R)": 25,
+          "CentralBrain-unspecified": 383
+        }
+      },
+      {
+        "bodyId": 519368,
+        "in_map": {
+          "a'1": 1166,
+          "y2": 3455
+        },
+        "kc_synapses": 5361,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 419,
+          "a'2": 73,
+          "a1": 19
+        },
+        "type": "MBON12",
+        "unresolved": 229,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 229
+        }
+      },
+      {
+        "bodyId": 519619,
+        "in_map": {
+          "y4": 1089,
+          "y5": 1020
+        },
+        "kc_synapses": 2452,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'1": 2,
+          "B'2": 12,
+          "y1": 1,
+          "y2": 131,
+          "y3": 9
+        },
+        "type": "MBON29",
+        "unresolved": 188,
+        "unresolved_primary_top": {
+          "CRE(L)": 41,
+          "CRE(R)": 129,
+          "CentralBrain-unspecified": 18
+        }
+      },
+      {
+        "bodyId": 520151,
+        "in_map": {
+          "B'2": 3035,
+          "y5": 16814
+        },
+        "kc_synapses": 20449,
+        "named": [
+          "y5",
+          "B'2"
+        ],
+        "offmap": {
+          "y4": 264
+        },
+        "type": "MBON01",
+        "unresolved": 336,
+        "unresolved_primary_top": {
+          "CRE(L)": 125,
+          "CRE(R)": 2,
+          "CentralBrain-unspecified": 209
+        }
+      },
+      {
+        "bodyId": 521086,
+        "in_map": {
+          "a'1": 1680,
+          "y2": 3382
+        },
+        "kc_synapses": 5972,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 455,
+          "a'2": 225,
+          "a1": 30
+        },
+        "type": "MBON12",
+        "unresolved": 200,
+        "unresolved_primary_top": {
+          "CentralBrain-unspecified": 200
+        }
+      },
+      {
+        "bodyId": 522444,
+        "in_map": {
+          "B'2": 880,
+          "B2": 8229
+        },
+        "kc_synapses": 9536,
+        "named": [
+          "B2",
+          "B'2"
+        ],
+        "offmap": {
+          "B'1": 6,
+          "B1": 179,
+          "a'3": 31,
+          "a2": 14,
+          "a3": 19,
+          "y3": 58,
+          "y4": 8,
+          "y5": 22
+        },
+        "type": "MBON02",
+        "unresolved": 90,
+        "unresolved_primary_top": {
+          "CRE(R)": 27,
+          "CentralBrain-unspecified": 55,
+          "EB": 1,
+          "SIP(R)": 7
+        }
+      },
+      {
+        "bodyId": 522749,
+        "in_map": {
+          "B'2": 823,
+          "B2": 8051
+        },
+        "kc_synapses": 9135,
+        "named": [
+          "B2",
+          "B'2"
+        ],
+        "offmap": {
+          "B1": 96,
+          "a'2": 1,
+          "a'3": 22,
+          "y3": 33,
+          "y4": 12,
+          "y5": 21
+        },
+        "type": "MBON02",
+        "unresolved": 76,
+        "unresolved_primary_top": {
+          "CRE(R)": 32,
+          "CentralBrain-unspecified": 42,
+          "SIP(L)": 2
+        }
+      },
+      {
+        "bodyId": 523043,
+        "in_map": {
+          "y2": 374,
+          "y3": 172
+        },
+        "kc_synapses": 734,
+        "named": [
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "y4": 8
+        },
+        "type": "MBON33",
+        "unresolved": 180,
+        "unresolved_primary_top": {
+          "CRE(R)": 29,
+          "CentralBrain-unspecified": 151
+        }
+      },
+      {
+        "bodyId": 523060,
+        "in_map": {
+          "B'1": 6284,
+          "y3": 10124
+        },
+        "kc_synapses": 17304,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 11,
+          "B1": 2,
+          "a1": 35,
+          "y2": 106,
+          "y4": 342,
+          "y5": 7
+        },
+        "type": "MBON09",
+        "unresolved": 393,
+        "unresolved_primary_top": {
+          "CRE(L)": 26,
+          "CRE(R)": 30,
+          "CentralBrain-unspecified": 337
+        }
+      },
+      {
+        "bodyId": 523628,
+        "in_map": {
+          "y4": 2517,
+          "y5": 588
+        },
+        "kc_synapses": 4403,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 5,
+          "B2": 44,
+          "y1": 6,
+          "y2": 2,
+          "y3": 177
+        },
+        "type": "MBON21",
+        "unresolved": 1064,
+        "unresolved_primary_top": {
+          "CRE(L)": 1,
+          "CRE(R)": 942,
+          "CentralBrain-unspecified": 121
+        }
+      },
+      {
+        "bodyId": 523987,
+        "in_map": {
+          "y4": 1176,
+          "y5": 854
+        },
+        "kc_synapses": 2553,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 4,
+          "y3": 12
+        },
+        "type": "MBON29",
+        "unresolved": 507,
+        "unresolved_primary_top": {
+          "CRE(L)": 15,
+          "CRE(R)": 428,
+          "CentralBrain-unspecified": 64
+        }
+      },
+      {
+        "bodyId": 556300,
+        "in_map": {
+          "y1": 99,
+          "y2": 32
+        },
+        "kc_synapses": 133,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "y4": 1
+        },
+        "type": "MBON25-like",
+        "unresolved": 1,
+        "unresolved_primary_top": {
+          "CRE(L)": 1
+        }
+      }
+    ],
+    "newly_plastic_compartments": [
+      "B2",
+      "y1",
+      "y3"
+    ],
+    "nonplastic_by_reason": {
+      "offmap": 17572,
+      "outside": 16084,
+      "unresolved": 23679
+    },
+    "plastic_by_compartment": {
+      "B'1": {
+        "gate_dan_bodies": 34,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 1511,
+        "resolved_weight": 16181,
+        "single_edges": 1279,
+        "single_weight": 2695
+      },
+      "B'2": {
+        "gate_dan_bodies": 81,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 1472,
+        "resolved_weight": 7594,
+        "single_edges": 3465,
+        "single_weight": 35364
+      },
+      "B1": {
+        "gate_dan_bodies": 24,
+        "resolved_mbon_bodies": 0,
+        "resolved_subedges": 0,
+        "resolved_weight": 0,
+        "single_edges": 1944,
+        "single_weight": 25465
+      },
+      "B2": {
+        "gate_dan_bodies": 44,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 5032,
+        "resolved_weight": 19626,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "a'1": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 1710,
+        "resolved_weight": 5392,
+        "single_edges": 1425,
+        "single_weight": 11799
+      },
+      "a'2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 6,
+        "resolved_subedges": 648,
+        "resolved_weight": 1494,
+        "single_edges": 673,
+        "single_weight": 10194
+      },
+      "a'3": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 2,
+        "resolved_subedges": 394,
+        "resolved_weight": 1136,
+        "single_edges": 1554,
+        "single_weight": 8909
+      },
+      "a1": {
+        "gate_dan_bodies": 15,
+        "resolved_mbon_bodies": 0,
+        "resolved_subedges": 0,
+        "resolved_weight": 0,
+        "single_edges": 3651,
+        "single_weight": 22840
+      },
+      "a2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 528,
+        "resolved_weight": 999,
+        "single_edges": 2921,
+        "single_weight": 16859
+      },
+      "a3": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 31,
+        "resolved_weight": 38,
+        "single_edges": 3437,
+        "single_weight": 22217
+      },
+      "y1": {
+        "gate_dan_bodies": 4,
+        "resolved_mbon_bodies": 10,
+        "resolved_subedges": 4894,
+        "resolved_weight": 32252,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "y2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 14,
+        "resolved_subedges": 5982,
+        "resolved_weight": 20298,
+        "single_edges": 3566,
+        "single_weight": 18428
+      },
+      "y3": {
+        "gate_dan_bodies": 22,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 4768,
+        "resolved_weight": 45668,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "y4": {
+        "gate_dan_bodies": 64,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 2689,
+        "resolved_weight": 7514,
+        "single_edges": 1999,
+        "single_weight": 36320
+      },
+      "y5": {
+        "gate_dan_bodies": 48,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 3870,
+        "resolved_weight": 31414,
+        "single_edges": 618,
+        "single_weight": 5609
+      }
+    },
+    "post_point_neuron_part": {
+      "axon": 38453,
+      "cell-body-fiber": 1896,
+      "dendrite": 419572,
+      "linker": 2146,
+      "unknown": 1573
+    },
+    "side_agreement_resolved": {
+      "agree": 413113,
+      "disagree": 102,
+      "kc_side_missing": 0
+    },
+    "signed_loops": [
+      {
+        "compartment": "a'1",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON12",
+        "model_consistent": true,
+        "plastic_weight": 4401
+      },
+      {
+        "compartment": "y1",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL101",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON11",
+        "model_consistent": true,
+        "plastic_weight": 25025
+      },
+      {
+        "compartment": "y2",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON12",
+        "model_consistent": true,
+        "plastic_weight": 13175
+      },
+      {
+        "compartment": "y2",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON33",
+        "model_consistent": true,
+        "plastic_weight": 869
+      },
+      {
+        "compartment": "y5",
+        "dan_sign": "APPETITIVE",
+        "dan_type": "PAM01",
+        "mbon_sign": "REPULSIVE",
+        "mbon_type": "MBON21",
+        "model_consistent": true,
+        "plastic_weight": 1543
+      },
+      {
+        "compartment": "y5",
+        "dan_sign": "APPETITIVE",
+        "dan_type": "PAM01",
+        "mbon_sign": "REPULSIVE",
+        "mbon_type": "MBON29",
+        "model_consistent": true,
+        "plastic_weight": 1874
+      }
+    ]
+  },
+  "identity": {
+    "KC": 4064,
+    "MBON": 97,
+    "gated_lobe_compartments": [
+      "a1",
+      "a2",
+      "a3",
+      "a'1",
+      "a'2",
+      "a'3",
+      "B1",
+      "B2",
+      "B'1",
+      "B'2",
+      "y1",
+      "y2",
+      "y3",
+      "y4",
+      "y5"
+    ],
+    "kc_mbon_edges": 61210,
+    "kc_mbon_weight_sum": 463640,
+    "m5b3b_map_mismatches": [],
+    "single_bodies_with_one_lobe_compartment": true,
+    "status_counts": {
+      "multi_compartment": 40,
+      "outside_fast_lobe_map": 2,
+      "single_compartment": 55
+    }
+  },
+  "join": {
+    "complete_consistent": true,
+    "duplicate_point_groups": 0,
+    "inconsistent_rows": 0,
+    "partner_rows": 463640,
+    "postsyn_points_kept": 732505,
+    "primary_disagreements": 0,
+    "rows_matching_several_points": 0,
+    "unmatched_rows": 0
+  },
+  "learner_edges": {
+    "content_digest": "a3159ff67ec172d101a218d26a8ce0c4a1d846e91b2a115db94f2e23ac2cf01a",
+    "file": "v6_m5b3c_learner_edges.npz",
+    "nonplastic_rows": 17472,
+    "nonplastic_weight": 57335,
+    "plastic_rows": 60061,
+    "plastic_weight": 406305
+  },
+  "m5b3b_single_reproduction": {
+    "B'1": {
+      "edges": 1279,
+      "m5b3b_edges": 1279,
+      "m5b3b_weight": 2695.0,
+      "weight": 2695
+    },
+    "B'2": {
+      "edges": 3465,
+      "m5b3b_edges": 3465,
+      "m5b3b_weight": 35364.0,
+      "weight": 35364
+    },
+    "B1": {
+      "edges": 1944,
+      "m5b3b_edges": 1944,
+      "m5b3b_weight": 25465.0,
+      "weight": 25465
+    },
+    "a'1": {
+      "edges": 1425,
+      "m5b3b_edges": 1425,
+      "m5b3b_weight": 11799.0,
+      "weight": 11799
+    },
+    "a'2": {
+      "edges": 673,
+      "m5b3b_edges": 673,
+      "m5b3b_weight": 10194.0,
+      "weight": 10194
+    },
+    "a'3": {
+      "edges": 1554,
+      "m5b3b_edges": 1554,
+      "m5b3b_weight": 8909.0,
+      "weight": 8909
+    },
+    "a1": {
+      "edges": 3651,
+      "m5b3b_edges": 3651,
+      "m5b3b_weight": 22840.0,
+      "weight": 22840
+    },
+    "a2": {
+      "edges": 2921,
+      "m5b3b_edges": 2921,
+      "m5b3b_weight": 16859.0,
+      "weight": 16859
+    },
+    "a3": {
+      "edges": 3437,
+      "m5b3b_edges": 3437,
+      "m5b3b_weight": 22217.0,
+      "weight": 22217
+    },
+    "y2": {
+      "edges": 3566,
+      "m5b3b_edges": 3566,
+      "m5b3b_weight": 18428.0,
+      "weight": 18428
+    },
+    "y4": {
+      "edges": 1999,
+      "m5b3b_edges": 1999,
+      "m5b3b_weight": 36320.0,
+      "weight": 36320
+    },
+    "y5": {
+      "edges": 618,
+      "m5b3b_edges": 618,
+      "m5b3b_weight": 5609.0,
+      "weight": 5609
+    }
+  },
+  "pins": {
+    "syn-partners-male-cns-v1.0-minconf-0.5.feather": {
+      "etag": "\"58efcf712f8c4d4de5f2ad51e97def76\"",
+      "footer_length": 116632,
+      "generation": "1780494942562468",
+      "md5": "58efcf712f8c4d4de5f2ad51e97def76",
+      "record_batches": 4759,
+      "size": 6777179098
+    },
+    "syn-points-male-cns-v1.0-minconf-0.5.feather": {
+      "etag": "\"c69d08758de07582035cc8843574493a\"",
+      "footer_length": 140760,
+      "generation": "1780494991007477",
+      "md5": "c69d08758de07582035cc8843574493a",
+      "record_batches": 5455,
+      "size": 13061489098
+    }
+  },
+  "prerequisites": {
+    "annotations_sha256": true,
+    "protocol_sha256": true,
+    "sha256:fly_mnq/v6_m5b3b_compartment_gating_mvp.py": true,
+    "sha256:fly_mnq/v6_m5b3c1_roi_vocabulary_probe.py": true,
+    "sha256:research/results/v6_m5b3b_compartment_gating_mvp_result.json": true,
+    "sha256:research/results/v6_m5b3c0_synapse_schema_result.json": true,
+    "sha256:research/results/v6_m5b3c1_roi_vocabulary_result.json": true,
+    "weights_sha256": true
+  },
+  "protocol": {
+    "expected_sha256": "013fd988ecb063ee74d9b4487dc08dfdcf4270a2ad3b557ab1c53f58141c9cda",
+    "freeze_commit": "0627505bbbbcda6a79abc13591b4aea978d739f8",
+    "path": "research/v6_m5b3c_synapse_compartment_resolver_protocol.md",
+    "sha256": "013fd988ecb063ee74d9b4487dc08dfdcf4270a2ad3b557ab1c53f58141c9cda"
+  },
+  "reason": "failed: E1_pooled_single_compartment_agreement, E2_every_single_compartment_body_plurality",
+  "selftest": {
+    "cases": {
+      "dictionary_mismatch_detected": true,
+      "edges": true,
+      "join": true,
+      "object_change_on_reconnect_rejected": true,
+      "parity": true,
+      "range_ignored_rejected": true,
+      "resume_after_disconnect": true,
+      "validation": true
+    },
+    "passed": true
+  },
+  "sources": {
+    "syn-partners-male-cns-v1.0-minconf-0.5.feather": {
+      "bytes": 6777179098,
+      "bytes_match_pin": true,
+      "dictionary_mismatch_batches": 0,
+      "integrity_ok": true,
+      "kept_row_nulls": 0,
+      "key_column_nulls": 0,
+      "md5": "58efcf712f8c4d4de5f2ad51e97def76",
+      "md5_matches_pin": true,
+      "record_batches_parsed": 4759,
+      "record_batches_pin": 4759,
+      "rows_kept": 463640,
+      "rows_total": 311833243,
+      "sha256": "959d8ef4173b35382a3e6acfaf5167c795b6d10b877572d146af04e1b487bc07",
+      "tail": {
+        "end_of_last_parsed_batch": 6777062448,
+        "footer_last_block_end": 6777062448,
+        "footer_record_batch_blocks": 4759,
+        "footer_start": 6777062456,
+        "gap_hex": "ffffffff00000000",
+        "gap_length": 8,
+        "trailer_ok": true
+      },
+      "tail_ok": true
+    },
+    "syn-points-male-cns-v1.0-minconf-0.5.feather": {
+      "bytes": 13061489098,
+      "bytes_match_pin": true,
+      "dictionary_mismatch_batches": 0,
+      "integrity_ok": true,
+      "kept_row_nulls": 0,
+      "key_column_nulls": 0,
+      "md5": "c69d08758de07582035cc8843574493a",
+      "md5_matches_pin": true,
+      "record_batches_parsed": 5455,
+      "record_batches_pin": 5455,
+      "rows_kept": 732505,
+      "rows_total": 357489383,
+      "sha256": "c16b1b63186c4d4f28939decea7444451f0f5f6f7ef1bb5dab5b2a7058f8f284",
+      "tail": {
+        "end_of_last_parsed_batch": 13061348320,
+        "footer_last_block_end": 13061348320,
+        "footer_record_batch_blocks": 5455,
+        "footer_start": 13061348328,
+        "gap_hex": "ffffffff00000000",
+        "gap_length": 8,
+        "trailer_ok": true
+      },
+      "tail_ok": true
+    }
+  },
+  "synapse_table": {
+    "content_digest": "5662f4f8194ff65991f0be326eaf450423edb9d5d4630961f90257ad88279585",
+    "file": "v6_m5b3c_kc_mbon_synapses.npz (artifact only)",
+    "rows": 463640
+  },
+  "validation": {
+    "every_body_plurality_matches": false,
+    "per_body": [
+      {
+        "agree": 10305,
+        "bodyId": 10079,
+        "kc_synapses": 11675,
+        "nominal": "B1",
+        "plurality": "B1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 20,
+          "B'2": 16,
+          "B1": 10305,
+          "B2": 766,
+          "a'2": 54,
+          "a'3": 9,
+          "a1": 124,
+          "a2": 116,
+          "a3": 193,
+          "y1": 5,
+          "y2": 4,
+          "y3": 19,
+          "y4": 1
+        },
+        "unresolved": 43
+      },
+      {
+        "agree": 4929,
+        "bodyId": 10267,
+        "kc_synapses": 4929,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a3": 4929
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 16284,
+        "bodyId": 10495,
+        "kc_synapses": 19140,
+        "nominal": "y4",
+        "plurality": "y4",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 54,
+          "B'2": 81,
+          "y1": 671,
+          "y2": 263,
+          "y3": 586,
+          "y4": 16284,
+          "y5": 949
+        },
+        "unresolved": 252
+      },
+      {
+        "agree": 1878,
+        "bodyId": 10599,
+        "kc_synapses": 2041,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 60,
+          "y2": 1878,
+          "y3": 11
+        },
+        "unresolved": 92
+      },
+      {
+        "agree": 1769,
+        "bodyId": 10816,
+        "kc_synapses": 5367,
+        "nominal": "a'1",
+        "plurality": "B'1",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'1": 2072,
+          "a'1": 1769,
+          "a'2": 747,
+          "a1": 222,
+          "y2": 513,
+          "y3": 6,
+          "y5": 5
+        },
+        "unresolved": 33
+      },
+      {
+        "agree": 1438,
+        "bodyId": 11176,
+        "kc_synapses": 1982,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 1,
+          "B'2": 1438,
+          "B2": 6,
+          "y3": 23,
+          "y4": 100,
+          "y5": 8
+        },
+        "unresolved": 406
+      },
+      {
+        "agree": 5859,
+        "bodyId": 11455,
+        "kc_synapses": 7093,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 459,
+          "a'1": 550,
+          "a'2": 13,
+          "y2": 5859,
+          "y3": 48,
+          "y5": 2
+        },
+        "unresolved": 162
+      },
+      {
+        "agree": 140,
+        "bodyId": 11777,
+        "kc_synapses": 213,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 58,
+          "B'2": 1,
+          "a'1": 140,
+          "a'2": 9,
+          "a'3": 1,
+          "y2": 4
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2417,
+        "bodyId": 11805,
+        "kc_synapses": 5126,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 550,
+          "a'1": 2417,
+          "a'2": 463,
+          "a1": 22,
+          "y1": 7,
+          "y2": 1430,
+          "y3": 18
+        },
+        "unresolved": 219
+      },
+      {
+        "agree": 5431,
+        "bodyId": 11873,
+        "kc_synapses": 5488,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a3": 5431
+        },
+        "unresolved": 57
+      },
+      {
+        "agree": 6962,
+        "bodyId": 12690,
+        "kc_synapses": 13790,
+        "nominal": "B1",
+        "plurality": "B1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 517,
+          "B'2": 16,
+          "B1": 6962,
+          "B2": 262,
+          "a'1": 33,
+          "a'2": 18,
+          "a'3": 15,
+          "a1": 165,
+          "a2": 179,
+          "a3": 269,
+          "y1": 168,
+          "y2": 3326,
+          "y3": 1696,
+          "y4": 6
+        },
+        "unresolved": 158
+      },
+      {
+        "agree": 4912,
+        "bodyId": 12726,
+        "kc_synapses": 5334,
+        "nominal": "a'2",
+        "plurality": "a'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 8,
+          "a'1": 387,
+          "a'2": 4912,
+          "a2": 8
+        },
+        "unresolved": 19
+      },
+      {
+        "agree": 3766,
+        "bodyId": 12859,
+        "kc_synapses": 5636,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 390,
+          "B1": 875,
+          "a'1": 362,
+          "a'2": 71,
+          "a1": 3766,
+          "a2": 25,
+          "y1": 80,
+          "y2": 67
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 6717,
+        "bodyId": 14221,
+        "kc_synapses": 6940,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 103,
+          "a'3": 5,
+          "a1": 48,
+          "a2": 6717,
+          "a3": 38
+        },
+        "unresolved": 29
+      },
+      {
+        "agree": 3179,
+        "bodyId": 15626,
+        "kc_synapses": 5085,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 4,
+          "B1": 1061,
+          "a1": 3179,
+          "a2": 27,
+          "y1": 238
+        },
+        "unresolved": 576
+      },
+      {
+        "agree": 6719,
+        "bodyId": 17946,
+        "kc_synapses": 6719,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a3": 6719
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 3524,
+        "bodyId": 18603,
+        "kc_synapses": 5425,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 11,
+          "B1": 1077,
+          "a'1": 2,
+          "a1": 3524,
+          "a2": 19,
+          "y1": 205,
+          "y3": 1
+        },
+        "unresolved": 586
+      },
+      {
+        "agree": 5031,
+        "bodyId": 19366,
+        "kc_synapses": 5081,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a2": 12,
+          "a3": 5031
+        },
+        "unresolved": 38
+      },
+      {
+        "agree": 1557,
+        "bodyId": 20835,
+        "kc_synapses": 1632,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 51,
+          "a'3": 4,
+          "a1": 8,
+          "a2": 1557,
+          "a3": 1
+        },
+        "unresolved": 11
+      },
+      {
+        "agree": 1183,
+        "bodyId": 26485,
+        "kc_synapses": 1242,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 1183,
+          "a2": 9,
+          "a3": 37
+        },
+        "unresolved": 13
+      },
+      {
+        "agree": 801,
+        "bodyId": 28622,
+        "kc_synapses": 1037,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 801,
+          "a2": 22,
+          "a3": 71
+        },
+        "unresolved": 143
+      },
+      {
+        "agree": 1032,
+        "bodyId": 31016,
+        "kc_synapses": 1480,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 1032,
+          "a2": 159,
+          "a3": 235
+        },
+        "unresolved": 54
+      },
+      {
+        "agree": 104,
+        "bodyId": 38853,
+        "kc_synapses": 416,
+        "nominal": "a'1",
+        "plurality": "B'1",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'1": 199,
+          "a'1": 104,
+          "a'2": 67,
+          "a1": 30,
+          "y2": 16
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 361,
+        "bodyId": 39608,
+        "kc_synapses": 425,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 361,
+          "B'2": 47,
+          "y3": 14
+        },
+        "unresolved": 3
+      },
+      {
+        "agree": 1260,
+        "bodyId": 41692,
+        "kc_synapses": 1540,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 1260,
+          "a2": 89,
+          "a3": 163
+        },
+        "unresolved": 28
+      },
+      {
+        "agree": 96,
+        "bodyId": 49262,
+        "kc_synapses": 169,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 96,
+          "B'2": 15,
+          "y2": 38,
+          "y3": 17
+        },
+        "unresolved": 3
+      },
+      {
+        "agree": 189,
+        "bodyId": 58401,
+        "kc_synapses": 385,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 112,
+          "a'1": 189,
+          "a'2": 56,
+          "a3": 3,
+          "y2": 24
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 467,
+        "bodyId": 70924,
+        "kc_synapses": 482,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 467,
+          "B'2": 3,
+          "y2": 10,
+          "y3": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 119,
+        "bodyId": 76585,
+        "kc_synapses": 154,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 18,
+          "a'1": 8,
+          "y2": 119,
+          "y4": 4
+        },
+        "unresolved": 5
+      },
+      {
+        "agree": 32,
+        "bodyId": 92112,
+        "kc_synapses": 35,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "y2": 32,
+          "y3": 1
+        },
+        "unresolved": 2
+      },
+      {
+        "agree": 128,
+        "bodyId": 133427,
+        "kc_synapses": 206,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 128,
+          "B'2": 5,
+          "y2": 60,
+          "y3": 10
+        },
+        "unresolved": 3
+      },
+      {
+        "agree": 130,
+        "bodyId": 160320,
+        "kc_synapses": 375,
+        "nominal": "y2",
+        "plurality": "y1",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "y1": 175,
+          "y2": 130,
+          "y3": 7,
+          "y5": 3
+        },
+        "unresolved": 60
+      },
+      {
+        "agree": 41,
+        "bodyId": 208566,
+        "kc_synapses": 45,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "y2": 41,
+          "y4": 1
+        },
+        "unresolved": 3
+      },
+      {
+        "agree": 2234,
+        "bodyId": 508595,
+        "kc_synapses": 2614,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 24,
+          "y2": 2234,
+          "y3": 5
+        },
+        "unresolved": 351
+      },
+      {
+        "agree": 6358,
+        "bodyId": 512788,
+        "kc_synapses": 6985,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 315,
+          "a'3": 5,
+          "a1": 57,
+          "a2": 6358,
+          "a3": 61
+        },
+        "unresolved": 189
+      },
+      {
+        "agree": 929,
+        "bodyId": 512789,
+        "kc_synapses": 1302,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 289,
+          "a'3": 8,
+          "a1": 23,
+          "a2": 929,
+          "a3": 5
+        },
+        "unresolved": 48
+      },
+      {
+        "agree": 4181,
+        "bodyId": 514853,
+        "kc_synapses": 4860,
+        "nominal": "a'2",
+        "plurality": "a'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 236,
+          "a'2": 4181,
+          "a2": 383
+        },
+        "unresolved": 60
+      },
+      {
+        "agree": 639,
+        "bodyId": 515034,
+        "kc_synapses": 3205,
+        "nominal": "y5",
+        "plurality": "y4",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'2": 13,
+          "y3": 261,
+          "y4": 745,
+          "y5": 639
+        },
+        "unresolved": 1547
+      },
+      {
+        "agree": 4456,
+        "bodyId": 515338,
+        "kc_synapses": 6694,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 275,
+          "B1": 1192,
+          "a'1": 318,
+          "a'2": 102,
+          "a1": 4456,
+          "a2": 14,
+          "y1": 256,
+          "y2": 79
+        },
+        "unresolved": 2
+      },
+      {
+        "agree": 866,
+        "bodyId": 519128,
+        "kc_synapses": 2404,
+        "nominal": "y5",
+        "plurality": "y4",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'2": 47,
+          "y2": 39,
+          "y3": 299,
+          "y4": 1097,
+          "y5": 866
+        },
+        "unresolved": 56
+      },
+      {
+        "agree": 4621,
+        "bodyId": 519131,
+        "kc_synapses": 6071,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 103,
+          "a'1": 905,
+          "a'2": 1,
+          "y2": 4621,
+          "y3": 8,
+          "y5": 6
+        },
+        "unresolved": 427
+      },
+      {
+        "agree": 11666,
+        "bodyId": 519371,
+        "kc_synapses": 17180,
+        "nominal": "y4",
+        "plurality": "y4",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 29,
+          "B'2": 123,
+          "B1": 3,
+          "a'1": 55,
+          "a1": 8,
+          "a2": 1,
+          "y1": 722,
+          "y2": 378,
+          "y3": 497,
+          "y4": 11666,
+          "y5": 698
+        },
+        "unresolved": 3000
+      },
+      {
+        "agree": 9355,
+        "bodyId": 519373,
+        "kc_synapses": 10309,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'2": 9355,
+          "B2": 113,
+          "y4": 2
+        },
+        "unresolved": 839
+      },
+      {
+        "agree": 1404,
+        "bodyId": 520186,
+        "kc_synapses": 1571,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 1404,
+          "a3": 82
+        },
+        "unresolved": 85
+      },
+      {
+        "agree": 142,
+        "bodyId": 520395,
+        "kc_synapses": 292,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 93,
+          "a'1": 142,
+          "a'2": 53,
+          "a1": 2,
+          "a2": 1
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 10685,
+        "bodyId": 521526,
+        "kc_synapses": 13695,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 1347,
+          "B'2": 10685,
+          "B2": 20,
+          "a'1": 423,
+          "a'2": 698,
+          "a1": 228,
+          "y2": 64,
+          "y4": 4
+        },
+        "unresolved": 226
+      },
+      {
+        "agree": 397,
+        "bodyId": 524733,
+        "kc_synapses": 398,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 397
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 2394,
+        "bodyId": 524893,
+        "kc_synapses": 2575,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'2": 2394,
+          "y4": 69,
+          "y5": 17
+        },
+        "unresolved": 95
+      },
+      {
+        "agree": 2476,
+        "bodyId": 525780,
+        "kc_synapses": 3746,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'2": 2476,
+          "y3": 9,
+          "y4": 1070,
+          "y5": 3
+        },
+        "unresolved": 188
+      },
+      {
+        "agree": 1851,
+        "bodyId": 530875,
+        "kc_synapses": 3057,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'2": 1851,
+          "B2": 3,
+          "y4": 556
+        },
+        "unresolved": 647
+      },
+      {
+        "agree": 346,
+        "bodyId": 531829,
+        "kc_synapses": 372,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 346,
+          "B'2": 17,
+          "y2": 4,
+          "y3": 4
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 87,
+        "bodyId": 540383,
+        "kc_synapses": 98,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 87,
+          "y2": 11
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 124,
+        "bodyId": 558665,
+        "kc_synapses": 387,
+        "nominal": "B'1",
+        "plurality": "y2",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'1": 124,
+          "B'2": 3,
+          "B1": 2,
+          "y2": 146,
+          "y3": 112
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1911,
+        "bodyId": 562782,
+        "kc_synapses": 2039,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 1911,
+          "a3": 94
+        },
+        "unresolved": 34
+      },
+      {
+        "agree": 10,
+        "bodyId": 579919,
+        "kc_synapses": 158,
+        "nominal": "B'1",
+        "plurality": "y3",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'1": 10,
+          "y2": 29,
+          "y3": 119
+        },
+        "unresolved": 0
+      }
+    ],
+    "pooled_agree": 165892,
+    "pooled_agreement": 0.7655411423218381,
+    "pooled_n": 216699,
+    "pooled_pass": false
+  },
+  "validation_threshold": 0.8
+}
