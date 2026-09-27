@@ -1,0 +1,2517 @@
+{
+  "aggregate_parity": {
+    "duplicate_weight_pairs": 0,
+    "exact": true,
+    "pairs_only_in_synapses": 0,
+    "pairs_only_in_weights": 0,
+    "pairs_with_unequal_count": 0,
+    "synapse_pairs": 61210,
+    "synapse_rows": 463640,
+    "weight_pairs": 61210,
+    "weight_sum": 463640
+  },
+  "classification": "FAIL_M5B3D_RESOLVER_VALIDATION",
+  "criteria": {
+    "A_prerequisites_exact": true,
+    "B_source_integrity": true,
+    "C_aggregate_parity_exact": true,
+    "D_territory_coverage": true,
+    "E1_pooled_single_compartment_agreement": true,
+    "E2_every_single_compartment_body_plurality": false,
+    "F_no_market_valence_theta_criterion": true
+  },
+  "diagnostics": {
+    "candidate_release_sites": {
+      "alpha_beta(L)": 10621,
+      "alpha_beta(R)": 9999,
+      "alpha_prime_beta_prime(L)": 12154,
+      "alpha_prime_beta_prime(R)": 9845,
+      "gamma(L)": 16456,
+      "gamma(R)": 15452
+    },
+    "dan_kc_rows": 223031,
+    "multi_compartment_bodies": [
+      {
+        "bodyId": 10013,
+        "in_map": {
+          "B'2": 3065,
+          "y5": 16544
+        },
+        "kc_synapses": 20439,
+        "named": [
+          "y5",
+          "B'2"
+        ],
+        "offmap": {
+          "B'1": 23,
+          "y3": 4,
+          "y4": 803
+        },
+        "type": "MBON01",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 10704,
+        "in_map": {
+          "y1": 10892
+        },
+        "kc_synapses": 16863,
+        "named": [
+          "y1"
+        ],
+        "offmap": {
+          "B'1": 2,
+          "B'2": 65,
+          "B1": 3335,
+          "B2": 79,
+          "a'1": 71,
+          "a'2": 5,
+          "a'3": 11,
+          "a1": 1831,
+          "a2": 229,
+          "a3": 83,
+          "y2": 38,
+          "y3": 85,
+          "y4": 121,
+          "y5": 16
+        },
+        "type": "MBON11",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 10804,
+        "in_map": {
+          "y1": 1964,
+          "y2": 412
+        },
+        "kc_synapses": 2502,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "B1": 2,
+          "a'1": 1,
+          "y3": 80,
+          "y4": 36,
+          "y5": 7
+        },
+        "type": "MBON20",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 10826,
+        "in_map": {
+          "y4": 2891,
+          "y5": 924
+        },
+        "kc_synapses": 3980,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B1": 8,
+          "B2": 52,
+          "y1": 13,
+          "y2": 4,
+          "y3": 88
+        },
+        "type": "MBON21",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 11145,
+        "in_map": {
+          "y1": 1322,
+          "y2": 581
+        },
+        "kc_synapses": 2102,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "B1": 2,
+          "a'1": 1,
+          "y3": 94,
+          "y4": 99,
+          "y5": 3
+        },
+        "type": "MBON20",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 11402,
+        "in_map": {
+          "y1": 16304
+        },
+        "kc_synapses": 24597,
+        "named": [
+          "y1"
+        ],
+        "offmap": {
+          "B'1": 30,
+          "B'2": 37,
+          "B1": 4148,
+          "B2": 128,
+          "a'1": 252,
+          "a'2": 10,
+          "a'3": 7,
+          "a1": 3087,
+          "a2": 154,
+          "a3": 76,
+          "y2": 23,
+          "y3": 122,
+          "y4": 199,
+          "y5": 20
+        },
+        "type": "MBON11",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 11785,
+        "in_map": {
+          "y2": 540,
+          "y3": 193
+        },
+        "kc_synapses": 862,
+        "named": [
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "y1": 3,
+          "y4": 124,
+          "y5": 2
+        },
+        "type": "MBON33",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 13728,
+        "in_map": {
+          "a'1": 1940,
+          "y2": 3140
+        },
+        "kc_synapses": 5426,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 77,
+          "a'2": 138,
+          "y1": 108,
+          "y3": 8,
+          "y4": 15
+        },
+        "type": "MBON12",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 13768,
+        "in_map": {
+          "a'1": 2523,
+          "y2": 2895
+        },
+        "kc_synapses": 5844,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 84,
+          "a'2": 230,
+          "y1": 78,
+          "y3": 18,
+          "y4": 16
+        },
+        "type": "MBON12",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 15708,
+        "in_map": {
+          "B2": 1728,
+          "y5": 92
+        },
+        "kc_synapses": 1833,
+        "named": [
+          "B2",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 4,
+          "B1": 9
+        },
+        "type": "MBON24",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 18406,
+        "in_map": {
+          "B2": 1679,
+          "y5": 104
+        },
+        "kc_synapses": 1801,
+        "named": [
+          "B2",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 16,
+          "y4": 2
+        },
+        "type": "MBON24",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 18713,
+        "in_map": {
+          "B'1": 4071,
+          "y3": 10994
+        },
+        "kc_synapses": 16349,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 57,
+          "B1": 1,
+          "a'1": 10,
+          "y2": 145,
+          "y4": 1055,
+          "y5": 16
+        },
+        "type": "MBON09",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 19267,
+        "in_map": {
+          "B'1": 3304,
+          "y3": 11236
+        },
+        "kc_synapses": 15702,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 7,
+          "B1": 1,
+          "B2": 1,
+          "a'1": 20,
+          "y2": 119,
+          "y4": 991,
+          "y5": 22
+        },
+        "type": "MBON09",
+        "unresolved": 1
+      },
+      {
+        "bodyId": 21242,
+        "in_map": {
+          "B'1": 5439,
+          "y3": 7307
+        },
+        "kc_synapses": 14224,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 123,
+          "B1": 1,
+          "a'1": 16,
+          "y2": 117,
+          "y4": 1208,
+          "y5": 13
+        },
+        "type": "MBON09",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 26853,
+        "in_map": {
+          "a2": 370,
+          "a3": 0
+        },
+        "kc_synapses": 406,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 33,
+          "a'3": 3
+        },
+        "type": "MBON19",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 31083,
+        "in_map": {
+          "a'1": 447,
+          "a'2": 179
+        },
+        "kc_synapses": 665,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 24,
+          "a'3": 15
+        },
+        "type": "MBON15-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 33617,
+        "in_map": {
+          "a2": 140,
+          "a3": 0
+        },
+        "kc_synapses": 428,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 249,
+          "a'3": 39
+        },
+        "type": "MBON19",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 36094,
+        "in_map": {
+          "a2": 497,
+          "a3": 4
+        },
+        "kc_synapses": 650,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 127,
+          "a'3": 22
+        },
+        "type": "MBON19",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 38859,
+        "in_map": {
+          "a'1": 420,
+          "a'2": 505
+        },
+        "kc_synapses": 951,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 5,
+          "a'3": 20,
+          "a2": 1
+        },
+        "type": "MBON15-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 44619,
+        "in_map": {
+          "a'1": 545,
+          "a'2": 445
+        },
+        "kc_synapses": 1056,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 35,
+          "a'3": 29,
+          "a2": 2
+        },
+        "type": "MBON15-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 47551,
+        "in_map": {
+          "a2": 440,
+          "a3": 1
+        },
+        "kc_synapses": 501,
+        "named": [
+          "a2",
+          "a3"
+        ],
+        "offmap": {
+          "a'2": 23,
+          "a'3": 37
+        },
+        "type": "MBON19",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 87077,
+        "in_map": {
+          "y1": 332,
+          "y2": 166
+        },
+        "kc_synapses": 517,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "a'1": 1,
+          "y3": 5,
+          "y4": 6,
+          "y5": 7
+        },
+        "type": "MBON25",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 110448,
+        "in_map": {
+          "y1": 187,
+          "y2": 64
+        },
+        "kc_synapses": 262,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "a'1": 2,
+          "y3": 3,
+          "y4": 6
+        },
+        "type": "MBON25-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 187741,
+        "in_map": {
+          "a'1": 449,
+          "a'2": 99
+        },
+        "kc_synapses": 563,
+        "named": [
+          "a'1",
+          "a'2"
+        ],
+        "offmap": {
+          "B'1": 14,
+          "y2": 1
+        },
+        "type": "MBON15-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 394860,
+        "in_map": {
+          "y1": 342,
+          "y2": 183
+        },
+        "kc_synapses": 554,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "y3": 14,
+          "y4": 11,
+          "y5": 4
+        },
+        "type": "MBON25",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 513174,
+        "in_map": {
+          "y1": 1762,
+          "y2": 2621,
+          "y3": 1690
+        },
+        "kc_synapses": 6361,
+        "named": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "B'1": 2,
+          "B'2": 2,
+          "a'1": 2,
+          "y4": 251,
+          "y5": 31
+        },
+        "type": "MBON30",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 513387,
+        "in_map": {
+          "a'2": 75,
+          "a'3": 844
+        },
+        "kc_synapses": 920,
+        "named": [
+          "a'2",
+          "a'3"
+        ],
+        "offmap": {
+          "y2": 1
+        },
+        "type": "MBON17-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 513391,
+        "in_map": {
+          "a'2": 447,
+          "a'3": 521
+        },
+        "kc_synapses": 969,
+        "named": [
+          "a'2",
+          "a'3"
+        ],
+        "offmap": {
+          "a2": 1
+        },
+        "type": "MBON17-like",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 515015,
+        "in_map": {
+          "y1": 2117,
+          "y2": 2247,
+          "y3": 861
+        },
+        "kc_synapses": 5498,
+        "named": [
+          "y1",
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "B'1": 3,
+          "B'2": 1,
+          "B1": 1,
+          "a'1": 11,
+          "y4": 235,
+          "y5": 22
+        },
+        "type": "MBON30",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 519368,
+        "in_map": {
+          "a'1": 2297,
+          "y2": 2708
+        },
+        "kc_synapses": 5361,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 175,
+          "a'2": 121,
+          "y1": 33,
+          "y4": 27
+        },
+        "type": "MBON12",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 519619,
+        "in_map": {
+          "y4": 1206,
+          "y5": 1099
+        },
+        "kc_synapses": 2452,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 8,
+          "y1": 3,
+          "y2": 131,
+          "y3": 5
+        },
+        "type": "MBON29",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 520151,
+        "in_map": {
+          "B'2": 3103,
+          "y5": 16617
+        },
+        "kc_synapses": 20449,
+        "named": [
+          "y5",
+          "B'2"
+        ],
+        "offmap": {
+          "y3": 7,
+          "y4": 722
+        },
+        "type": "MBON01",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 521086,
+        "in_map": {
+          "a'1": 2598,
+          "y2": 2796
+        },
+        "kc_synapses": 5972,
+        "named": [
+          "y2",
+          "a'1"
+        ],
+        "offmap": {
+          "B'1": 240,
+          "a'2": 260,
+          "y1": 47,
+          "y3": 2,
+          "y4": 29
+        },
+        "type": "MBON12",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 522444,
+        "in_map": {
+          "B'2": 866,
+          "B2": 8064
+        },
+        "kc_synapses": 9536,
+        "named": [
+          "B2",
+          "B'2"
+        ],
+        "offmap": {
+          "B'1": 21,
+          "B1": 497,
+          "a'2": 17,
+          "a'3": 54,
+          "y4": 6,
+          "y5": 11
+        },
+        "type": "MBON02",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 522749,
+        "in_map": {
+          "B'2": 823,
+          "B2": 7824
+        },
+        "kc_synapses": 9135,
+        "named": [
+          "B2",
+          "B'2"
+        ],
+        "offmap": {
+          "B'1": 2,
+          "B1": 446,
+          "a'2": 1,
+          "a'3": 24,
+          "y3": 8,
+          "y4": 2,
+          "y5": 5
+        },
+        "type": "MBON02",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 523043,
+        "in_map": {
+          "y2": 515,
+          "y3": 166
+        },
+        "kc_synapses": 734,
+        "named": [
+          "y2",
+          "y3"
+        ],
+        "offmap": {
+          "y4": 53
+        },
+        "type": "MBON33",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 523060,
+        "in_map": {
+          "B'1": 6082,
+          "y3": 9356
+        },
+        "kc_synapses": 17304,
+        "named": [
+          "y3",
+          "B'1"
+        ],
+        "offmap": {
+          "B'2": 11,
+          "B1": 1,
+          "a'1": 177,
+          "y2": 305,
+          "y4": 1361,
+          "y5": 11
+        },
+        "type": "MBON09",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 523628,
+        "in_map": {
+          "y4": 3280,
+          "y5": 952
+        },
+        "kc_synapses": 4403,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 1,
+          "B1": 1,
+          "B2": 52,
+          "y1": 5,
+          "y2": 2,
+          "y3": 110
+        },
+        "type": "MBON21",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 523987,
+        "in_map": {
+          "y4": 1470,
+          "y5": 1070
+        },
+        "kc_synapses": 2553,
+        "named": [
+          "y4",
+          "y5"
+        ],
+        "offmap": {
+          "B'2": 7,
+          "y3": 6
+        },
+        "type": "MBON29",
+        "unresolved": 0
+      },
+      {
+        "bodyId": 556300,
+        "in_map": {
+          "y1": 104,
+          "y2": 26
+        },
+        "kc_synapses": 133,
+        "named": [
+          "y1",
+          "y2"
+        ],
+        "offmap": {
+          "B1": 1,
+          "y4": 2
+        },
+        "type": "MBON25-like",
+        "unresolved": 0
+      }
+    ],
+    "nearest_release_site_nm": {
+      "p100": 126736.35652013987,
+      "p50": 851.8779255268914,
+      "p90": 1587.2693533234994,
+      "p99": 75670.14915547843
+    },
+    "newly_plastic_compartments": [
+      "B2",
+      "y1",
+      "y3"
+    ],
+    "nonplastic_by_reason": {
+      "offmap": 26750,
+      "outside": 16084,
+      "unresolved": 1
+    },
+    "plastic_by_compartment": {
+      "B'1": {
+        "gate_dan_bodies": 34,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 1431,
+        "resolved_weight": 18896,
+        "single_edges": 1279,
+        "single_weight": 2695
+      },
+      "B'2": {
+        "gate_dan_bodies": 81,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 1334,
+        "resolved_weight": 7857,
+        "single_edges": 3465,
+        "single_weight": 35364
+      },
+      "B1": {
+        "gate_dan_bodies": 24,
+        "resolved_mbon_bodies": 0,
+        "resolved_subedges": 0,
+        "resolved_weight": 0,
+        "single_edges": 1944,
+        "single_weight": 25465
+      },
+      "B2": {
+        "gate_dan_bodies": 44,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 4961,
+        "resolved_weight": 19295,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "a'1": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 2190,
+        "resolved_weight": 11219,
+        "single_edges": 1425,
+        "single_weight": 11799
+      },
+      "a'2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 6,
+        "resolved_subedges": 709,
+        "resolved_weight": 1750,
+        "single_edges": 673,
+        "single_weight": 10194
+      },
+      "a'3": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 2,
+        "resolved_subedges": 423,
+        "resolved_weight": 1365,
+        "single_edges": 1554,
+        "single_weight": 8909
+      },
+      "a1": {
+        "gate_dan_bodies": 15,
+        "resolved_mbon_bodies": 0,
+        "resolved_subedges": 0,
+        "resolved_weight": 0,
+        "single_edges": 3651,
+        "single_weight": 22840
+      },
+      "a2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 538,
+        "resolved_weight": 1447,
+        "single_edges": 2921,
+        "single_weight": 16859
+      },
+      "a3": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 2,
+        "resolved_subedges": 4,
+        "resolved_weight": 5,
+        "single_edges": 3437,
+        "single_weight": 22217
+      },
+      "y1": {
+        "gate_dan_bodies": 4,
+        "resolved_mbon_bodies": 10,
+        "resolved_subedges": 4661,
+        "resolved_weight": 35326,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "y2": {
+        "gate_dan_bodies": 2,
+        "resolved_mbon_bodies": 14,
+        "resolved_subedges": 5450,
+        "resolved_weight": 18894,
+        "single_edges": 3566,
+        "single_weight": 18428
+      },
+      "y3": {
+        "gate_dan_bodies": 22,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 4466,
+        "resolved_weight": 41803,
+        "single_edges": 0,
+        "single_weight": 0
+      },
+      "y4": {
+        "gate_dan_bodies": 64,
+        "resolved_mbon_bodies": 4,
+        "resolved_subedges": 2906,
+        "resolved_weight": 8847,
+        "single_edges": 1999,
+        "single_weight": 36320
+      },
+      "y5": {
+        "gate_dan_bodies": 48,
+        "resolved_mbon_bodies": 8,
+        "resolved_subedges": 4074,
+        "resolved_weight": 37402,
+        "single_edges": 618,
+        "single_weight": 5609
+      }
+    },
+    "plurality_territory_vs_roi": [
+      {
+        "bodyId": 10079,
+        "nominal": "B1",
+        "roi_plurality_m5b3c": "B1",
+        "territory_plurality": "B1",
+        "type": "MBON06"
+      },
+      {
+        "bodyId": 10267,
+        "nominal": "a3",
+        "roi_plurality_m5b3c": "a3",
+        "territory_plurality": "a3",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 10495,
+        "nominal": "y4",
+        "roi_plurality_m5b3c": "y4",
+        "territory_plurality": "y4",
+        "type": "MBON05"
+      },
+      {
+        "bodyId": 10599,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON35"
+      },
+      {
+        "bodyId": 10816,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "a'1",
+        "type": "MBON31"
+      },
+      {
+        "bodyId": 11176,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON26"
+      },
+      {
+        "bodyId": 11455,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON32"
+      },
+      {
+        "bodyId": 11777,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "a'1",
+        "territory_plurality": "a'1",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 11805,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "a'1",
+        "territory_plurality": "a'1",
+        "type": "MBON31"
+      },
+      {
+        "bodyId": 11873,
+        "nominal": "a3",
+        "roi_plurality_m5b3c": "a3",
+        "territory_plurality": "a3",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 12690,
+        "nominal": "B1",
+        "roi_plurality_m5b3c": "B1",
+        "territory_plurality": "B1",
+        "type": "MBON06"
+      },
+      {
+        "bodyId": 12726,
+        "nominal": "a'2",
+        "roi_plurality_m5b3c": "a'2",
+        "territory_plurality": "a'2",
+        "type": "MBON13"
+      },
+      {
+        "bodyId": 12859,
+        "nominal": "a1",
+        "roi_plurality_m5b3c": "a1",
+        "territory_plurality": "a1",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 14221,
+        "nominal": "a2",
+        "roi_plurality_m5b3c": "a2",
+        "territory_plurality": "a2",
+        "type": "MBON18"
+      },
+      {
+        "bodyId": 15626,
+        "nominal": "a1",
+        "roi_plurality_m5b3c": "a1",
+        "territory_plurality": "a1",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 17946,
+        "nominal": "a3",
+        "roi_plurality_m5b3c": "a3",
+        "territory_plurality": "a3",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 18603,
+        "nominal": "a1",
+        "roi_plurality_m5b3c": "a1",
+        "territory_plurality": "a1",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 19366,
+        "nominal": "a3",
+        "roi_plurality_m5b3c": "a3",
+        "territory_plurality": "a3",
+        "type": "MBON14"
+      },
+      {
+        "bodyId": 20835,
+        "nominal": "a2",
+        "roi_plurality_m5b3c": "a2",
+        "territory_plurality": "a2",
+        "type": "MBON23"
+      },
+      {
+        "bodyId": 26485,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON28"
+      },
+      {
+        "bodyId": 28622,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON28"
+      },
+      {
+        "bodyId": 31016,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON17"
+      },
+      {
+        "bodyId": 38853,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "a'1",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 39608,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 41692,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON17"
+      },
+      {
+        "bodyId": 49262,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 58401,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "a'1",
+        "territory_plurality": "a'1",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 70924,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 76585,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 92112,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON34"
+      },
+      {
+        "bodyId": 133427,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 160320,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y1",
+        "territory_plurality": "y1",
+        "type": "MBON25-like"
+      },
+      {
+        "bodyId": 208566,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON34"
+      },
+      {
+        "bodyId": 508595,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON35"
+      },
+      {
+        "bodyId": 512788,
+        "nominal": "a2",
+        "roi_plurality_m5b3c": "a2",
+        "territory_plurality": "a2",
+        "type": "MBON18"
+      },
+      {
+        "bodyId": 512789,
+        "nominal": "a2",
+        "roi_plurality_m5b3c": "a2",
+        "territory_plurality": "a2",
+        "type": "MBON23"
+      },
+      {
+        "bodyId": 514853,
+        "nominal": "a'2",
+        "roi_plurality_m5b3c": "a'2",
+        "territory_plurality": "a'2",
+        "type": "MBON13"
+      },
+      {
+        "bodyId": 515034,
+        "nominal": "y5",
+        "roi_plurality_m5b3c": "y4",
+        "territory_plurality": "y4",
+        "type": "MBON27"
+      },
+      {
+        "bodyId": 515338,
+        "nominal": "a1",
+        "roi_plurality_m5b3c": "a1",
+        "territory_plurality": "a1",
+        "type": "MBON07"
+      },
+      {
+        "bodyId": 519128,
+        "nominal": "y5",
+        "roi_plurality_m5b3c": "y4",
+        "territory_plurality": "y4",
+        "type": "MBON27"
+      },
+      {
+        "bodyId": 519131,
+        "nominal": "y2",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "y2",
+        "type": "MBON32"
+      },
+      {
+        "bodyId": 519371,
+        "nominal": "y4",
+        "roi_plurality_m5b3c": "y4",
+        "territory_plurality": "y4",
+        "type": "MBON05"
+      },
+      {
+        "bodyId": 519373,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON03"
+      },
+      {
+        "bodyId": 520186,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON16"
+      },
+      {
+        "bodyId": 520395,
+        "nominal": "a'1",
+        "roi_plurality_m5b3c": "a'1",
+        "territory_plurality": "a'1",
+        "type": "MBON15"
+      },
+      {
+        "bodyId": 521526,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON03"
+      },
+      {
+        "bodyId": 524733,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 524893,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON26"
+      },
+      {
+        "bodyId": 525780,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON04"
+      },
+      {
+        "bodyId": 530875,
+        "nominal": "B'2",
+        "roi_plurality_m5b3c": "B'2",
+        "territory_plurality": "B'2",
+        "type": "MBON04"
+      },
+      {
+        "bodyId": 531829,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 540383,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "B'1",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 558665,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "y2",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      },
+      {
+        "bodyId": 562782,
+        "nominal": "a'3",
+        "roi_plurality_m5b3c": "a'3",
+        "territory_plurality": "a'3",
+        "type": "MBON16"
+      },
+      {
+        "bodyId": 579919,
+        "nominal": "B'1",
+        "roi_plurality_m5b3c": "y3",
+        "territory_plurality": "B'1",
+        "type": "MBON10"
+      }
+    ],
+    "pooled_agreement_resolved_only": 0.8781662874889823,
+    "pre_post_distance_nm": {
+      "p100": 549.6762683616603,
+      "p50": 149.45233353815524,
+      "p90": 240.13329631685815,
+      "p99": 333.0345327439784
+    },
+    "resolved": 463634,
+    "signed_loops": [
+      {
+        "compartment": "a'1",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON12",
+        "model_consistent": true,
+        "plastic_weight": 9358
+      },
+      {
+        "compartment": "y1",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL101",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON11",
+        "model_consistent": true,
+        "plastic_weight": 27196
+      },
+      {
+        "compartment": "y2",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON12",
+        "model_consistent": true,
+        "plastic_weight": 11539
+      },
+      {
+        "compartment": "y2",
+        "dan_sign": "AVERSIVE",
+        "dan_type": "PPL103",
+        "mbon_sign": "ATTRACTIVE",
+        "mbon_type": "MBON33",
+        "model_consistent": true,
+        "plastic_weight": 1055
+      },
+      {
+        "compartment": "y5",
+        "dan_sign": "APPETITIVE",
+        "dan_type": "PAM01",
+        "mbon_sign": "REPULSIVE",
+        "mbon_type": "MBON21",
+        "model_consistent": true,
+        "plastic_weight": 1876
+      },
+      {
+        "compartment": "y5",
+        "dan_sign": "APPETITIVE",
+        "dan_type": "PAM01",
+        "mbon_sign": "REPULSIVE",
+        "mbon_type": "MBON29",
+        "model_consistent": true,
+        "plastic_weight": 2169
+      }
+    ],
+    "type_shuffle_control_pooled_agreement": 0.2645143724705698,
+    "unresolved_tie": 3,
+    "unresolved_unknown_kc_class": 3
+  },
+  "identity": {
+    "FAST_DAN": 328,
+    "KC": 4064,
+    "MBON": 97,
+    "kc_mbon_edges": 61210,
+    "kc_side_counts": {
+      "L": 2019,
+      "R": 2045
+    },
+    "kc_system_counts": {
+      "alpha_beta": 1810,
+      "alpha_prime_beta_prime": 695,
+      "gamma": 1557,
+      "unknown": 2
+    },
+    "m5b3b_map_mismatches": [],
+    "single_bodies_with_one_lobe_compartment": true,
+    "status_counts": {
+      "multi_compartment": 40,
+      "outside_fast_lobe_map": 2,
+      "single_compartment": 55
+    }
+  },
+  "learner_edges": {
+    "content_digest": "5ceb9d762be0d3352c2daef38ad8a6d592d6f0296fa308e60ded6544de231ca9",
+    "file": "v6_m5b3d_learner_edges.npz",
+    "nonplastic_rows": 13008,
+    "nonplastic_weight": 42835,
+    "plastic_rows": 59679,
+    "plastic_weight": 420805
+  },
+  "m5b3b_single_reproduction": {
+    "B'1": {
+      "edges": 1279,
+      "m5b3b_edges": 1279,
+      "m5b3b_weight": 2695.0,
+      "weight": 2695
+    },
+    "B'2": {
+      "edges": 3465,
+      "m5b3b_edges": 3465,
+      "m5b3b_weight": 35364.0,
+      "weight": 35364
+    },
+    "B1": {
+      "edges": 1944,
+      "m5b3b_edges": 1944,
+      "m5b3b_weight": 25465.0,
+      "weight": 25465
+    },
+    "a'1": {
+      "edges": 1425,
+      "m5b3b_edges": 1425,
+      "m5b3b_weight": 11799.0,
+      "weight": 11799
+    },
+    "a'2": {
+      "edges": 673,
+      "m5b3b_edges": 673,
+      "m5b3b_weight": 10194.0,
+      "weight": 10194
+    },
+    "a'3": {
+      "edges": 1554,
+      "m5b3b_edges": 1554,
+      "m5b3b_weight": 8909.0,
+      "weight": 8909
+    },
+    "a1": {
+      "edges": 3651,
+      "m5b3b_edges": 3651,
+      "m5b3b_weight": 22840.0,
+      "weight": 22840
+    },
+    "a2": {
+      "edges": 2921,
+      "m5b3b_edges": 2921,
+      "m5b3b_weight": 16859.0,
+      "weight": 16859
+    },
+    "a3": {
+      "edges": 3437,
+      "m5b3b_edges": 3437,
+      "m5b3b_weight": 22217.0,
+      "weight": 22217
+    },
+    "y2": {
+      "edges": 3566,
+      "m5b3b_edges": 3566,
+      "m5b3b_weight": 18428.0,
+      "weight": 18428
+    },
+    "y4": {
+      "edges": 1999,
+      "m5b3b_edges": 1999,
+      "m5b3b_weight": 36320.0,
+      "weight": 36320
+    },
+    "y5": {
+      "edges": 618,
+      "m5b3b_edges": 618,
+      "m5b3b_weight": 5609.0,
+      "weight": 5609
+    }
+  },
+  "pin": {
+    "etag": "\"58efcf712f8c4d4de5f2ad51e97def76\"",
+    "footer_length": 116632,
+    "generation": "1780494942562468",
+    "md5": "58efcf712f8c4d4de5f2ad51e97def76",
+    "record_batches": 4759,
+    "sha256": "959d8ef4173b35382a3e6acfaf5167c795b6d10b877572d146af04e1b487bc07",
+    "size": 6777179098
+  },
+  "prerequisites": {
+    "annotations_sha256": true,
+    "protocol_sha256": true,
+    "sha256:fly_mnq/v6_m5b3b_compartment_gating_mvp.py": true,
+    "sha256:fly_mnq/v6_m5b3c1_roi_vocabulary_probe.py": true,
+    "sha256:fly_mnq/v6_m5b3c_synapse_compartment_resolver.py": true,
+    "sha256:research/results/v6_m5b3b_compartment_gating_mvp_result.json": true,
+    "sha256:research/results/v6_m5b3c0_synapse_schema_result.json": true,
+    "sha256:research/results/v6_m5b3c1_roi_vocabulary_result.json": true,
+    "sha256:research/results/v6_m5b3c_resolver_result.json": true,
+    "weights_sha256": true
+  },
+  "protocol": {
+    "expected_sha256": "a9bea6d68c51b971e9ac3d666a429c7165cadbf57849c7c02b1089577de8651e",
+    "freeze_commit": "994a2b152b93188adeafa57196e726b9abd9628a",
+    "path": "research/v6_m5b3d_dan_territory_resolver_protocol.md",
+    "sha256": "a9bea6d68c51b971e9ac3d666a429c7165cadbf57849c7c02b1089577de8651e"
+  },
+  "reason": "failed: E2_every_single_compartment_body_plurality",
+  "selftest": {
+    "cases": {
+      "assignment": true,
+      "candidates": true,
+      "equidistant_different_compartments_unresolved": true,
+      "kdtree_equals_bruteforce": true,
+      "m5b3c_machinery": true,
+      "tie_overflow_unresolved": true,
+      "tie_same_compartment_assigned": true,
+      "type_map": true,
+      "type_map_rejects_two_per_system": true
+    },
+    "passed": true
+  },
+  "source": {
+    "bytes": 6777179098,
+    "bytes_match_pin": true,
+    "dictionary_mismatch_batches": 0,
+    "integrity_ok": true,
+    "kept_row_nulls": 0,
+    "key_column_nulls": 0,
+    "md5": "58efcf712f8c4d4de5f2ad51e97def76",
+    "md5_matches_pin": true,
+    "record_batches_parsed": 4759,
+    "rows_kept": 686671,
+    "rows_total": 311833243,
+    "sha256": "959d8ef4173b35382a3e6acfaf5167c795b6d10b877572d146af04e1b487bc07",
+    "sha256_matches_pin": true,
+    "tail": {
+      "end_of_last_parsed_batch": 6777062448,
+      "footer_last_block_end": 6777062448,
+      "footer_record_batch_blocks": 4759,
+      "footer_start": 6777062456,
+      "gap_hex": "ffffffff00000000",
+      "gap_length": 8,
+      "trailer_ok": true
+    },
+    "tail_ok": true
+  },
+  "synapse_table": {
+    "content_digest": "ef0d7a8bc221fa2ff687fc7c7ba9c6d21be1eab72408d5684c4c445638371108",
+    "file": "v6_m5b3d_kc_mbon_synapses.npz (artifact only)",
+    "rows": 463640
+  },
+  "territory_coverage": {
+    "B'1(L)": 2513,
+    "B'1(R)": 2005,
+    "B'2(L)": 7294,
+    "B'2(R)": 5733,
+    "B1(L)": 4031,
+    "B1(R)": 4247,
+    "B2(L)": 2721,
+    "B2(R)": 2036,
+    "a'1(L)": 1093,
+    "a'1(R)": 915,
+    "a'2(L)": 651,
+    "a'2(R)": 585,
+    "a'3(L)": 603,
+    "a'3(R)": 607,
+    "a1(L)": 1692,
+    "a1(R)": 1828,
+    "a2(L)": 1053,
+    "a2(R)": 767,
+    "a3(L)": 1124,
+    "a3(R)": 1121,
+    "y1(L)": 1471,
+    "y1(R)": 1901,
+    "y2(L)": 2494,
+    "y2(R)": 1824,
+    "y3(L)": 2241,
+    "y3(R)": 1658,
+    "y4(L)": 6728,
+    "y4(R)": 6261,
+    "y5(L)": 3522,
+    "y5(R)": 3808
+  },
+  "tie_k": 16,
+  "validation": {
+    "every_body_plurality_matches": false,
+    "per_body": [
+      {
+        "agree": 10543,
+        "bodyId": 10079,
+        "kc_synapses": 11675,
+        "nominal": "B1",
+        "plurality": "B1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 22,
+          "B'2": 17,
+          "B1": 10543,
+          "B2": 348,
+          "a'2": 9,
+          "a'3": 16,
+          "a1": 347,
+          "a2": 167,
+          "a3": 195,
+          "y3": 9,
+          "y4": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4911,
+        "bodyId": 10267,
+        "kc_synapses": 4929,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 13,
+          "a2": 5,
+          "a3": 4911
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 17013,
+        "bodyId": 10495,
+        "kc_synapses": 19140,
+        "nominal": "y4",
+        "plurality": "y4",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 27,
+          "B'2": 74,
+          "a'1": 13,
+          "a'2": 1,
+          "y1": 647,
+          "y2": 245,
+          "y3": 459,
+          "y4": 17013,
+          "y5": 661
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2026,
+        "bodyId": 10599,
+        "kc_synapses": 2041,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "y1": 9,
+          "y2": 2026,
+          "y3": 2,
+          "y4": 4
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 3955,
+        "bodyId": 10816,
+        "kc_synapses": 5367,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 710,
+          "a'1": 3955,
+          "a'2": 661,
+          "y2": 30,
+          "y3": 5,
+          "y4": 1,
+          "y5": 5
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1657,
+        "bodyId": 11176,
+        "kc_synapses": 1982,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 5,
+          "B'2": 1657,
+          "y3": 4,
+          "y4": 307,
+          "y5": 9
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 6001,
+        "bodyId": 11455,
+        "kc_synapses": 7093,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 6,
+          "a'1": 939,
+          "a'2": 11,
+          "y1": 102,
+          "y2": 6001,
+          "y3": 4,
+          "y4": 28,
+          "y5": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 193,
+        "bodyId": 11777,
+        "kc_synapses": 213,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 2,
+          "B'2": 1,
+          "a'1": 193,
+          "a'2": 15,
+          "a'3": 1,
+          "y2": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4183,
+        "bodyId": 11805,
+        "kc_synapses": 5126,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 467,
+          "B1": 3,
+          "a'1": 4183,
+          "a'2": 440,
+          "a'3": 9,
+          "y2": 23,
+          "y3": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 5482,
+        "bodyId": 11873,
+        "kc_synapses": 5488,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 5,
+          "a2": 1,
+          "a3": 5482
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 12479,
+        "bodyId": 12690,
+        "kc_synapses": 13790,
+        "nominal": "B1",
+        "plurality": "B1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 24,
+          "B'2": 17,
+          "B1": 12479,
+          "B2": 252,
+          "a'1": 1,
+          "a'2": 8,
+          "a'3": 17,
+          "a1": 500,
+          "a2": 191,
+          "a3": 267,
+          "y1": 1,
+          "y3": 2,
+          "y4": 30
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 4728,
+        "bodyId": 12726,
+        "kc_synapses": 5334,
+        "nominal": "a'2",
+        "plurality": "a'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 606,
+          "a'2": 4728
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4892,
+        "bodyId": 12859,
+        "kc_synapses": 5636,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 61,
+          "B1": 598,
+          "a'1": 1,
+          "a1": 4892,
+          "a2": 67,
+          "y3": 17
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 6853,
+        "bodyId": 14221,
+        "kc_synapses": 6940,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 11,
+          "a'3": 7,
+          "a1": 41,
+          "a2": 6853,
+          "a3": 28
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4365,
+        "bodyId": 15626,
+        "kc_synapses": 5085,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 1,
+          "B1": 642,
+          "a'1": 8,
+          "a1": 4365,
+          "a2": 68,
+          "y1": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 6704,
+        "bodyId": 17946,
+        "kc_synapses": 6719,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 8,
+          "a2": 7,
+          "a3": 6704
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4724,
+        "bodyId": 18603,
+        "kc_synapses": 5425,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 5,
+          "B1": 620,
+          "a'1": 1,
+          "a1": 4724,
+          "a2": 72,
+          "y3": 3
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 5056,
+        "bodyId": 19366,
+        "kc_synapses": 5081,
+        "nominal": "a3",
+        "plurality": "a3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 13,
+          "a2": 12,
+          "a3": 5056
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1604,
+        "bodyId": 20835,
+        "kc_synapses": 1632,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 21,
+          "a'3": 5,
+          "a1": 2,
+          "a2": 1604
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1229,
+        "bodyId": 26485,
+        "kc_synapses": 1242,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 9,
+          "a'3": 1229,
+          "y2": 4
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1022,
+        "bodyId": 28622,
+        "kc_synapses": 1037,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 10,
+          "a'3": 1022,
+          "y2": 5
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1426,
+        "bodyId": 31016,
+        "kc_synapses": 1480,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 52,
+          "a'3": 1426,
+          "a2": 1,
+          "y2": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 318,
+        "bodyId": 38853,
+        "kc_synapses": 416,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 51,
+          "a'1": 318,
+          "a'2": 47
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 355,
+        "bodyId": 39608,
+        "kc_synapses": 425,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 355,
+          "B'2": 49,
+          "y2": 1,
+          "y3": 20
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1440,
+        "bodyId": 41692,
+        "kc_synapses": 1540,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 98,
+          "a'3": 1440,
+          "y2": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 151,
+        "bodyId": 49262,
+        "kc_synapses": 169,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 151,
+          "B'2": 18
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 237,
+        "bodyId": 58401,
+        "kc_synapses": 385,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 91,
+          "a'1": 237,
+          "a'2": 55,
+          "a'3": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 479,
+        "bodyId": 70924,
+        "kc_synapses": 482,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 479,
+          "B'2": 3
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 103,
+        "bodyId": 76585,
+        "kc_synapses": 154,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 30,
+          "y1": 9,
+          "y2": 103,
+          "y4": 7,
+          "y5": 5
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 31,
+        "bodyId": 92112,
+        "kc_synapses": 35,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "y1": 1,
+          "y2": 31,
+          "y3": 3
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 185,
+        "bodyId": 133427,
+        "kc_synapses": 206,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 185,
+          "B'2": 8,
+          "a'1": 13
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 127,
+        "bodyId": 160320,
+        "kc_synapses": 375,
+        "nominal": "y2",
+        "plurality": "y1",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "y1": 238,
+          "y2": 127,
+          "y3": 5,
+          "y4": 2,
+          "y5": 3
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 42,
+        "bodyId": 208566,
+        "kc_synapses": 45,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "y2": 42,
+          "y4": 1,
+          "y5": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2542,
+        "bodyId": 508595,
+        "kc_synapses": 2614,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 31,
+          "y1": 30,
+          "y2": 2542,
+          "y3": 3,
+          "y4": 8
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 6855,
+        "bodyId": 512788,
+        "kc_synapses": 6985,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 5,
+          "a'3": 18,
+          "a1": 44,
+          "a2": 6855,
+          "a3": 63
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1256,
+        "bodyId": 512789,
+        "kc_synapses": 1302,
+        "nominal": "a2",
+        "plurality": "a2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 11,
+          "a'3": 20,
+          "a1": 15,
+          "a2": 1256
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4665,
+        "bodyId": 514853,
+        "kc_synapses": 4860,
+        "nominal": "a'2",
+        "plurality": "a'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'1": 194,
+          "a'2": 4665,
+          "a'3": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1393,
+        "bodyId": 515034,
+        "kc_synapses": 3205,
+        "nominal": "y5",
+        "plurality": "y4",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'2": 31,
+          "y3": 151,
+          "y4": 1630,
+          "y5": 1393
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 5850,
+        "bodyId": 515338,
+        "kc_synapses": 6694,
+        "nominal": "a1",
+        "plurality": "a1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 26,
+          "B1": 750,
+          "a'1": 3,
+          "a1": 5850,
+          "a2": 65
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 811,
+        "bodyId": 519128,
+        "kc_synapses": 2404,
+        "nominal": "y5",
+        "plurality": "y4",
+        "plurality_matches": false,
+        "resolved_counts": {
+          "B'2": 44,
+          "y2": 50,
+          "y3": 134,
+          "y4": 1365,
+          "y5": 811
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 4427,
+        "bodyId": 519131,
+        "kc_synapses": 6071,
+        "nominal": "y2",
+        "plurality": "y2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 4,
+          "a'1": 1580,
+          "a'2": 5,
+          "y1": 38,
+          "y2": 4427,
+          "y3": 1,
+          "y4": 8,
+          "y5": 8
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 14886,
+        "bodyId": 519371,
+        "kc_synapses": 17180,
+        "nominal": "y4",
+        "plurality": "y4",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 34,
+          "B'2": 123,
+          "a'1": 70,
+          "a2": 1,
+          "y1": 764,
+          "y2": 337,
+          "y3": 272,
+          "y4": 14886,
+          "y5": 693
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 10198,
+        "bodyId": 519373,
+        "kc_synapses": 10309,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 111,
+          "B'2": 10198
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 1551,
+        "bodyId": 520186,
+        "kc_synapses": 1571,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'2": 10,
+          "a'3": 1551,
+          "y2": 10
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 194,
+        "bodyId": 520395,
+        "kc_synapses": 292,
+        "nominal": "a'1",
+        "plurality": "a'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 58,
+          "a'1": 194,
+          "a'2": 39,
+          "a'3": 1
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 10815,
+        "bodyId": 521526,
+        "kc_synapses": 13695,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 839,
+          "B'2": 10815,
+          "B2": 4,
+          "a'1": 1381,
+          "a'2": 642,
+          "y2": 4,
+          "y4": 7,
+          "y5": 2
+        },
+        "unresolved": 1
+      },
+      {
+        "agree": 396,
+        "bodyId": 524733,
+        "kc_synapses": 398,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 396,
+          "a'1": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2366,
+        "bodyId": 524893,
+        "kc_synapses": 2575,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 20,
+          "B'2": 2366,
+          "a'1": 2,
+          "y4": 169,
+          "y5": 18
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2456,
+        "bodyId": 525780,
+        "kc_synapses": 3746,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 23,
+          "B'2": 2456,
+          "y2": 1,
+          "y3": 2,
+          "y4": 1258,
+          "y5": 6
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2124,
+        "bodyId": 530875,
+        "kc_synapses": 3057,
+        "nominal": "B'2",
+        "plurality": "B'2",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 11,
+          "B'2": 2124,
+          "y2": 8,
+          "y4": 914
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 351,
+        "bodyId": 531829,
+        "kc_synapses": 372,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 351,
+          "B'2": 17,
+          "y2": 1,
+          "y3": 3
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 98,
+        "bodyId": 540383,
+        "kc_synapses": 98,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 98
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 375,
+        "bodyId": 558665,
+        "kc_synapses": 387,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 375,
+          "B'2": 1,
+          "B1": 1,
+          "a'1": 7,
+          "a1": 1,
+          "y3": 2
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 2028,
+        "bodyId": 562782,
+        "kc_synapses": 2039,
+        "nominal": "a'3",
+        "plurality": "a'3",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "a'3": 2028,
+          "a3": 5,
+          "y2": 6
+        },
+        "unresolved": 0
+      },
+      {
+        "agree": 145,
+        "bodyId": 579919,
+        "kc_synapses": 158,
+        "nominal": "B'1",
+        "plurality": "B'1",
+        "plurality_matches": true,
+        "resolved_counts": {
+          "B'1": 145,
+          "y3": 13
+        },
+        "unresolved": 0
+      }
+    ],
+    "pooled_agree": 190296,
+    "pooled_agreement": 0.8781581825481428,
+    "pooled_n": 216699,
+    "pooled_pass": true
+  },
+  "voxel_nm": 8.0
+}
