@@ -1,0 +1,90 @@
+name: V6 M5B3C1 ROI label vocabulary probe
+
+on:
+  push:
+    branches: [claude/hello-8eabhu]
+    paths:
+      - ".github/workflows/v6_m5b3c1_roi_vocabulary.yml"
+      - "fly_mnq/v6_m5b3c1_roi_vocabulary_probe.py"
+      - "research/v6_m5b3c1_roi_label_vocabulary_protocol.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.10"
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 pyarrow==17.0.0
+
+      - name: Freeze execution bytes
+        run: |
+          mkdir -p v6_m5b3c1_out
+          sha256sum research/v6_m5b3c1_roi_label_vocabulary_protocol.md fly_mnq/v6_m5b3c1_roi_vocabulary_probe.py research/results/v6_m5b3c0_synapse_schema_result.json | tee v6_m5b3c1_out/preexecution_sha256.txt
+
+      - name: Execute dictionary-only vocabulary probe (self-test first)
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m5b3c1_roi_vocabulary_probe.py | tee v6_m5b3c1_out/stdout.txt
+
+      - name: Enforce classification vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m5b3c1_out/v6_m5b3c1_roi_vocabulary_result.json"))
+          allowed={
+            "PASS_M5B3C1_MB_COMPARTMENT_COLUMN_IDENTIFIED",
+            "FAIL_M5B3C1_MB_COMPARTMENT_COLUMN_NOT_FOUND",
+            "BLOCKED_M5B3C1_SOURCE",
+          }
+          print("FORMAL_CLASSIFICATION",r["classification"])
+          if r["classification"] not in allowed:
+              raise SystemExit(2)
+          PY
+
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m5b3c1_out/output_sha256.txt
+          for f in v6_m5b3c1_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m5b3c1_out/output_sha256.txt
+          done
+          cat v6_m5b3c1_out/output_sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m5b3c1-roi-vocabulary
+          path: v6_m5b3c1_out/
+          retention-days: 14
+          compression-level: 0
+
+      - name: Persist formal summary result
+        if: success()
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m5b3c1_out/v6_m5b3c1_roi_vocabulary_result.json research/results/v6_m5b3c1_roi_vocabulary_result.json
+          cp v6_m5b3c1_out/output_sha256.txt research/results/v6_m5b3c1_roi_vocabulary_output_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m5b3c1_roi_vocabulary_result.json research/results/v6_m5b3c1_roi_vocabulary_output_sha256.txt
+          if git diff --cached --quiet; then
+            echo "No result change"
+          else
+            git commit -m "V6-M5B3C1: record ROI label vocabulary probe result [skip ci]"
+            git push
+          fi
