@@ -1,0 +1,1869 @@
+{
+  "classification": "PASS_M5B3C1_MB_COMPARTMENT_COLUMN_IDENTIFIED",
+  "diagnostics": {
+    "PED_presence": {
+      "syn-partners-male-cns-v1.0-minconf-0.5.feather:primary_post": {
+        "PED(L)": true,
+        "PED(R)": true
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:compartment": {
+        "PED(L)": false,
+        "PED(R)": false
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:kind": {
+        "PED(L)": false,
+        "PED(R)": false
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:major": {
+        "PED(L)": false,
+        "PED(R)": false
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:primary": {
+        "PED(L)": true,
+        "PED(R)": true
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:subprimary": {
+        "PED(L)": false,
+        "PED(R)": false
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:superprimary": {
+        "PED(L)": false,
+        "PED(R)": false
+      }
+    },
+    "compartment_equals_documented_major_compartments": false,
+    "primary_post_equals_primary_as_set": true,
+    "reference_labels_by_column": {
+      "syn-partners-male-cns-v1.0-minconf-0.5.feather:primary_post": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:compartment": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:kind": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:major": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:primary": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:subprimary": {
+        "absent": [],
+        "present": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ]
+      },
+      "syn-points-male-cns-v1.0-minconf-0.5.feather:superprimary": {
+        "absent": [
+          "a1(L)",
+          "a1(R)",
+          "a2(L)",
+          "a2(R)",
+          "a3(L)",
+          "a3(R)",
+          "a'1(L)",
+          "a'1(R)",
+          "a'2(L)",
+          "a'2(R)",
+          "a'3(L)",
+          "a'3(R)",
+          "b1(L)",
+          "b1(R)",
+          "b2(L)",
+          "b2(R)",
+          "b'1(L)",
+          "b'1(R)",
+          "b'2(L)",
+          "b'2(R)",
+          "g1(L)",
+          "g1(R)",
+          "g2(L)",
+          "g2(R)",
+          "g3(L)",
+          "g3(R)",
+          "g4(L)",
+          "g4(R)",
+          "g5(L)",
+          "g5(R)"
+        ],
+        "present": []
+      }
+    }
+  },
+  "firewall": "footers, schema messages and dictionary batches only; no record-batch bytes; no per-synapse values",
+  "m5b3c0_record_sha256_match": true,
+  "parity_with_m5b3c0": {
+    "syn-partners-male-cns-v1.0-minconf-0.5.feather": {
+      "content_length": true,
+      "headers": true,
+      "record_batch_count": true,
+      "schema": true
+    },
+    "syn-points-male-cns-v1.0-minconf-0.5.feather": {
+      "content_length": true,
+      "headers": true,
+      "record_batch_count": true,
+      "schema": true
+    }
+  },
+  "problems": {
+    "syn-partners-male-cns-v1.0-minconf-0.5.feather": [],
+    "syn-points-male-cns-v1.0-minconf-0.5.feather": []
+  },
+  "protocol": {
+    "path": "research/v6_m5b3c1_roi_label_vocabulary_protocol.md",
+    "sha256": "26fda91338840b86e9dce0f35e1fcfe931072504597232c7e140bf4873047ade"
+  },
+  "qualifying_columns": [
+    {
+      "column": "subprimary",
+      "file": "syn-points-male-cns-v1.0-minconf-0.5.feather"
+    }
+  ],
+  "reason": "a dictionary column contains all 30 documented MB lobe-compartment labels",
+  "reference_labels": [
+    "a1(L)",
+    "a1(R)",
+    "a2(L)",
+    "a2(R)",
+    "a3(L)",
+    "a3(R)",
+    "a'1(L)",
+    "a'1(R)",
+    "a'2(L)",
+    "a'2(R)",
+    "a'3(L)",
+    "a'3(R)",
+    "b1(L)",
+    "b1(R)",
+    "b2(L)",
+    "b2(R)",
+    "b'1(L)",
+    "b'1(R)",
+    "b'2(L)",
+    "b'2(R)",
+    "g1(L)",
+    "g1(R)",
+    "g2(L)",
+    "g2(R)",
+    "g3(L)",
+    "g3(R)",
+    "g4(L)",
+    "g4(R)",
+    "g5(L)",
+    "g5(R)"
+  ],
+  "selftest": {
+    "cases": [
+      {
+        "case": "pandas_lz4.feather",
+        "dictionary_messages": [
+          [
+            0,
+            false,
+            "LZ4_FRAME"
+          ],
+          [
+            1,
+            false,
+            "LZ4_FRAME"
+          ],
+          [
+            2,
+            false,
+            "LZ4_FRAME"
+          ]
+        ],
+        "no_record_batch_bytes_read": true,
+        "problems": [],
+        "record_batches": 14,
+        "record_batches_match_reader": true,
+        "vocabularies_equal_full_read": true
+      },
+      {
+        "case": "pandas_zstd.feather",
+        "dictionary_messages": [
+          [
+            0,
+            false,
+            "ZSTD"
+          ],
+          [
+            1,
+            false,
+            "ZSTD"
+          ],
+          [
+            2,
+            false,
+            "ZSTD"
+          ]
+        ],
+        "no_record_batch_bytes_read": true,
+        "problems": [],
+        "record_batches": 14,
+        "record_batches_match_reader": true,
+        "vocabularies_equal_full_read": true
+      },
+      {
+        "case": "pandas_uncompressed.feather",
+        "dictionary_messages": [
+          [
+            0,
+            false,
+            null
+          ],
+          [
+            1,
+            false,
+            null
+          ],
+          [
+            2,
+            false,
+            null
+          ]
+        ],
+        "no_record_batch_bytes_read": true,
+        "problems": [],
+        "record_batches": 14,
+        "record_batches_match_reader": true,
+        "vocabularies_equal_full_read": true
+      },
+      {
+        "case": "deltas.arrow",
+        "dictionary_messages": [
+          [
+            0,
+            false,
+            "LZ4_FRAME"
+          ],
+          [
+            0,
+            true,
+            "LZ4_FRAME"
+          ],
+          [
+            0,
+            true,
+            "LZ4_FRAME"
+          ]
+        ],
+        "no_record_batch_bytes_read": true,
+        "problems": [],
+        "record_batches": 3,
+        "record_batches_match_reader": true,
+        "vocabularies_equal_full_read": true
+      }
+    ],
+    "passed": true
+  },
+  "sources": {
+    "syn-partners-male-cns-v1.0-minconf-0.5.feather": {
+      "content_length": 6777179098,
+      "dictionary_block_count": 1,
+      "dictionary_messages": [
+        {
+          "body_length": 1376,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 0,
+          "dictionary_length": 146,
+          "is_delta": false,
+          "metadata_length": 192,
+          "offset": 2392
+        }
+      ],
+      "fields": [
+        {
+          "dictionary_id": null,
+          "name": "x_pre"
+        },
+        {
+          "dictionary_id": null,
+          "name": "y_pre"
+        },
+        {
+          "dictionary_id": null,
+          "name": "z_pre"
+        },
+        {
+          "dictionary_id": null,
+          "name": "body_pre"
+        },
+        {
+          "dictionary_id": null,
+          "name": "conf_pre"
+        },
+        {
+          "dictionary_id": null,
+          "name": "x_post"
+        },
+        {
+          "dictionary_id": null,
+          "name": "y_post"
+        },
+        {
+          "dictionary_id": null,
+          "name": "z_post"
+        },
+        {
+          "dictionary_id": null,
+          "name": "body_post"
+        },
+        {
+          "dictionary_id": null,
+          "name": "conf_post"
+        },
+        {
+          "dictionary_id": 0,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "primary_post",
+          "ordered": true
+        }
+      ],
+      "footer_length": 116632,
+      "footer_version": 4,
+      "range_reads": [
+        {
+          "length": 10,
+          "offset": 6777179088
+        },
+        {
+          "length": 116632,
+          "offset": 6777062456
+        },
+        {
+          "length": 8,
+          "offset": 0
+        },
+        {
+          "length": 8,
+          "offset": 8
+        },
+        {
+          "length": 2376,
+          "offset": 16
+        },
+        {
+          "length": 1568,
+          "offset": 2392
+        }
+      ],
+      "reads_intersecting_record_batch_blocks": [],
+      "record_batch_block_count": 4759,
+      "schema": [
+        {
+          "name": "x_pre",
+          "type": "int32"
+        },
+        {
+          "name": "y_pre",
+          "type": "int32"
+        },
+        {
+          "name": "z_pre",
+          "type": "int32"
+        },
+        {
+          "name": "body_pre",
+          "type": "int64"
+        },
+        {
+          "name": "conf_pre",
+          "type": "float"
+        },
+        {
+          "name": "x_post",
+          "type": "int32"
+        },
+        {
+          "name": "y_post",
+          "type": "int32"
+        },
+        {
+          "name": "z_post",
+          "type": "int32"
+        },
+        {
+          "name": "body_post",
+          "type": "int64"
+        },
+        {
+          "name": "conf_post",
+          "type": "float"
+        },
+        {
+          "name": "primary_post",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        }
+      ],
+      "schema_message_version": 4,
+      "server_headers": {
+        "ETag": "\"58efcf712f8c4d4de5f2ad51e97def76\"",
+        "Last-Modified": "Wed, 03 Jun 2026 13:55:42 GMT",
+        "x-goog-generation": "1780494942562468",
+        "x-goog-hash": "crc32c=jTlNIA=="
+      },
+      "vocabularies": {
+        "primary_post": {
+          "size": 146,
+          "values": [
+            "<unspecified>",
+            "AB(L)",
+            "AB(R)",
+            "AL(L)",
+            "AL(R)",
+            "AME(L)",
+            "AME(R)",
+            "AOTU(L)",
+            "AOTU(R)",
+            "ATL(L)",
+            "ATL(R)",
+            "AVLP(L)",
+            "AVLP(R)",
+            "BU(L)",
+            "BU(R)",
+            "CA(L)",
+            "CA(R)",
+            "CAN(L)",
+            "CAN(R)",
+            "CRE(L)",
+            "CRE(R)",
+            "EB",
+            "EPA(L)",
+            "EPA(R)",
+            "FB",
+            "FLA(L)",
+            "FLA(R)",
+            "GNG",
+            "GOR(L)",
+            "GOR(R)",
+            "IB",
+            "ICL(L)",
+            "ICL(R)",
+            "IPS(L)",
+            "IPS(R)",
+            "LA(L)",
+            "LA(R)",
+            "LAL(L)",
+            "LAL(R)",
+            "LH(L)",
+            "LH(R)",
+            "LO(L)",
+            "LO(R)",
+            "LOP(L)",
+            "LOP(R)",
+            "ME(L)",
+            "ME(R)",
+            "NO",
+            "PB",
+            "PED(L)",
+            "PED(R)",
+            "PLP(L)",
+            "PLP(R)",
+            "PRW",
+            "PVLP(L)",
+            "PVLP(R)",
+            "SAD",
+            "SCL(L)",
+            "SCL(R)",
+            "SIP(L)",
+            "SIP(R)",
+            "SLP(L)",
+            "SLP(R)",
+            "SMP(L)",
+            "SMP(R)",
+            "SPS(L)",
+            "SPS(R)",
+            "VES(L)",
+            "VES(R)",
+            "WED(L)",
+            "WED(R)",
+            "a'L(L)",
+            "a'L(R)",
+            "aL(L)",
+            "aL(R)",
+            "b'L(L)",
+            "b'L(R)",
+            "bL(L)",
+            "bL(R)",
+            "gL(L)",
+            "gL(R)",
+            "CRN",
+            "ANm",
+            "HTct(UTct-T3)(L)",
+            "HTct(UTct-T3)(R)",
+            "IntTct",
+            "LTct",
+            "LegNp(T1)(L)",
+            "LegNp(T1)(R)",
+            "LegNp(T2)(L)",
+            "LegNp(T2)(R)",
+            "LegNp(T3)(L)",
+            "LegNp(T3)(R)",
+            "NTct(UTct-T1)(L)",
+            "NTct(UTct-T1)(R)",
+            "Ov(L)",
+            "Ov(R)",
+            "WTct(UTct-T2)(L)",
+            "WTct(UTct-T2)(R)",
+            "mVAC(T1)(L)",
+            "mVAC(T1)(R)",
+            "mVAC(T2)(L)",
+            "mVAC(T2)(R)",
+            "mVAC(T3)(L)",
+            "mVAC(T3)(R)",
+            "ADMN(L)",
+            "ADMN(R)",
+            "AbN1(L)",
+            "AbN1(R)",
+            "AbN2(L)",
+            "AbN2(R)",
+            "AbN3(L)",
+            "AbN3(R)",
+            "AbN4(L)",
+            "AbN4(R)",
+            "AbNT(L)",
+            "AbNT(R)",
+            "CvN(L)",
+            "CvN(R)",
+            "DMetaN(L)",
+            "DMetaN(R)",
+            "DProN(L)",
+            "DProN(R)",
+            "MesoAN(L)",
+            "MesoAN(R)",
+            "MesoLN(L)",
+            "MesoLN(R)",
+            "MetaLN(L)",
+            "MetaLN(R)",
+            "PDMN(L)",
+            "PDMN(R)",
+            "PrN(L)",
+            "PrN(R)",
+            "ProAN(L)",
+            "ProAN(R)",
+            "ProCN(L)",
+            "ProCN(R)",
+            "ProLN(L)",
+            "ProLN(R)",
+            "VProN(L)",
+            "VProN(R)",
+            "CentralBrain-unspecified",
+            "Optic-unspecified(L)",
+            "Optic-unspecified(R)",
+            "CV-unspecified",
+            "VNC-unspecified"
+          ]
+        }
+      }
+    },
+    "syn-points-male-cns-v1.0-minconf-0.5.feather": {
+      "content_length": 13061489098,
+      "dictionary_block_count": 18,
+      "dictionary_messages": [
+        {
+          "body_length": 80,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 0,
+          "dictionary_length": 2,
+          "is_delta": false,
+          "metadata_length": 192,
+          "offset": 9400
+        },
+        {
+          "body_length": 112,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 1,
+          "dictionary_length": 5,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 9672
+        },
+        {
+          "body_length": 128,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 2,
+          "dictionary_length": 6,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 9984
+        },
+        {
+          "body_length": 1376,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 3,
+          "dictionary_length": 146,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 10312
+        },
+        {
+          "body_length": 176,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 4,
+          "dictionary_length": 13,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 11888
+        },
+        {
+          "body_length": 1816,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 5,
+          "dictionary_length": 204,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 12264
+        },
+        {
+          "body_length": 7512,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 6,
+          "dictionary_length": 893,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 14280
+        },
+        {
+          "body_length": 7384,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 7,
+          "dictionary_length": 876,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 21992
+        },
+        {
+          "body_length": 7216,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 8,
+          "dictionary_length": 857,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 29576
+        },
+        {
+          "body_length": 168,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 9,
+          "dictionary_length": 11,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 36992
+        },
+        {
+          "body_length": 144,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 10,
+          "dictionary_length": 8,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 37360
+        },
+        {
+          "body_length": 120,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 11,
+          "dictionary_length": 5,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 37704
+        },
+        {
+          "body_length": 7416,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 12,
+          "dictionary_length": 881,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 38024
+        },
+        {
+          "body_length": 7320,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 13,
+          "dictionary_length": 868,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 45640
+        },
+        {
+          "body_length": 7104,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 14,
+          "dictionary_length": 843,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 53160
+        },
+        {
+          "body_length": 168,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 15,
+          "dictionary_length": 11,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 60464
+        },
+        {
+          "body_length": 144,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 16,
+          "dictionary_length": 8,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 60832
+        },
+        {
+          "body_length": 120,
+          "compression_codec": "LZ4_FRAME",
+          "dictionary_id": 17,
+          "dictionary_length": 5,
+          "is_delta": false,
+          "metadata_length": 200,
+          "offset": 61176
+        }
+      ],
+      "fields": [
+        {
+          "dictionary_id": null,
+          "name": "z"
+        },
+        {
+          "dictionary_id": null,
+          "name": "y"
+        },
+        {
+          "dictionary_id": null,
+          "name": "x"
+        },
+        {
+          "dictionary_id": 0,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "kind",
+          "ordered": false
+        },
+        {
+          "dictionary_id": null,
+          "name": "conf"
+        },
+        {
+          "dictionary_id": null,
+          "name": "sv"
+        },
+        {
+          "dictionary_id": null,
+          "name": "body"
+        },
+        {
+          "dictionary_id": 1,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "compartment",
+          "ordered": false
+        },
+        {
+          "dictionary_id": null,
+          "name": "major_label"
+        },
+        {
+          "dictionary_id": 2,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "major",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "primary_label"
+        },
+        {
+          "dictionary_id": 3,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "primary",
+          "ordered": true
+        },
+        {
+          "dictionary_id": 4,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "superprimary",
+          "ordered": false
+        },
+        {
+          "dictionary_id": null,
+          "name": "superprimary_label"
+        },
+        {
+          "dictionary_id": null,
+          "name": "subprimary_label"
+        },
+        {
+          "dictionary_id": 5,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "subprimary",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "medulla_r_column_label"
+        },
+        {
+          "dictionary_id": 6,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "medulla_r_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_r_column_label"
+        },
+        {
+          "dictionary_id": 7,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "lobula_r_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_plate_r_column_label"
+        },
+        {
+          "dictionary_id": 8,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "lobula_plate_r_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "medulla_r_layer_label"
+        },
+        {
+          "dictionary_id": 9,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "medulla_r_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_r_layer_label"
+        },
+        {
+          "dictionary_id": 10,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "lobula_r_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_plate_r_layer_label"
+        },
+        {
+          "dictionary_id": 11,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "lobula_plate_r_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "medulla_l_column_label"
+        },
+        {
+          "dictionary_id": 12,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "medulla_l_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_l_column_label"
+        },
+        {
+          "dictionary_id": 13,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "lobula_l_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_plate_l_column_label"
+        },
+        {
+          "dictionary_id": 14,
+          "index_bit_width": 16,
+          "index_signed": true,
+          "name": "lobula_plate_l_column",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "medulla_l_layer_label"
+        },
+        {
+          "dictionary_id": 15,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "medulla_l_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_l_layer_label"
+        },
+        {
+          "dictionary_id": 16,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "lobula_l_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "lobula_plate_l_layer_label"
+        },
+        {
+          "dictionary_id": 17,
+          "index_bit_width": 8,
+          "index_signed": true,
+          "name": "lobula_plate_l_layer",
+          "ordered": true
+        },
+        {
+          "dictionary_id": null,
+          "name": "point_id"
+        }
+      ],
+      "footer_length": 140760,
+      "footer_version": 4,
+      "range_reads": [
+        {
+          "length": 10,
+          "offset": 13061489088
+        },
+        {
+          "length": 140760,
+          "offset": 13061348328
+        },
+        {
+          "length": 8,
+          "offset": 0
+        },
+        {
+          "length": 8,
+          "offset": 8
+        },
+        {
+          "length": 9384,
+          "offset": 16
+        },
+        {
+          "length": 272,
+          "offset": 9400
+        },
+        {
+          "length": 312,
+          "offset": 9672
+        },
+        {
+          "length": 328,
+          "offset": 9984
+        },
+        {
+          "length": 1576,
+          "offset": 10312
+        },
+        {
+          "length": 376,
+          "offset": 11888
+        },
+        {
+          "length": 2016,
+          "offset": 12264
+        },
+        {
+          "length": 7712,
+          "offset": 14280
+        },
+        {
+          "length": 7584,
+          "offset": 21992
+        },
+        {
+          "length": 7416,
+          "offset": 29576
+        },
+        {
+          "length": 368,
+          "offset": 36992
+        },
+        {
+          "length": 344,
+          "offset": 37360
+        },
+        {
+          "length": 320,
+          "offset": 37704
+        },
+        {
+          "length": 7616,
+          "offset": 38024
+        },
+        {
+          "length": 7520,
+          "offset": 45640
+        },
+        {
+          "length": 7304,
+          "offset": 53160
+        },
+        {
+          "length": 368,
+          "offset": 60464
+        },
+        {
+          "length": 344,
+          "offset": 60832
+        },
+        {
+          "length": 320,
+          "offset": 61176
+        }
+      ],
+      "reads_intersecting_record_batch_blocks": [],
+      "record_batch_block_count": 5455,
+      "schema": [
+        {
+          "name": "z",
+          "type": "int32"
+        },
+        {
+          "name": "y",
+          "type": "int32"
+        },
+        {
+          "name": "x",
+          "type": "int32"
+        },
+        {
+          "name": "kind",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "name": "conf",
+          "type": "float"
+        },
+        {
+          "name": "sv",
+          "type": "int64"
+        },
+        {
+          "name": "body",
+          "type": "int64"
+        },
+        {
+          "name": "compartment",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "name": "major_label",
+          "type": "int8"
+        },
+        {
+          "name": "major",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "primary_label",
+          "type": "uint8"
+        },
+        {
+          "name": "primary",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "superprimary",
+          "type": "dictionary<values=string, indices=int8, ordered=0>"
+        },
+        {
+          "name": "superprimary_label",
+          "type": "uint8"
+        },
+        {
+          "name": "subprimary_label",
+          "type": "uint8"
+        },
+        {
+          "name": "subprimary",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "medulla_r_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "medulla_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "lobula_r_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "lobula_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "lobula_plate_r_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "lobula_plate_r_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "medulla_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "medulla_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "lobula_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "lobula_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "lobula_plate_r_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "lobula_plate_r_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "medulla_l_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "medulla_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "lobula_l_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "lobula_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "lobula_plate_l_column_label",
+          "type": "int16"
+        },
+        {
+          "name": "lobula_plate_l_column",
+          "type": "dictionary<values=string, indices=int16, ordered=1>"
+        },
+        {
+          "name": "medulla_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "medulla_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "lobula_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "lobula_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "lobula_plate_l_layer_label",
+          "type": "int8"
+        },
+        {
+          "name": "lobula_plate_l_layer",
+          "type": "dictionary<values=string, indices=int8, ordered=1>"
+        },
+        {
+          "name": "point_id",
+          "type": "uint64"
+        }
+      ],
+      "schema_message_version": 4,
+      "server_headers": {
+        "ETag": "\"c69d08758de07582035cc8843574493a\"",
+        "Last-Modified": "Wed, 03 Jun 2026 13:56:31 GMT",
+        "x-goog-generation": "1780494991007477",
+        "x-goog-hash": "crc32c=1E7gRw=="
+      },
+      "vocabularies": {
+        "compartment": {
+          "size": 5,
+          "values": [
+            "unknown",
+            "axon",
+            "dendrite",
+            "linker",
+            "cell-body-fiber"
+          ]
+        },
+        "kind": {
+          "size": 2,
+          "values": [
+            "PostSyn",
+            "PreSyn"
+          ]
+        },
+        "lobula_l_column": {
+          "canonical_json_sha256": "6b1b7f0c0ef158a35279cb8c665d712789b1493a909fbbbe5c3984b0be5fe184",
+          "size": 868
+        },
+        "lobula_l_layer": {
+          "canonical_json_sha256": "d974a8956b4814b3d763a869730441832e6afe05cad850592b8ac69164b6e4cf",
+          "size": 8
+        },
+        "lobula_plate_l_column": {
+          "canonical_json_sha256": "0fd5ee75e1d129883ee35c8faba91645981aa4224aa70d4133b2f8be64617b85",
+          "size": 843
+        },
+        "lobula_plate_l_layer": {
+          "canonical_json_sha256": "8134fb7eb46f8ae9a50c1a02159d960fee96f1463320334017a256408ea7cb80",
+          "size": 5
+        },
+        "lobula_plate_r_column": {
+          "canonical_json_sha256": "07af4aae93d3c487425cba7080bc1b820bdfc3ce1c2f493dce84747081117a37",
+          "size": 857
+        },
+        "lobula_plate_r_layer": {
+          "canonical_json_sha256": "a63565c81a9c737935f175b6b3bd98e3511920bd7f096629c8afac7c04e43078",
+          "size": 5
+        },
+        "lobula_r_column": {
+          "canonical_json_sha256": "e94576ae5b5a09459788d8c5363be1b63ab2bb892a48435024faccb949d6fb99",
+          "size": 876
+        },
+        "lobula_r_layer": {
+          "canonical_json_sha256": "38035f2bc29afd3d076e6ac2af23eafed84116e21fa571ac419c13ea0b4e2cb2",
+          "size": 8
+        },
+        "major": {
+          "size": 6,
+          "values": [
+            "<unspecified>",
+            "CentralBrain",
+            "Optic(L)",
+            "Optic(R)",
+            "CV",
+            "VNC"
+          ]
+        },
+        "medulla_l_column": {
+          "canonical_json_sha256": "9d99487c4fc8cd19151225bc54e036be95435e6ae20c87b02c3c082c74d8a48c",
+          "size": 881
+        },
+        "medulla_l_layer": {
+          "canonical_json_sha256": "95c47aedcfb991042ffa6c7b395bdfbc4bf73220326941d5ecf99ee8cdcb5bf9",
+          "size": 11
+        },
+        "medulla_r_column": {
+          "canonical_json_sha256": "3ec09387332a932f9da0020e83fec32e546ebedb7bfe1a35476d196cc9b765eb",
+          "size": 893
+        },
+        "medulla_r_layer": {
+          "canonical_json_sha256": "c2ff49437f40cfcfe4016a4c362107302b82354fc7e23113e4c26ed9d61f7e7c",
+          "size": 11
+        },
+        "primary": {
+          "size": 146,
+          "values": [
+            "<unspecified>",
+            "AB(L)",
+            "AB(R)",
+            "AL(L)",
+            "AL(R)",
+            "AME(L)",
+            "AME(R)",
+            "AOTU(L)",
+            "AOTU(R)",
+            "ATL(L)",
+            "ATL(R)",
+            "AVLP(L)",
+            "AVLP(R)",
+            "BU(L)",
+            "BU(R)",
+            "CA(L)",
+            "CA(R)",
+            "CAN(L)",
+            "CAN(R)",
+            "CRE(L)",
+            "CRE(R)",
+            "EB",
+            "EPA(L)",
+            "EPA(R)",
+            "FB",
+            "FLA(L)",
+            "FLA(R)",
+            "GNG",
+            "GOR(L)",
+            "GOR(R)",
+            "IB",
+            "ICL(L)",
+            "ICL(R)",
+            "IPS(L)",
+            "IPS(R)",
+            "LA(L)",
+            "LA(R)",
+            "LAL(L)",
+            "LAL(R)",
+            "LH(L)",
+            "LH(R)",
+            "LO(L)",
+            "LO(R)",
+            "LOP(L)",
+            "LOP(R)",
+            "ME(L)",
+            "ME(R)",
+            "NO",
+            "PB",
+            "PED(L)",
+            "PED(R)",
+            "PLP(L)",
+            "PLP(R)",
+            "PRW",
+            "PVLP(L)",
+            "PVLP(R)",
+            "SAD",
+            "SCL(L)",
+            "SCL(R)",
+            "SIP(L)",
+            "SIP(R)",
+            "SLP(L)",
+            "SLP(R)",
+            "SMP(L)",
+            "SMP(R)",
+            "SPS(L)",
+            "SPS(R)",
+            "VES(L)",
+            "VES(R)",
+            "WED(L)",
+            "WED(R)",
+            "a'L(L)",
+            "a'L(R)",
+            "aL(L)",
+            "aL(R)",
+            "b'L(L)",
+            "b'L(R)",
+            "bL(L)",
+            "bL(R)",
+            "gL(L)",
+            "gL(R)",
+            "CRN",
+            "ANm",
+            "HTct(UTct-T3)(L)",
+            "HTct(UTct-T3)(R)",
+            "IntTct",
+            "LTct",
+            "LegNp(T1)(L)",
+            "LegNp(T1)(R)",
+            "LegNp(T2)(L)",
+            "LegNp(T2)(R)",
+            "LegNp(T3)(L)",
+            "LegNp(T3)(R)",
+            "NTct(UTct-T1)(L)",
+            "NTct(UTct-T1)(R)",
+            "Ov(L)",
+            "Ov(R)",
+            "WTct(UTct-T2)(L)",
+            "WTct(UTct-T2)(R)",
+            "mVAC(T1)(L)",
+            "mVAC(T1)(R)",
+            "mVAC(T2)(L)",
+            "mVAC(T2)(R)",
+            "mVAC(T3)(L)",
+            "mVAC(T3)(R)",
+            "ADMN(L)",
+            "ADMN(R)",
+            "AbN1(L)",
+            "AbN1(R)",
+            "AbN2(L)",
+            "AbN2(R)",
+            "AbN3(L)",
+            "AbN3(R)",
+            "AbN4(L)",
+            "AbN4(R)",
+            "AbNT(L)",
+            "AbNT(R)",
+            "CvN(L)",
+            "CvN(R)",
+            "DMetaN(L)",
+            "DMetaN(R)",
+            "DProN(L)",
+            "DProN(R)",
+            "MesoAN(L)",
+            "MesoAN(R)",
+            "MesoLN(L)",
+            "MesoLN(R)",
+            "MetaLN(L)",
+            "MetaLN(R)",
+            "PDMN(L)",
+            "PDMN(R)",
+            "PrN(L)",
+            "PrN(R)",
+            "ProAN(L)",
+            "ProAN(R)",
+            "ProCN(L)",
+            "ProCN(R)",
+            "ProLN(L)",
+            "ProLN(R)",
+            "VProN(L)",
+            "VProN(R)",
+            "CentralBrain-unspecified",
+            "Optic-unspecified(L)",
+            "Optic-unspecified(R)",
+            "CV-unspecified",
+            "VNC-unspecified"
+          ]
+        },
+        "subprimary": {
+          "size": 204,
+          "values": [
+            "<unspecified>",
+            "AL-D(L)",
+            "AL-DA1(L)",
+            "AL-DA2(L)",
+            "AL-DA3(L)",
+            "AL-DA4l(L)",
+            "AL-DA4m(L)",
+            "AL-DC1(L)",
+            "AL-DC2(L)",
+            "AL-DC3(L)",
+            "AL-DC4(L)",
+            "AL-DL1(L)",
+            "AL-DL2d(L)",
+            "AL-DL2v(L)",
+            "AL-DL3(L)",
+            "AL-DL4(L)",
+            "AL-DL5(L)",
+            "AL-DM1(L)",
+            "AL-DM2(L)",
+            "AL-DM3(L)",
+            "AL-DM4(L)",
+            "AL-DM5(L)",
+            "AL-DM6(L)",
+            "AL-DP1l(L)",
+            "AL-DP1m(L)",
+            "AL-V(L)",
+            "AL-VA1d(L)",
+            "AL-VA1v(L)",
+            "AL-VA2(L)",
+            "AL-VA3(L)",
+            "AL-VA4(L)",
+            "AL-VA5(L)",
+            "AL-VA6(L)",
+            "AL-VA7l(L)",
+            "AL-VA7m(L)",
+            "AL-VC1(L)",
+            "AL-VC2(L)",
+            "AL-VC3(L)",
+            "AL-VC4(L)",
+            "AL-VC5(L)",
+            "AL-VL1(L)",
+            "AL-VL2a(L)",
+            "AL-VL2p(L)",
+            "AL-VM1(L)",
+            "AL-VM2(L)",
+            "AL-VM3(L)",
+            "AL-VM4(L)",
+            "AL-VM5d(L)",
+            "AL-VM5v(L)",
+            "AL-VM6(L)",
+            "AL-VM7d(L)",
+            "AL-VM7v(L)",
+            "AL-VP1d(L)",
+            "AL-VP1l(L)",
+            "AL-VP1m(L)",
+            "AL-VP2(L)",
+            "AL-VP3(L)",
+            "AL-VP4(L)",
+            "AL-VP5(L)",
+            "AL-D(R)",
+            "AL-DA1(R)",
+            "AL-DA2(R)",
+            "AL-DA3(R)",
+            "AL-DA4l(R)",
+            "AL-DA4m(R)",
+            "AL-DC1(R)",
+            "AL-DC2(R)",
+            "AL-DC3(R)",
+            "AL-DC4(R)",
+            "AL-DL1(R)",
+            "AL-DL2d(R)",
+            "AL-DL2v(R)",
+            "AL-DL3(R)",
+            "AL-DL4(R)",
+            "AL-DL5(R)",
+            "AL-DM1(R)",
+            "AL-DM2(R)",
+            "AL-DM3(R)",
+            "AL-DM4(R)",
+            "AL-DM5(R)",
+            "AL-DM6(R)",
+            "AL-DP1l(R)",
+            "AL-DP1m(R)",
+            "AL-V(R)",
+            "AL-VA1d(R)",
+            "AL-VA1v(R)",
+            "AL-VA2(R)",
+            "AL-VA3(R)",
+            "AL-VA4(R)",
+            "AL-VA5(R)",
+            "AL-VA6(R)",
+            "AL-VA7l(R)",
+            "AL-VA7m(R)",
+            "AL-VC1(R)",
+            "AL-VC2(R)",
+            "AL-VC3(R)",
+            "AL-VC4(R)",
+            "AL-VC5(R)",
+            "AL-VL1(R)",
+            "AL-VL2a(R)",
+            "AL-VL2p(R)",
+            "AL-VM1(R)",
+            "AL-VM2(R)",
+            "AL-VM3(R)",
+            "AL-VM4(R)",
+            "AL-VM5d(R)",
+            "AL-VM5v(R)",
+            "AL-VM6(R)",
+            "AL-VM7d(R)",
+            "AL-VM7v(R)",
+            "AL-VP1d(R)",
+            "AL-VP1l(R)",
+            "AL-VP1m(R)",
+            "AL-VP2(R)",
+            "AL-VP3(R)",
+            "AL-VP4(R)",
+            "AL-VP5(R)",
+            "CRE(-ROB)(-RUB)(L)",
+            "ROB(L)",
+            "RUB(L)",
+            "CRE(-ROB)(-RUB)(R)",
+            "ROB(R)",
+            "RUB(R)",
+            "EBr1",
+            "EBr2r4",
+            "EBr3am",
+            "EBr3d",
+            "EBr3pw",
+            "EBr5",
+            "EBr6",
+            "FBl1",
+            "FBl2",
+            "FBl3",
+            "FBl4",
+            "FBl5",
+            "FBl6",
+            "FBl7",
+            "FBl8",
+            "FBl9",
+            "GA(L)",
+            "LAL(-GA)(L)",
+            "GA(R)",
+            "LAL(-GA)(R)",
+            "NO1(L)",
+            "NO1(R)",
+            "NO2(L)",
+            "NO2(R)",
+            "NO3(L)",
+            "NO3(R)",
+            "PB(L1)",
+            "PB(L2)",
+            "PB(L3)",
+            "PB(L4)",
+            "PB(L5)",
+            "PB(L6)",
+            "PB(L7)",
+            "PB(L8)",
+            "PB(L9)",
+            "PB(R1)",
+            "PB(R2)",
+            "PB(R3)",
+            "PB(R4)",
+            "PB(R5)",
+            "PB(R6)",
+            "PB(R7)",
+            "PB(R8)",
+            "PB(R9)",
+            "AMMC(L)",
+            "AMMC(R)",
+            "SAD(-AMMC)",
+            "a'1(L)",
+            "a'2(L)",
+            "a'3(L)",
+            "a'1(R)",
+            "a'2(R)",
+            "a'3(R)",
+            "a1(L)",
+            "a2(L)",
+            "a3(L)",
+            "a1(R)",
+            "a2(R)",
+            "a3(R)",
+            "b'1(L)",
+            "b'2(L)",
+            "b'1(R)",
+            "b'2(R)",
+            "b1(L)",
+            "b2(L)",
+            "b1(R)",
+            "b2(R)",
+            "g1(L)",
+            "g2(L)",
+            "g3(L)",
+            "g4(L)",
+            "g5(L)",
+            "g1(R)",
+            "g2(R)",
+            "g3(R)",
+            "g4(R)",
+            "g5(R)",
+            "AL-unspecified(L)",
+            "AL-unspecified(R)",
+            "gL-unspecified(R)",
+            "gL-unspecified(L)"
+          ]
+        },
+        "superprimary": {
+          "size": 13,
+          "values": [
+            "<unspecified>",
+            "CX",
+            "INP",
+            "LX(L)",
+            "LX(R)",
+            "MB(L)",
+            "MB(R)",
+            "PENP",
+            "SNP(L)",
+            "SNP(R)",
+            "VLNP(L)",
+            "VLNP(R)",
+            "VMNP"
+          ]
+        }
+      }
+    }
+  }
+}
