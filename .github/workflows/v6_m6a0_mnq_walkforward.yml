@@ -1,6 +1,10 @@
 name: V6 M6A0 MNQ walk-forward
 
 on:
+  push:
+    branches: [claude/hello-8eabhu]
+    paths:
+      - ".github/workflows/v6_m6a0_mnq_walkforward.yml"
   workflow_dispatch:
 
 permissions:
