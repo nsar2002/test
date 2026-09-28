@@ -1,0 +1,15 @@
+{
+  "classification": "BLOCKED_M6A0_DATA",
+  "code_sha256": "5fa7050aa0c48f1a50cf3820c299e10306945f2b757fe3a7af3b54924cb3c175",
+  "pins": {
+    "m5f0_script": true,
+    "manifest": true,
+    "protocol": true
+  },
+  "protocol": {
+    "freeze_commit": "c767d89",
+    "path": "research/v6_m6a0_mnq_walkforward_protocol.md",
+    "sha256": "893e5b5d459610a595cf1352b5e429916ec0d921cf5e2417e14bae891078d561"
+  },
+  "reason": "data: MNQ 06-19.Last.txt: non-ASCII bytes"
+}
