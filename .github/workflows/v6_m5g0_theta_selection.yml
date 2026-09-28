@@ -1,0 +1,102 @@
+name: V6 M5G0 non-market theta selection
+
+on:
+  push:
+    branches: [claude/hello-8eabhu]
+    paths:
+      - ".github/workflows/v6_m5g0_theta_selection.yml"
+      - "fly_mnq/v6_m5g0_theta_selection.py"
+      - "research/v6_m5g0_nonmarket_theta_selection_protocol.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.10"
+
+      - name: Freeze execution bytes
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m5g0_out
+          sha256sum \
+            research/v6_m5g0_nonmarket_theta_selection_protocol.md \
+            fly_mnq/v6_m5g0_theta_selection.py \
+            research/results/v6_m5f0_teaching_result.json \
+            | tee v6_m5g0_out/preexecution_sha256.txt
+
+      - name: Execute frozen M5G0 theta selection
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m5g0_theta_selection.py | tee v6_m5g0_out/stdout.txt
+
+      - name: Enforce classification vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m5g0_out/v6_m5g0_theta_selection_result.json"))
+          allowed={
+            "PASS_M5G0_THETA_SELECTED",
+            "FAIL_M5G0_NO_THETA_LEARNS_ALL_WORLDS",
+            "BLOCKED_M5G0_PREREQUISITE",
+          }
+          print("FORMAL_CLASSIFICATION",r["classification"])
+          if r["classification"] not in allowed:
+              raise SystemExit(2)
+          PY
+
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m5g0_out/output_sha256.txt
+          for f in v6_m5g0_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m5g0_out/output_sha256.txt
+          done
+          cat v6_m5g0_out/output_sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m5g0-theta-selection
+          path: v6_m5g0_out/
+          retention-days: 14
+          compression-level: 0
+
+      - name: Persist formal summary result
+        if: success()
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m5g0_out/v6_m5g0_theta_selection_result.json research/results/v6_m5g0_theta_selection_result.json
+          cp v6_m5g0_out/output_sha256.txt research/results/v6_m5g0_theta_selection_output_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m5g0_theta_selection_result.json research/results/v6_m5g0_theta_selection_output_sha256.txt
+          if git diff --cached --quiet; then
+            echo "No result change"
+            exit 0
+          fi
+          git commit -m "V6-M5G0: record non-market theta selection result [skip ci]"
+          # The branch may have advanced during the run; replay only this result commit onto its head.
+          for attempt in 1 2 3; do
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          exit 1
