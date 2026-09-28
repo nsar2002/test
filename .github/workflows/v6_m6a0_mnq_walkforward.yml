@@ -1,0 +1,133 @@
+name: V6 M6A0 MNQ walk-forward
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.10"
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.1.3 pandas==2.2.3 pyarrow==17.0.0 scipy==1.14.1
+
+      - name: Acquire pinned MaleCNS sources
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m5b3b_work v6_m5b3b_out v6_m6a0_out
+          curl --fail --location --retry 5 --retry-delay 5 \
+            -o v6_m5b3b_work/body-annotations.feather \
+            https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather
+          curl --fail --location --retry 5 --retry-delay 5 \
+            -o v6_m5b3b_work/connectome-weights.feather \
+            https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/connectome-weights-male-cns-v1.0-minconf-0.5.feather
+          echo '2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2  v6_m5b3b_work/body-annotations.feather' | sha256sum -c -
+          echo 'e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1  v6_m5b3b_work/connectome-weights.feather' | sha256sum -c -
+
+      - name: Freeze execution bytes
+        run: |
+          sha256sum \
+            research/v6_m6a0_mnq_walkforward_protocol.md \
+            research/v6_m6a0_mnq_file_manifest.json \
+            fly_mnq/v6_m6a0_mnq_walkforward.py \
+            fly_mnq/v6_m5f0_dan_teaching_semantics.py \
+            research/results/v6_m5g0_theta_selection_result.json \
+            | tee v6_m6a0_out/preexecution_sha256.txt
+
+      - name: Re-execute frozen M5B3B unchanged (parity prerequisite)
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m5b3b_compartment_gating_mvp.py > v6_m6a0_out/m5b3b_rerun_stdout.txt
+          sha256sum v6_m5b3b_out/* | tee v6_m6a0_out/m5b3b_rerun_sha256.txt
+
+      - name: Download MNQ Last files by manifest ID (values never printed)
+        run: |
+          set -euo pipefail
+          mkdir -p v6_m6a0_data
+          python - <<'PY'
+          import json, subprocess
+          m = json.load(open("research/v6_m6a0_mnq_file_manifest.json"))
+          for name, fid in m["used"].items():
+              url = f"https://drive.usercontent.google.com/download?id={fid}&export=download&confirm=t"
+              subprocess.run(["curl", "--fail", "--silent", "--show-error", "--location", "--retry", "5",
+                              "--retry-delay", "5", "-o", f"v6_m6a0_data/{name}", url], check=True)
+          PY
+          sha256sum v6_m6a0_data/* | tee v6_m6a0_out/input_sha256.txt
+
+      - name: Execute frozen M6A0 walk-forward
+        run: |
+          set -euo pipefail
+          python fly_mnq/v6_m6a0_mnq_walkforward.py | tee v6_m6a0_out/stdout.txt
+
+      - name: Enforce classification vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("v6_m6a0_out/v6_m6a0_result.json"))
+          allowed={"PASS_M6A0_CONNECTOME_LEARNS_MNQ","FAIL_M6A0_NO_CONNECTOME_ADVANTAGE","BLOCKED_M6A0_DATA"}
+          print("FORMAL_CLASSIFICATION",r["classification"])
+          if r["classification"] not in allowed:
+              raise SystemExit(2)
+          PY
+
+      - name: Remove market data before any upload
+        if: always()
+        run: rm -rf v6_m6a0_data
+
+      - name: Hash outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          : > v6_m6a0_out/output_sha256.txt
+          for f in v6_m6a0_out/*; do
+            [ -f "$f" ] || continue
+            [ "$(basename "$f")" = output_sha256.txt ] && continue
+            sha256sum "$f" >> v6_m6a0_out/output_sha256.txt
+          done
+          cat v6_m6a0_out/output_sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fly-mnq-v6-m6a0-mnq-walkforward
+          path: v6_m6a0_out/
+          retention-days: 14
+          compression-level: 0
+
+      - name: Persist formal summary result
+        if: success()
+        run: |
+          set -euo pipefail
+          mkdir -p research/results
+          cp v6_m6a0_out/v6_m6a0_result.json research/results/v6_m6a0_result.json
+          cp v6_m6a0_out/output_sha256.txt research/results/v6_m6a0_output_sha256.txt
+          cp v6_m6a0_out/input_sha256.txt research/results/v6_m6a0_input_sha256.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/results/v6_m6a0_result.json research/results/v6_m6a0_output_sha256.txt research/results/v6_m6a0_input_sha256.txt
+          if git diff --cached --quiet; then
+            echo "No result change"
+            exit 0
+          fi
+          git commit -m "V6-M6A0: record MNQ walk-forward result [skip ci]"
+          for attempt in 1 2 3; do
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          exit 1
