@@ -1,6 +1,501 @@
 {
-  "classification": "BLOCKED_M6A0_DATA",
-  "code_sha256": "5fa7050aa0c48f1a50cf3820c299e10306945f2b757fe3a7af3b54924cb3c175",
+  "classification": "FAIL_M6A0_NO_CONNECTOME_ADVANTAGE",
+  "code_sha256": "34bf4ef25e053ea6086eeb0903ab0dc6a57a69526ebd7dfd82cff1fd36a4944e",
+  "criteria": {
+    "H1_learns_MNQ": false,
+    "H2_connectome_beats_rewired": false,
+    "H3_teaching_specific": false
+  },
+  "criteria_stats": {
+    "H1_learns_MNQ": {
+      "mean": -0.0035867570926801044,
+      "n_blocks": 133,
+      "p": 0.9074511992168416,
+      "sd": 0.03105031396323829,
+      "t": -1.3321765677534156
+    },
+    "H2_connectome_beats_rewired": {
+      "mean": 0.00136176417054198,
+      "n_blocks": 133,
+      "p": 0.02582721720928437,
+      "sd": 0.007997046779249499,
+      "t": 1.9638037602462513
+    },
+    "H3_teaching_specific": {
+      "mean": -0.001319445621718099,
+      "n_blocks": 133,
+      "p": 0.6563654273876203,
+      "sd": 0.037716062550198076,
+      "t": -0.4034511609602892
+    }
+  },
+  "data": {
+    "active_bars": 144115,
+    "files": [
+      {
+        "active_bars": 2546,
+        "active_with_outcome": 2513,
+        "bars_15m": 3131,
+        "expiry": "2019-06-21",
+        "file": "MNQ 06-19.Last.txt",
+        "minute_lines": 42778,
+        "roll": "2019-06-13",
+        "sha256": "3f149589718a71169454dc803ebc20174f97a21c0c369e22b4e864aa1d503ef5"
+      },
+      {
+        "active_bars": 5872,
+        "active_with_outcome": 5793,
+        "bars_15m": 7169,
+        "expiry": "2019-09-20",
+        "file": "MNQ 09-19.Last.txt",
+        "minute_lines": 93910,
+        "roll": "2019-09-12",
+        "sha256": "fdade7723c55537223adaffea1669166b5cb013f85605a958e0745287c8eb36c"
+      },
+      {
+        "active_bars": 5895,
+        "active_with_outcome": 5817,
+        "bars_15m": 7959,
+        "expiry": "2019-12-20",
+        "file": "MNQ 12-19.Last.txt",
+        "minute_lines": 96370,
+        "roll": "2019-12-12",
+        "sha256": "91c17725d77af817d97e7e9efb8144c6636665536a8622257e278baa8b17b57b"
+      },
+      {
+        "active_bars": 5707,
+        "active_with_outcome": 5630,
+        "bars_15m": 7457,
+        "expiry": "2020-03-20",
+        "file": "MNQ 03-20.Last.txt",
+        "minute_lines": 93281,
+        "roll": "2020-03-12",
+        "sha256": "f0e4a9367b276e56cba5bda3df770929c37691ee063d7f3feebc9d6a3b4afba9"
+      },
+      {
+        "active_bars": 5789,
+        "active_with_outcome": 5709,
+        "bars_15m": 8371,
+        "expiry": "2020-06-19",
+        "file": "MNQ 06-20.Last.txt",
+        "minute_lines": 102697,
+        "roll": "2020-06-11",
+        "sha256": "f65ae53319da3370dc79dac2d8071f56abfa301798f70cfec7ca06ce7c86ebc1"
+      },
+      {
+        "active_bars": 5905,
+        "active_with_outcome": 5825,
+        "bars_15m": 8734,
+        "expiry": "2020-09-18",
+        "file": "MNQ 09-20.Last.txt",
+        "minute_lines": 105732,
+        "roll": "2020-09-10",
+        "sha256": "cdf49e2af5b07ebd0f6d2d817ef218a81813ed1d785caf96ab19bce0ee22efc0"
+      },
+      {
+        "active_bars": 5910,
+        "active_with_outcome": 5836,
+        "bars_15m": 8786,
+        "expiry": "2020-12-18",
+        "file": "MNQ 12-20.Last.txt",
+        "minute_lines": 109711,
+        "roll": "2020-12-10",
+        "sha256": "5d1bd0eff82e81be3e608c36f1216dfd5785c38c5f0c5de5c6b7dd1cbeed2689"
+      },
+      {
+        "active_bars": 5702,
+        "active_with_outcome": 5631,
+        "bars_15m": 8647,
+        "expiry": "2021-03-19",
+        "file": "MNQ 03-21.Last.txt",
+        "minute_lines": 106729,
+        "roll": "2021-03-11",
+        "sha256": "71fd0bb0a7d48faab58894978b446901ac8d749c59b7e93431e009994ecbca52"
+      },
+      {
+        "active_bars": 5892,
+        "active_with_outcome": 5815,
+        "bars_15m": 8924,
+        "expiry": "2021-06-18",
+        "file": "MNQ 06-21.Last.txt",
+        "minute_lines": 114637,
+        "roll": "2021-06-10",
+        "sha256": "7e9643845723fb33c784ca6057fd0f6050e00ae8eeadbb195c2cebf3eae0550a"
+      },
+      {
+        "active_bars": 5951,
+        "active_with_outcome": 5874,
+        "bars_15m": 9031,
+        "expiry": "2021-09-17",
+        "file": "MNQ 09-21.Last.txt",
+        "minute_lines": 112645,
+        "roll": "2021-09-09",
+        "sha256": "19308cb85c49ad1891d52fed0ca6a6187ff9fa861441de722021c66a08e1b630"
+      },
+      {
+        "active_bars": 5953,
+        "active_with_outcome": 5876,
+        "bars_15m": 8911,
+        "expiry": "2021-12-17",
+        "file": "MNQ 12-21.Last.txt",
+        "minute_lines": 111488,
+        "roll": "2021-12-09",
+        "sha256": "41a2e1ceeac80db38a29e0ade54dbb601cf0be6ef2edc3ed5f998829ec3801ba"
+      },
+      {
+        "active_bars": 5877,
+        "active_with_outcome": 5797,
+        "bars_15m": 8888,
+        "expiry": "2022-03-18",
+        "file": "MNQ 03-22.Last.txt",
+        "minute_lines": 114660,
+        "roll": "2022-03-10",
+        "sha256": "57c5bea7c097341f222365c623e183062adb747325221a5c4c266855863cc495"
+      },
+      {
+        "active_bars": 5904,
+        "active_with_outcome": 5823,
+        "bars_15m": 9047,
+        "expiry": "2022-06-17",
+        "file": "MNQ 06-22.Last.txt",
+        "minute_lines": 122070,
+        "roll": "2022-06-09",
+        "sha256": "62f56d3d2c16259e9920b6b8858e35958f2bb2b3120a6cf9163c8125eb65b662"
+      },
+      {
+        "active_bars": 5963,
+        "active_with_outcome": 5870,
+        "bars_15m": 9111,
+        "expiry": "2022-09-16",
+        "file": "MNQ 09-22.Last.txt",
+        "minute_lines": 119768,
+        "roll": "2022-09-08",
+        "sha256": "6f6cbeba73fd45a26d23b0c7f3361af61644958c6814809780b917d15baa9c6c"
+      },
+      {
+        "active_bars": 5929,
+        "active_with_outcome": 5844,
+        "bars_15m": 9064,
+        "expiry": "2022-12-16",
+        "file": "MNQ 12-22.Last.txt",
+        "minute_lines": 117168,
+        "roll": "2022-12-08",
+        "sha256": "d54f2a8d5700439ba7bb6abee0db3a61dd8e47052d83ffbde851127706fde9fe"
+      },
+      {
+        "active_bars": 5789,
+        "active_with_outcome": 5706,
+        "bars_15m": 8828,
+        "expiry": "2023-03-17",
+        "file": "MNQ 03-23.Last.txt",
+        "minute_lines": 113540,
+        "roll": "2023-03-09",
+        "sha256": "5013259a24cfea980f6461f74824fa0f04c25605b7e7473122f36efcdb77c0b7"
+      },
+      {
+        "active_bars": 5948,
+        "active_with_outcome": 5873,
+        "bars_15m": 8949,
+        "expiry": "2023-06-16",
+        "file": "MNQ 06-23.Last.txt",
+        "minute_lines": 116030,
+        "roll": "2023-06-08",
+        "sha256": "487c35b66eff2f019a2aac73a795c4cbfc5ac2cdb917944c8106a7645c80ccca"
+      },
+      {
+        "active_bars": 5924,
+        "active_with_outcome": 5845,
+        "bars_15m": 9037,
+        "expiry": "2023-09-15",
+        "file": "MNQ 09-23.Last.txt",
+        "minute_lines": 117589,
+        "roll": "2023-09-07",
+        "sha256": "a250c4410ecae8bcf055977a8d31fe8cf1a672eec51fa936c3a8d4d6615dc2c1"
+      },
+      {
+        "active_bars": 5965,
+        "active_with_outcome": 5882,
+        "bars_15m": 9111,
+        "expiry": "2023-12-15",
+        "file": "MNQ 12-23.Last.txt",
+        "minute_lines": 120681,
+        "roll": "2023-12-07",
+        "sha256": "2646658835c0ee16c4fbfa148dc988c81b2f5b1dd5cf6bdf8e4be254e7c3a56f"
+      },
+      {
+        "active_bars": 5778,
+        "active_with_outcome": 5709,
+        "bars_15m": 8781,
+        "expiry": "2024-03-15",
+        "file": "MNQ 03-24.Last.txt",
+        "minute_lines": 113433,
+        "roll": "2024-03-07",
+        "sha256": "b3822ec8be7da1a491c15bd68f331243f9d8c864ab3243c482718dc2848802cc"
+      },
+      {
+        "active_bars": 6352,
+        "active_with_outcome": 6271,
+        "bars_15m": 9251,
+        "expiry": "2024-06-21",
+        "file": "MNQ 06-24.Last.txt",
+        "minute_lines": 123554,
+        "roll": "2024-06-13",
+        "sha256": "bfdda2cf12cf589f1ea316ed2029d96895317ff2629b2d4de4575be8035abc30"
+      },
+      {
+        "active_bars": 5936,
+        "active_with_outcome": 5864,
+        "bars_15m": 9401,
+        "expiry": "2024-09-20",
+        "file": "MNQ 09-24.Last.txt",
+        "minute_lines": 122250,
+        "roll": "2024-09-12",
+        "sha256": "de52e63dd4396eebe53f096b0bd38283ad9fed03c885b263a2657316ccf8205e"
+      },
+      {
+        "active_bars": 5976,
+        "active_with_outcome": 5892,
+        "bars_15m": 9412,
+        "expiry": "2024-12-20",
+        "file": "MNQ 12-24.Last.txt",
+        "minute_lines": 128460,
+        "roll": "2024-12-12",
+        "sha256": "596b8124bd310961d918b505efe7b4c5a61b59e2ed06b7d38d084b51d7c70422"
+      },
+      {
+        "active_bars": 5749,
+        "active_with_outcome": 5674,
+        "bars_15m": 9058,
+        "expiry": "2025-03-21",
+        "file": "MNQ 03-25.Last.txt",
+        "minute_lines": 117804,
+        "roll": "2025-03-13",
+        "sha256": "880c3d49cd7d95f9e68ca68917732f7a3bdcce03a3e1a8505f463c816ed068fd"
+      },
+      {
+        "active_bars": 5903,
+        "active_with_outcome": 5817,
+        "bars_15m": 9138,
+        "expiry": "2025-06-20",
+        "file": "MNQ 06-25.Last.txt",
+        "minute_lines": 125195,
+        "roll": "2025-06-12",
+        "sha256": "8c1096c72c1e0dc73a2f63eb8360dfbc936c242c982c10b5e32a44f22a5eabc4"
+      }
+    ]
+  },
+  "diagnostics": {
+    "A_minus_D": {
+      "mean": 0.011028698434608509,
+      "n_blocks": 133,
+      "p": 0.022892204821570745,
+      "sd": 0.06307651736777148,
+      "t": 2.016426403082566
+    },
+    "D_linear_ridge": {
+      "mean": -0.014615455527288613,
+      "n_blocks": 133,
+      "p": 0.9996893196991524,
+      "sd": 0.04807138766123895,
+      "t": -3.50631974483216
+    },
+    "arm_run_info": {
+      "A_connectome": {
+        "kc_code_density": 0.1001476377952756,
+        "seconds": 329.7,
+        "zero_score_bars": 0
+      },
+      "B_rewired": {
+        "kc_code_density": 0.1001476377952756,
+        "seconds": 330.0,
+        "zero_score_bars": 0
+      },
+      "C_shuffled_teaching": {
+        "kc_code_density": 0.1001476377952756,
+        "seconds": 309.2,
+        "zero_score_bars": 0
+      }
+    },
+    "mean_block_rho": {
+      "A_connectome": -0.0035867570926801044,
+      "B_rewired": -0.004948521263222084,
+      "C_shuffled_teaching": -0.002267311470962005,
+      "D_linear_ridge": -0.014615455527288613
+    },
+    "trading": {
+      "A_connectome": {
+        "by_year": {
+          "2019": {
+            "gross_pnl": 1241.0,
+            "net_pnl": -5044.0
+          },
+          "2020": {
+            "gross_pnl": -5730.0,
+            "net_pnl": -25782.0
+          },
+          "2021": {
+            "gross_pnl": -1602.5,
+            "net_pnl": -21987.5
+          },
+          "2022": {
+            "gross_pnl": -7684.5,
+            "net_pnl": -27283.5
+          },
+          "2023": {
+            "gross_pnl": 975.0,
+            "net_pnl": -18816.0
+          },
+          "2024": {
+            "gross_pnl": -10553.5,
+            "net_pnl": -30500.5
+          },
+          "2025": {
+            "gross_pnl": 8250.0,
+            "net_pnl": -790.5
+          }
+        },
+        "costs": 115099.5,
+        "gross_pnl": -15104.5,
+        "hit_rate": 0.5102408453049546,
+        "max_drawdown": 135079.0,
+        "net_pnl": -130204.0,
+        "sharpe_annualized": -3.4498657799592793,
+        "turnover_per_bar": 0.5731475948610696
+      },
+      "B_rewired": {
+        "by_year": {
+          "2019": {
+            "gross_pnl": 1792.0,
+            "net_pnl": -4622.0
+          },
+          "2020": {
+            "gross_pnl": -5960.0,
+            "net_pnl": -26897.0
+          },
+          "2021": {
+            "gross_pnl": -6053.5,
+            "net_pnl": -26945.5
+          },
+          "2022": {
+            "gross_pnl": -9546.5,
+            "net_pnl": -29667.5
+          },
+          "2023": {
+            "gross_pnl": -3740.0,
+            "net_pnl": -23555.0
+          },
+          "2024": {
+            "gross_pnl": -11012.5,
+            "net_pnl": -32060.5
+          },
+          "2025": {
+            "gross_pnl": 6972.0,
+            "net_pnl": -2224.5
+          }
+        },
+        "costs": 118423.5,
+        "gross_pnl": -27548.5,
+        "hit_rate": 0.5099910685901997,
+        "max_drawdown": 149374.5,
+        "net_pnl": -145972.0,
+        "sharpe_annualized": -3.86742376861581,
+        "turnover_per_bar": 0.5896997311024799
+      },
+      "C_shuffled_teaching": {
+        "by_year": {
+          "2019": {
+            "gross_pnl": -659.0,
+            "net_pnl": -7763.0
+          },
+          "2020": {
+            "gross_pnl": -10920.0,
+            "net_pnl": -32334.0
+          },
+          "2021": {
+            "gross_pnl": -4095.5,
+            "net_pnl": -24696.5
+          },
+          "2022": {
+            "gross_pnl": -19094.5,
+            "net_pnl": -40934.5
+          },
+          "2023": {
+            "gross_pnl": 884.0,
+            "net_pnl": -19558.0
+          },
+          "2024": {
+            "gross_pnl": -2704.5,
+            "net_pnl": -23233.5
+          },
+          "2025": {
+            "gross_pnl": 6008.0,
+            "net_pnl": -2936.5
+          }
+        },
+        "costs": 120874.5,
+        "gross_pnl": -30581.5,
+        "hit_rate": 0.4961095384429071,
+        "max_drawdown": 155597.0,
+        "net_pnl": -151456.0,
+        "sharpe_annualized": -4.013278222649924,
+        "turnover_per_bar": 0.6019046907678518
+      },
+      "D_linear_ridge": {
+        "by_year": {
+          "2019": {
+            "gross_pnl": -461.0,
+            "net_pnl": -4766.0
+          },
+          "2020": {
+            "gross_pnl": -9039.0,
+            "net_pnl": -24351.0
+          },
+          "2021": {
+            "gross_pnl": -10387.5,
+            "net_pnl": -30121.5
+          },
+          "2022": {
+            "gross_pnl": -1120.5,
+            "net_pnl": -20707.5
+          },
+          "2023": {
+            "gross_pnl": -81.0,
+            "net_pnl": -18501.0
+          },
+          "2024": {
+            "gross_pnl": -1235.5,
+            "net_pnl": -18617.5
+          },
+          "2025": {
+            "gross_pnl": -7532.0,
+            "net_pnl": -14289.5
+          }
+        },
+        "costs": 101497.5,
+        "gross_pnl": -29856.5,
+        "hit_rate": 0.4993717737174344,
+        "max_drawdown": 131436.0,
+        "net_pnl": -131354.0,
+        "sharpe_annualized": -3.480413067035299,
+        "turnover_per_bar": 0.5054152972811473
+      }
+    },
+    "whole_window_rho": {
+      "A_connectome": -0.004979532292133335,
+      "B_rewired": -0.005749522682445081,
+      "C_shuffled_teaching": -0.003284459534619162,
+      "D_linear_ridge": -0.016515866777404627
+    }
+  },
+  "elapsed_s": 1014.7,
+  "evaluation": {
+    "blocks": 133,
+    "burn_in_contracts": 2,
+    "eval_bars": 133880,
+    "first_eval_contract": "MNQ 12-19.Last.txt"
+  },
+  "m5f0_prerequisites_all_true": true,
+  "m5g0_classification": "BLOCKED_M5G0_PREREQUISITE",
   "pins": {
     "m5f0_script": true,
     "manifest": true,
@@ -11,5 +506,15 @@
     "path": "research/v6_m6a0_mnq_walkforward_protocol.md",
     "sha256": "893e5b5d459610a595cf1352b5e429916ec0d921cf5e2417e14bae891078d561"
   },
-  "reason": "data: MNQ 06-19.Last.txt: non-ASCII bytes"
+  "reason": "failed: H1_learns_MNQ, H2_connectome_beats_rewired, H3_teaching_specific",
+  "theta": {
+    "point": {
+      "eta_minus": 0.05,
+      "eta_plus": 0.05,
+      "g_max": 2.0,
+      "lam_D": 0.5,
+      "lam_K": 0.5
+    },
+    "source": "M5C_REFERENCE_POINT"
+  }
 }
