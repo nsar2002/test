@@ -1,0 +1,998 @@
+{
+  "channel_ranking": [
+    "DP1m_adPN",
+    "DM1_lPN",
+    "DC1_adPN",
+    "DM2_lPN",
+    "DM4_adPN",
+    "VA2_adPN",
+    "DP1l_adPN",
+    "DA1_lPN",
+    "DM6_adPN",
+    "VM5d_adPN",
+    "DL1_adPN",
+    "VA6_adPN",
+    "VA3_adPN",
+    "VL2p_adPN",
+    "DL2v_adPN",
+    "VC3_adPN",
+    "DC3_adPN",
+    "VM3_adPN",
+    "VA4_lPN",
+    "DC2_adPN",
+    "DL2d_adPN",
+    "VL2a_adPN",
+    "VA5_lPN",
+    "DM3_adPN",
+    "VC5_lvPN",
+    "VA1d_adPN",
+    "VM6_adPN",
+    "D_adPN",
+    "VA7m_lPN",
+    "V_ilPN",
+    "VC4_adPN",
+    "DM5_lPN",
+    "VP1d+VP4_l2PN1",
+    "VC2_lPN",
+    "VM7d_adPN",
+    "VM2_adPN",
+    "VC1_lPN",
+    "VA1v_adPN",
+    "VP1m_l2PN",
+    "DL5_adPN",
+    "VM5v_adPN",
+    "VM4_adPN",
+    "VM1_lPN",
+    "DA2_lPN",
+    "VA7l_adPN",
+    "DA4l_adPN",
+    "VP3+VP1l_ivPN",
+    "VM7v_adPN",
+    "VP1d_il2PN",
+    "DC4_adPN",
+    "VP1m+VP5_ilPN",
+    "DL3_lPN",
+    "VP2_adPN",
+    "DL4_adPN",
+    "DA4m_adPN",
+    "VL1_ilPN",
+    "VM4_lvPN",
+    "M_lPNm11D",
+    "M_adPNm4",
+    "DA3_adPN",
+    "VP3+_vPN",
+    "VP5+Z_adPN",
+    "VP1m+VP2_lvPN2",
+    "M_adPNm8",
+    "M_l2PNm16",
+    "M_adPNm5",
+    "M_lPNm13",
+    "VP4_vPN",
+    "DA1_vPN",
+    "VP1m+_lvPN",
+    "VP2+_adPN",
+    "M_ilPNm90",
+    "M_adPNm7",
+    "M_lvPNm46",
+    "M_lPNm11A",
+    "M_lvPNm48",
+    "M_l2PNm15",
+    "M_lvPNm45",
+    "VP1m+VP2_lvPN1",
+    "M_lPNm11B",
+    "VP1l+VP3_ilPN",
+    "CB0650",
+    "M_lPNm11C",
+    "M_spPN4t9",
+    "VP2+Z_lvPN",
+    "M_l2PNm17",
+    "M_lvPNm25",
+    "M_smPNm1"
+  ],
+  "classification": "PASS_M5E0_SENSORY_KC_ENCODER_QUALIFIED",
+  "criteria": {
+    "A_prerequisite_parity": true,
+    "B_exact_arithmetic": true,
+    "C_exact_sparsity": true,
+    "D_memoryless": true,
+    "E_channel_map": true,
+    "F_wiring_control": true,
+    "G_determinism": true
+  },
+  "diagnostics": {
+    "channel_table": [
+      {
+        "bodies": 2,
+        "edges": 935,
+        "kcs_reached": 935,
+        "rank": 0,
+        "synapses": 20995,
+        "type": "DP1m_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 853,
+        "kcs_reached": 853,
+        "rank": 1,
+        "synapses": 18007,
+        "type": "DM1_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 892,
+        "kcs_reached": 892,
+        "rank": 2,
+        "synapses": 17443,
+        "type": "DC1_adPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 682,
+        "kcs_reached": 641,
+        "rank": 3,
+        "synapses": 12970,
+        "type": "DM2_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 627,
+        "kcs_reached": 627,
+        "rank": 4,
+        "synapses": 12314,
+        "type": "DM4_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 647,
+        "kcs_reached": 647,
+        "rank": 5,
+        "synapses": 12214,
+        "type": "VA2_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 559,
+        "kcs_reached": 559,
+        "rank": 6,
+        "synapses": 11637,
+        "type": "DP1l_adPN"
+      },
+      {
+        "bodies": 13,
+        "edges": 633,
+        "kcs_reached": 543,
+        "rank": 7,
+        "synapses": 10677,
+        "type": "DA1_lPN"
+      },
+      {
+        "bodies": 7,
+        "edges": 654,
+        "kcs_reached": 589,
+        "rank": 8,
+        "synapses": 10584,
+        "type": "DM6_adPN"
+      },
+      {
+        "bodies": 12,
+        "edges": 750,
+        "kcs_reached": 675,
+        "rank": 9,
+        "synapses": 10448,
+        "type": "VM5d_adPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 565,
+        "kcs_reached": 536,
+        "rank": 10,
+        "synapses": 9689,
+        "type": "DL1_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 435,
+        "kcs_reached": 435,
+        "rank": 11,
+        "synapses": 9366,
+        "type": "VA6_adPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 496,
+        "kcs_reached": 472,
+        "rank": 12,
+        "synapses": 8993,
+        "type": "VA3_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 514,
+        "kcs_reached": 514,
+        "rank": 13,
+        "synapses": 8977,
+        "type": "VL2p_adPN"
+      },
+      {
+        "bodies": 8,
+        "edges": 388,
+        "kcs_reached": 369,
+        "rank": 14,
+        "synapses": 8567,
+        "type": "DL2v_adPN"
+      },
+      {
+        "bodies": 7,
+        "edges": 590,
+        "kcs_reached": 549,
+        "rank": 15,
+        "synapses": 8462,
+        "type": "VC3_adPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 480,
+        "kcs_reached": 450,
+        "rank": 16,
+        "synapses": 8418,
+        "type": "DC3_adPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 458,
+        "kcs_reached": 441,
+        "rank": 17,
+        "synapses": 8168,
+        "type": "VM3_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 507,
+        "kcs_reached": 507,
+        "rank": 18,
+        "synapses": 7854,
+        "type": "VA4_lPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 482,
+        "kcs_reached": 462,
+        "rank": 19,
+        "synapses": 7547,
+        "type": "DC2_adPN"
+      },
+      {
+        "bodies": 9,
+        "edges": 327,
+        "kcs_reached": 307,
+        "rank": 20,
+        "synapses": 7443,
+        "type": "DL2d_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 358,
+        "kcs_reached": 358,
+        "rank": 21,
+        "synapses": 7383,
+        "type": "VL2a_adPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 367,
+        "kcs_reached": 352,
+        "rank": 22,
+        "synapses": 7258,
+        "type": "VA5_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 394,
+        "kcs_reached": 394,
+        "rank": 23,
+        "synapses": 6982,
+        "type": "DM3_adPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 441,
+        "kcs_reached": 428,
+        "rank": 24,
+        "synapses": 6949,
+        "type": "VC5_lvPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 344,
+        "kcs_reached": 326,
+        "rank": 25,
+        "synapses": 6820,
+        "type": "VA1d_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 306,
+        "kcs_reached": 306,
+        "rank": 26,
+        "synapses": 6678,
+        "type": "VM6_adPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 368,
+        "kcs_reached": 337,
+        "rank": 27,
+        "synapses": 6600,
+        "type": "D_adPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 443,
+        "kcs_reached": 418,
+        "rank": 28,
+        "synapses": 6479,
+        "type": "VA7m_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 388,
+        "kcs_reached": 373,
+        "rank": 29,
+        "synapses": 6340,
+        "type": "V_ilPN"
+      },
+      {
+        "bodies": 6,
+        "edges": 413,
+        "kcs_reached": 389,
+        "rank": 30,
+        "synapses": 6219,
+        "type": "VC4_adPN"
+      },
+      {
+        "bodies": 7,
+        "edges": 556,
+        "kcs_reached": 520,
+        "rank": 31,
+        "synapses": 6149,
+        "type": "DM5_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 370,
+        "kcs_reached": 370,
+        "rank": 32,
+        "synapses": 5792,
+        "type": "VP1d+VP4_l2PN1"
+      },
+      {
+        "bodies": 2,
+        "edges": 337,
+        "kcs_reached": 337,
+        "rank": 33,
+        "synapses": 5647,
+        "type": "VC2_lPN"
+      },
+      {
+        "bodies": 7,
+        "edges": 385,
+        "kcs_reached": 357,
+        "rank": 34,
+        "synapses": 5371,
+        "type": "VM7d_adPN"
+      },
+      {
+        "bodies": 3,
+        "edges": 293,
+        "kcs_reached": 284,
+        "rank": 35,
+        "synapses": 4462,
+        "type": "VM2_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 201,
+        "kcs_reached": 201,
+        "rank": 36,
+        "synapses": 4408,
+        "type": "VC1_lPN"
+      },
+      {
+        "bodies": 8,
+        "edges": 249,
+        "kcs_reached": 236,
+        "rank": 37,
+        "synapses": 4359,
+        "type": "VA1v_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 322,
+        "kcs_reached": 322,
+        "rank": 38,
+        "synapses": 4288,
+        "type": "VP1m_l2PN"
+      },
+      {
+        "bodies": 2,
+        "edges": 219,
+        "kcs_reached": 219,
+        "rank": 39,
+        "synapses": 4164,
+        "type": "DL5_adPN"
+      },
+      {
+        "bodies": 5,
+        "edges": 265,
+        "kcs_reached": 260,
+        "rank": 40,
+        "synapses": 4143,
+        "type": "VM5v_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 227,
+        "kcs_reached": 227,
+        "rank": 41,
+        "synapses": 4024,
+        "type": "VM4_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 166,
+        "kcs_reached": 166,
+        "rank": 42,
+        "synapses": 3659,
+        "type": "VM1_lPN"
+      },
+      {
+        "bodies": 10,
+        "edges": 327,
+        "kcs_reached": 287,
+        "rank": 43,
+        "synapses": 3651,
+        "type": "DA2_lPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 223,
+        "kcs_reached": 223,
+        "rank": 44,
+        "synapses": 3548,
+        "type": "VA7l_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 206,
+        "kcs_reached": 206,
+        "rank": 45,
+        "synapses": 3434,
+        "type": "DA4l_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 154,
+        "kcs_reached": 134,
+        "rank": 46,
+        "synapses": 3422,
+        "type": "VP3+VP1l_ivPN"
+      },
+      {
+        "bodies": 3,
+        "edges": 213,
+        "kcs_reached": 209,
+        "rank": 47,
+        "synapses": 3169,
+        "type": "VM7v_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 151,
+        "kcs_reached": 139,
+        "rank": 48,
+        "synapses": 2393,
+        "type": "VP1d_il2PN"
+      },
+      {
+        "bodies": 2,
+        "edges": 117,
+        "kcs_reached": 117,
+        "rank": 49,
+        "synapses": 2373,
+        "type": "DC4_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 162,
+        "kcs_reached": 146,
+        "rank": 50,
+        "synapses": 2178,
+        "type": "VP1m+VP5_ilPN"
+      },
+      {
+        "bodies": 8,
+        "edges": 176,
+        "kcs_reached": 165,
+        "rank": 51,
+        "synapses": 2028,
+        "type": "DL3_lPN"
+      },
+      {
+        "bodies": 1,
+        "edges": 93,
+        "kcs_reached": 93,
+        "rank": 52,
+        "synapses": 1653,
+        "type": "VP2_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 100,
+        "kcs_reached": 100,
+        "rank": 53,
+        "synapses": 1378,
+        "type": "DL4_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 71,
+        "kcs_reached": 71,
+        "rank": 54,
+        "synapses": 1138,
+        "type": "DA4m_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 67,
+        "kcs_reached": 66,
+        "rank": 55,
+        "synapses": 887,
+        "type": "VL1_ilPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 69,
+        "kcs_reached": 68,
+        "rank": 56,
+        "synapses": 826,
+        "type": "VM4_lvPN"
+      },
+      {
+        "bodies": 11,
+        "edges": 91,
+        "kcs_reached": 67,
+        "rank": 57,
+        "synapses": 779,
+        "type": "M_lPNm11D"
+      },
+      {
+        "bodies": 2,
+        "edges": 84,
+        "kcs_reached": 84,
+        "rank": 58,
+        "synapses": 764,
+        "type": "M_adPNm4"
+      },
+      {
+        "bodies": 4,
+        "edges": 47,
+        "kcs_reached": 47,
+        "rank": 59,
+        "synapses": 619,
+        "type": "DA3_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 32,
+        "kcs_reached": 32,
+        "rank": 60,
+        "synapses": 492,
+        "type": "VP3+_vPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 42,
+        "kcs_reached": 42,
+        "rank": 61,
+        "synapses": 396,
+        "type": "VP5+Z_adPN"
+      },
+      {
+        "bodies": 8,
+        "edges": 23,
+        "kcs_reached": 13,
+        "rank": 62,
+        "synapses": 157,
+        "type": "VP1m+VP2_lvPN2"
+      },
+      {
+        "bodies": 3,
+        "edges": 13,
+        "kcs_reached": 13,
+        "rank": 63,
+        "synapses": 137,
+        "type": "M_adPNm8"
+      },
+      {
+        "bodies": 4,
+        "edges": 77,
+        "kcs_reached": 66,
+        "rank": 64,
+        "synapses": 131,
+        "type": "M_l2PNm16"
+      },
+      {
+        "bodies": 4,
+        "edges": 29,
+        "kcs_reached": 27,
+        "rank": 65,
+        "synapses": 118,
+        "type": "M_adPNm5"
+      },
+      {
+        "bodies": 6,
+        "edges": 18,
+        "kcs_reached": 11,
+        "rank": 66,
+        "synapses": 92,
+        "type": "M_lPNm13"
+      },
+      {
+        "bodies": 2,
+        "edges": 14,
+        "kcs_reached": 14,
+        "rank": 67,
+        "synapses": 48,
+        "type": "VP4_vPN"
+      },
+      {
+        "bodies": 1,
+        "edges": 19,
+        "kcs_reached": 19,
+        "rank": 68,
+        "synapses": 33,
+        "type": "DA1_vPN"
+      },
+      {
+        "bodies": 4,
+        "edges": 24,
+        "kcs_reached": 23,
+        "rank": 69,
+        "synapses": 31,
+        "type": "VP1m+_lvPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 14,
+        "kcs_reached": 14,
+        "rank": 70,
+        "synapses": 31,
+        "type": "VP2+_adPN"
+      },
+      {
+        "bodies": 2,
+        "edges": 8,
+        "kcs_reached": 7,
+        "rank": 71,
+        "synapses": 18,
+        "type": "M_ilPNm90"
+      },
+      {
+        "bodies": 1,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 72,
+        "synapses": 8,
+        "type": "M_adPNm7"
+      },
+      {
+        "bodies": 2,
+        "edges": 5,
+        "kcs_reached": 4,
+        "rank": 73,
+        "synapses": 8,
+        "type": "M_lvPNm46"
+      },
+      {
+        "bodies": 3,
+        "edges": 4,
+        "kcs_reached": 3,
+        "rank": 74,
+        "synapses": 6,
+        "type": "M_lPNm11A"
+      },
+      {
+        "bodies": 1,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 75,
+        "synapses": 6,
+        "type": "M_lvPNm48"
+      },
+      {
+        "bodies": 2,
+        "edges": 3,
+        "kcs_reached": 3,
+        "rank": 76,
+        "synapses": 4,
+        "type": "M_l2PNm15"
+      },
+      {
+        "bodies": 2,
+        "edges": 3,
+        "kcs_reached": 3,
+        "rank": 77,
+        "synapses": 4,
+        "type": "M_lvPNm45"
+      },
+      {
+        "bodies": 2,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 78,
+        "synapses": 4,
+        "type": "VP1m+VP2_lvPN1"
+      },
+      {
+        "bodies": 2,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 79,
+        "synapses": 3,
+        "type": "M_lPNm11B"
+      },
+      {
+        "bodies": 2,
+        "edges": 3,
+        "kcs_reached": 3,
+        "rank": 80,
+        "synapses": 3,
+        "type": "VP1l+VP3_ilPN"
+      },
+      {
+        "bodies": 1,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 81,
+        "synapses": 2,
+        "type": "CB0650"
+      },
+      {
+        "bodies": 2,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 82,
+        "synapses": 2,
+        "type": "M_lPNm11C"
+      },
+      {
+        "bodies": 1,
+        "edges": 2,
+        "kcs_reached": 2,
+        "rank": 83,
+        "synapses": 2,
+        "type": "M_spPN4t9"
+      },
+      {
+        "bodies": 1,
+        "edges": 1,
+        "kcs_reached": 1,
+        "rank": 84,
+        "synapses": 2,
+        "type": "VP2+Z_lvPN"
+      },
+      {
+        "bodies": 1,
+        "edges": 1,
+        "kcs_reached": 1,
+        "rank": 85,
+        "synapses": 1,
+        "type": "M_l2PNm17"
+      },
+      {
+        "bodies": 1,
+        "edges": 1,
+        "kcs_reached": 1,
+        "rank": 86,
+        "synapses": 1,
+        "type": "M_lvPNm25"
+      },
+      {
+        "bodies": 1,
+        "edges": 1,
+        "kcs_reached": 1,
+        "rank": 87,
+        "synapses": 1,
+        "type": "M_smPNm1"
+      }
+    ],
+    "connectome_vs_rewired_code_overlap_iid20": 0.1393943488943489,
+    "decorrelation": {
+      "corr20": {
+        "code_overlap_vs_input_cosine_correlation": 0.9356603686137638,
+        "mean_abs_input_cosine": 0.5055819924304953,
+        "mean_code_overlap": 0.2716365013662311,
+        "mean_code_overlap_input_cosine_gt_0.5": 0.521549959049959,
+        "mean_code_overlap_input_cosine_lt_-0.5": 0.08207233828648743,
+        "mean_input_cosine": -0.0005654467552431119
+      },
+      "iid20": {
+        "code_overlap_vs_input_cosine_correlation": 0.7541017538293956,
+        "mean_abs_input_cosine": 0.17488918540294082,
+        "mean_code_overlap": 0.22611923963275316,
+        "mean_code_overlap_input_cosine_gt_0.5": 0.45295562942621764,
+        "mean_code_overlap_input_cosine_lt_-0.5": 0.10601965601965602,
+        "mean_input_cosine": 0.0034726412033698997
+      }
+    },
+    "per_stream": {
+      "connectome:corr20": {
+        "code_class_composition": {
+          "alpha_beta": 0.3034815724815725,
+          "alpha_prime_beta_prime": 0.0710933660933661,
+          "gamma": 0.6243746928746928,
+          "other": 0.0010503685503685503
+        },
+        "mean_positive_drive_kcs_L": 1761.413,
+        "mean_positive_drive_kcs_R": 1775.438,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "connectome:iid20": {
+        "code_class_composition": {
+          "alpha_beta": 0.3192653562653563,
+          "alpha_prime_beta_prime": 0.08135012285012284,
+          "gamma": 0.5986154791154791,
+          "other": 0.000769041769041769
+        },
+        "mean_positive_drive_kcs_L": 1766.5995,
+        "mean_positive_drive_kcs_R": 1774.7975,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "connectome:iid44": {
+        "code_class_composition": {
+          "alpha_beta": 0.2746167076167076,
+          "alpha_prime_beta_prime": 0.07788820638820639,
+          "gamma": 0.6468464373464373,
+          "other": 0.0006486486486486486
+        },
+        "mean_positive_drive_kcs_L": 1830.273,
+        "mean_positive_drive_kcs_R": 1842.0695,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "connectome:impulse20": {
+        "code_class_composition": {
+          "alpha_beta": 0.3777027027027027,
+          "alpha_prime_beta_prime": 0.16891891891891891,
+          "gamma": 0.4528255528255528,
+          "other": 0.0005528255528255529
+        },
+        "mean_positive_drive_kcs_L": 230.95,
+        "mean_positive_drive_kcs_R": 232.3,
+        "steps_with_zero_drive_kc_in_code": 0.5
+      },
+      "connectome:zero20": {
+        "code_class_composition": {
+          "alpha_beta": 0.08353808353808354,
+          "alpha_prime_beta_prime": 0.3808353808353808,
+          "gamma": 0.5356265356265356,
+          "other": 0.0
+        },
+        "mean_positive_drive_kcs_L": 0.0,
+        "mean_positive_drive_kcs_R": 0.0,
+        "steps_with_zero_drive_kc_in_code": 1.0
+      },
+      "rewired:corr20": {
+        "code_class_composition": {
+          "alpha_beta": 0.3452825552825553,
+          "alpha_prime_beta_prime": 0.11476781326781327,
+          "gamma": 0.5398488943488944,
+          "other": 0.00010073710073710074
+        },
+        "mean_positive_drive_kcs_L": 1781.533,
+        "mean_positive_drive_kcs_R": 1790.326,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "rewired:iid20": {
+        "code_class_composition": {
+          "alpha_beta": 0.35556265356265354,
+          "alpha_prime_beta_prime": 0.11846805896805897,
+          "gamma": 0.5256953316953317,
+          "other": 0.00027395577395577397
+        },
+        "mean_positive_drive_kcs_L": 1779.617,
+        "mean_positive_drive_kcs_R": 1791.2955,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "rewired:iid44": {
+        "code_class_composition": {
+          "alpha_beta": 0.3502727272727273,
+          "alpha_prime_beta_prime": 0.11088329238329238,
+          "gamma": 0.538421375921376,
+          "other": 0.00042260442260442263
+        },
+        "mean_positive_drive_kcs_L": 1825.66,
+        "mean_positive_drive_kcs_R": 1839.614,
+        "steps_with_zero_drive_kc_in_code": 0.0
+      },
+      "rewired:impulse20": {
+        "code_class_composition": {
+          "alpha_beta": 0.3785012285012285,
+          "alpha_prime_beta_prime": 0.17923832923832925,
+          "gamma": 0.44195331695331697,
+          "other": 0.0003071253071253071
+        },
+        "mean_positive_drive_kcs_L": 228.9,
+        "mean_positive_drive_kcs_R": 229.85,
+        "steps_with_zero_drive_kc_in_code": 0.5
+      },
+      "rewired:zero20": {
+        "code_class_composition": {
+          "alpha_beta": 0.08353808353808354,
+          "alpha_prime_beta_prime": 0.3808353808353808,
+          "gamma": 0.5356265356265356,
+          "other": 0.0
+        },
+        "mean_positive_drive_kcs_L": 0.0,
+        "mean_positive_drive_kcs_R": 0.0,
+        "steps_with_zero_drive_kc_in_code": 1.0
+      }
+    },
+    "pn_type_by_kc_class_chi_square": {
+      "connectome": 2521.9232895376977,
+      "rewired": 264.33912701868366
+    }
+  },
+  "digests": {
+    "W": "584662664c6736bb4d80ad62f69e2da11a769d96c273e242f53c53d013c4fbcb",
+    "W_rewired": "45bd42e3d3ad4e9c8d14032da5f410ce6c8dc137f6d37da22e53c18b0977bc95",
+    "z:connectome:corr20": "c3f84b2a962553aa3c1fff1e5e1058eb4038702ab2ab8b4837a97a5f30d25019",
+    "z:connectome:iid20": "908627c4c8ad8801f29dc0cbfca52b529ab4625358bb8eeae6b4f985946e4c23",
+    "z:connectome:iid44": "da7e26eab24d36c865ff61e5a58ed8b1e4d28baff74f07af8bad15a78721b204",
+    "z:connectome:impulse20": "1f9b0a3c1fe5b9ef317777685653712d1dfd322e087e84ff7ae1d5328546e844",
+    "z:connectome:zero20": "d09802964e7d3e69abf8e274fb0b96a9f028a338ef29570addf60181320c7012",
+    "z:rewired:corr20": "2cf0b9b02f88dd227ecd844ef38e9adbfece308bbe6d85cff09ee2e8c4bbd858",
+    "z:rewired:iid20": "ae63f4bfbf628e011092695f5ff062e3539dfe6de12d0e4246789bfe6723d75d",
+    "z:rewired:iid44": "271a6b144aefac59446c636125e52f607ead1e4eae420242b60ea247a1cd5790",
+    "z:rewired:impulse20": "232c9146fcc2c50f39d74d1cc0d937aadea5119634348848289660bf837b9a6e",
+    "z:rewired:zero20": "d09802964e7d3e69abf8e274fb0b96a9f028a338ef29570addf60181320c7012"
+  },
+  "identity": {
+    "KC": 4064,
+    "KC_L": 2019,
+    "KC_R": 2045,
+    "PN_BODIES": 314,
+    "PN_KC_EDGES": 22586,
+    "PN_KC_SYNAPSES": 390928,
+    "PN_TYPES": 88
+  },
+  "prerequisites": {
+    "annotations_sha256": true,
+    "identity_anchors_exact": true,
+    "kc_sides_exact_LR": true,
+    "m4b0_sha256": true,
+    "protocol_sha256": true,
+    "weights_sha256": true
+  },
+  "protocol": {
+    "freeze_commit": "ce8543e9add81f6114b2a0d42230e58dc1fd9a34",
+    "path": "research/v6_m5e0_sensory_kc_encoder_protocol.md",
+    "sha256": "037704788249ac288324524ff2da426b59f6ad057c069fdd3e3ae7a49f32eb79"
+  },
+  "reason": "all frozen encoder criteria passed",
+  "wiring_control": {
+    "accepted_swaps": 206063,
+    "attempted_swaps": 225860,
+    "expected_retention_R0": 0.046783664604439314,
+    "kc_in_degree_preserved": true,
+    "no_duplicate_edges": true,
+    "pn_out_degree_preserved": true,
+    "pn_out_weight_multisets_preserved": true,
+    "regeneration_identical": true,
+    "retained_fraction": 0.046179048968387496,
+    "retention_bound": 0.05847958075554914
+  },
+  "wiring_file": {
+    "content_digest": "8fdc526df077de4ffd8f91744692ef9c495facae46d0b97862c64cf5a59288b7",
+    "file": "v6_m5e0_wiring.npz"
+  }
+}
