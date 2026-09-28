@@ -62,12 +62,21 @@ jobs:
           set -euo pipefail
           mkdir -p v6_m6a0_data
           python - <<'PY'
-          import json, subprocess
+          import json, os, subprocess, time
           m = json.load(open("research/v6_m6a0_mnq_file_manifest.json"))
+          urls = ("https://drive.usercontent.google.com/download?id={}&export=download&confirm=t",
+                  "https://drive.google.com/uc?export=download&id={}")
           for name, fid in m["used"].items():
-              url = f"https://drive.usercontent.google.com/download?id={fid}&export=download&confirm=t"
-              subprocess.run(["curl", "--fail", "--silent", "--show-error", "--location", "--retry", "5",
-                              "--retry-delay", "5", "-o", f"v6_m6a0_data/{name}", url], check=True)
+              path = f"v6_m6a0_data/{name}"
+              for attempt in range(8):  # Google throttles bursts with an HTML page: back off and retry
+                  subprocess.run(["curl", "--silent", "--location", "--retry", "3", "--retry-delay", "5",
+                                  "-o", path, urls[attempt % 2].format(fid)])
+                  head = open(path, "rb").read(64).lstrip() if os.path.exists(path) else b""
+                  if head[:1] not in (b"", b"<"):
+                      break
+                  print("RETRY", name, attempt + 1, flush=True)
+                  time.sleep(20 * (attempt + 1))
+              time.sleep(4)
           PY
           sha256sum v6_m6a0_data/* | tee v6_m6a0_out/input_sha256.txt
           python - <<'PY'
