@@ -1,0 +1,15 @@
+{
+  "classification": "BLOCKED_M5G0_PREREQUISITE",
+  "m5f0_result": {
+    "classification": "FAIL_M5F0_TEACHING_SEMANTICS",
+    "path": "research/results/v6_m5f0_teaching_result.json",
+    "sha256": "9e1d8ec79f6d919647d6cbbba29acdf05346ee0341affa46d9098d5b47d366f5"
+  },
+  "protocol": {
+    "freeze_commit": "2c7dcc8",
+    "path": "research/v6_m5g0_nonmarket_theta_selection_protocol.md",
+    "sha256": "efe42171b6e7e306f4ecd56ecd45dd91907f44203a64c94e784dbd499971b8fd"
+  },
+  "reason": "protocol hash mismatch or M5F0 not PASS",
+  "threshold": 0.0691
+}
