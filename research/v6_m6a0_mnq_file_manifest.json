@@ -1,0 +1,38 @@
+{
+  "folder_id": "17DYp3CObxhVvip68vqSGtM_SYPCoBfVB",
+  "used": {
+    "MNQ 06-19.Last.txt": "1DMws2Jh-awgHaoQ5kG1iOi4a1VgsLvEw",
+    "MNQ 09-19.Last.txt": "1na3CIZIii4py1tXdKU4AVvWa5zd9lADU",
+    "MNQ 12-19.Last.txt": "1XT_G7iFKWdcDfJOayIsnWJDZFvZDq7Aq",
+    "MNQ 03-20.Last.txt": "12qU-w5_WTL5XanFav-2YBLSilAXNwTnn",
+    "MNQ 06-20.Last.txt": "1-z7o8hjm5uG1A_AW1Nn2XylOm5FIjBXa",
+    "MNQ 09-20.Last.txt": "1HoFr3FDV-ybYlG_GZfTD559V8hVqgW1s",
+    "MNQ 12-20.Last.txt": "1XgIPAsH-5yBm5e7k75fOX2TKa8o_aaaI",
+    "MNQ 03-21.Last.txt": "1_Hv2PXTE9jfqifgO7xxohK86NCT5ZH45",
+    "MNQ 06-21.Last.txt": "1jBm4KPqkWpX9oKLwntlzTeAbidmU3ETd",
+    "MNQ 09-21.Last.txt": "14dNdilsnSKEc7FAauw1NjeTBndMZsuLC",
+    "MNQ 12-21.Last.txt": "1mwPcn6yAvl1nWP7sf7yn8FdbQrjeoI2U",
+    "MNQ 03-22.Last.txt": "1_p879e9nHhTQ9RqK6jNvrcke08192ZZt",
+    "MNQ 06-22.Last.txt": "1D3zJk1IqU4vws5EV3WlkjqMQSBCEjaHS",
+    "MNQ 09-22.Last.txt": "1mRqQTk8pq5ro1PIBYH0LMJ7AyJ0izS3x",
+    "MNQ 12-22.Last.txt": "1-rf4QZYryLklhk1uEGNqF7NjGgIXahqX",
+    "MNQ 03-23.Last.txt": "1Ot32QwvQ4G1rdgZJfi5xqppUVVAcySEI",
+    "MNQ 06-23.Last.txt": "1UPDvekQtfIvSzxKbO4dfKMBfLpQ6OtnL",
+    "MNQ 09-23.Last.txt": "1NF7EUl2bMjSb_IVou4vFrZDA0UFHMc31",
+    "MNQ 12-23.Last.txt": "144npTq2lsNOtqrzMvyNH0tlXTEeBVSWC",
+    "MNQ 03-24.Last.txt": "114NsweG3jbBNSL3WLIQ48VtqnYYom_P9",
+    "MNQ 06-24.Last.txt": "1p3xnjQINZo6eTMIAoRL0iXGpcZ1kKzlv",
+    "MNQ 09-24.Last.txt": "1myGbXsx0DMWRgoZ13wVZmu1d84wywOwT",
+    "MNQ 12-24.Last.txt": "1hu9bAEESJwQTWFkfTXe3paky88Y69fAM",
+    "MNQ 03-25.Last.txt": "1xHr4HYORKUteNQZRhV72vcGu_af2HpXv",
+    "MNQ 06-25.Last.txt": "1eXRnkG720cUhMQ740f-33fIjweT5m-Te"
+  },
+  "reserved_holdout_not_downloaded": [
+    "MNQ 09-25.Last.txt",
+    "MNQ 12-25.Last.txt",
+    "MNQ 03-26.Last.txt",
+    "MNQ 06-26.Last.txt",
+    "MNQ 09-26.Last.txt",
+    "MNQ 12-26.Last.txt"
+  ]
+}
