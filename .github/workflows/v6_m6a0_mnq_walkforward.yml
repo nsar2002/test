@@ -45,6 +45,7 @@ jobs:
           sha256sum \
             research/v6_m6a0_mnq_walkforward_protocol.md \
             research/v6_m6a0_mnq_file_manifest.json \
+            research/v6_m6a0_amendment_a1_encoding.md \
             fly_mnq/v6_m6a0_mnq_walkforward.py \
             fly_mnq/v6_m5f0_dan_teaching_semantics.py \
             research/results/v6_m5g0_theta_selection_result.json \
@@ -69,6 +70,19 @@ jobs:
                               "--retry-delay", "5", "-o", f"v6_m6a0_data/{name}", url], check=True)
           PY
           sha256sum v6_m6a0_data/* | tee v6_m6a0_out/input_sha256.txt
+          python - <<'PY'
+          import os, sys
+          bad = []
+          for n in sorted(os.listdir("v6_m6a0_data")):
+              b = open(f"v6_m6a0_data/{n}", "rb").read(64)
+              s = b.lstrip()
+              tag = ("html" if s[:1] == b"<" else "utf8-bom" if b[:3] == b"\xef\xbb\xbf"
+                     else "utf16-bom" if b[:2] in (b"\xff\xfe", b"\xfe\xff") else "digit" if b[:1].isdigit() else "other")
+              print("PROBE", n, os.path.getsize(f"v6_m6a0_data/{n}"), tag)
+              bad += [n] if tag == "html" else []
+          if bad:
+              sys.exit(f"ACCESS NOT PUBLIC: {len(bad)} files are HTML pages; set the Drive folder to 'Anyone with the link'")
+          PY
 
       - name: Execute frozen M6A0 walk-forward
         run: |

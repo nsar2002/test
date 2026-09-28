@@ -71,10 +71,13 @@ def load_module(name, path):
 # ---------------------------------------------------------------- data (fail closed, no repair)
 
 def parse_last_file(path):
-    try:
-        text = Path(path).read_bytes().decode("ascii")
+    raw = Path(path).read_bytes()
+    try:  # amendment A1: ASCII, UTF-8 (optional BOM) or UTF-16 with BOM, decoded strictly
+        text = raw.decode("utf-16") if raw[:2] in (b"\xff\xfe", b"\xfe\xff") else raw.decode("utf-8-sig")
     except UnicodeDecodeError as exc:
-        raise DataError(f"{Path(path).name}: non-ASCII bytes") from exc
+        raise DataError(f"{Path(path).name}: undecodable bytes") from exc
+    if not text.isascii():
+        raise DataError(f"{Path(path).name}: non-ASCII characters")
     df = pd.read_csv(io.StringIO(text), sep=";", header=None, dtype=str, skip_blank_lines=True)
     if df.shape[1] != 6 or df.isna().any().any() or len(df) == 0:
         raise DataError(f"{Path(path).name}: not 6 fields per line")
